@@ -1,0 +1,69 @@
+---
+test:
+  name: empty-contract-couchDB-1of
+  description: This is a duration based benchmark targetting a Hyperledger Fabric network with a CouchDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
+    a Fabric-SDK-Node Gateway. Each test round flexes the `emptyContract` method. Rounds run for evaluate and submit Gateway routes.
+  clients:
+    type: local
+    number: 4
+  rounds:
+  - label: empty-contract-evaluate
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `emptyContract`, which immediately returns a null response. This represents the fastest possible round trip time for an evaluateTransaction() method that does not touch the world state or perform any action.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      consensus: false
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+  - label: empty-contract-submit
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for a submitTransaction() method that does not touch the world state or perform any action.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      consensus: true
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+  - label: empty-contract-evaluate-fixed-tps
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `emptyContract`, which immediately returns a null response. This represents the fastest possible round trip time for an evaluateTransaction() method that does not touch the world state or perform any action.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 750
+    arguments:
+      consensus: false
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+  - label: empty-contract-submit-fixed-tps
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for a submitTransaction() method that does not touch the world state or perform any action.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 350
+    arguments:
+      consensus: true
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+monitor:
+  type:
+  - docker
+  - process
+  docker:
+    name:
+    - all
+  process:
+  - command: node
+    arguments: local-client.js
+    multiOutput: avg
+  interval: 1

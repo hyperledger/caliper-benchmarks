@@ -1,0 +1,19 @@
+{
+	"name": "fixed-asset",
+	"version": "1.0.0",
+	"description": "Chaincode to create assets of user provided size",
+	"main": "index.js",
+	"engines": {
+		"node": ">=8",
+		"npm": ">=5"
+	},
+	"scripts": {
+		"start": "fabric-chaincode-node start"
+	},
+	"engine-strict": true,
+	"license": "Apache-2.0",
+	"dependencies": {
+		"fabric-contract-api": "~1.4.0",
+        "fabric-shim": "~1.4.0"
+	}
+}

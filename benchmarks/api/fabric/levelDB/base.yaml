@@ -1,0 +1,157 @@
+---
+test:
+  name: fixed-asset-levelDB
+  description: This is a duration based benchmark targetting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
+    a Fabric-SDK-Node Gateway. Each test round flexes a single chaincode method, and includes a null-operation to act as a performance cost baseline.
+  clients:
+    type: local
+    number: 4
+  rounds:
+  - label: empty-contract-evaluate
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for an evaluateTransaction() method.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      consensus: false
+    callback: benchmark/network-model/lib/empty-contract.js
+  - label: empty-contract-submit
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for a submitTransaction() method.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      consensus: true
+    callback: benchmark/network-model/lib/empty-contract.js
+  - label: create-asset-1000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `create`, which inserts an Asset of size 1000 bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      bytesize: 1000
+    callback: benchmark/network-model/lib/create-asset.js
+  - label: get-asset-evaluate-1000
+    description: Test a evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a `getState()` operation for a passed UUID, retrieving as asset of size 1000 bytes. 
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      nosetup: true
+      bytesize: 1000
+      uuid: '500'
+      consensus: false
+    callback: benchmark/network-model/lib/get-asset.js
+  - label: get-asset-submit-1000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a `getState()` operation for a passed UUID, retrieving as asset of size 1000 bytes. This test includes involvement of the orderer, and appending to the ledger.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      nosetup: true
+      bytesize: 1000
+      uuid: '500'
+      consensus: true
+    callback: benchmark/network-model/lib/get-asset.js
+  - label: range-query-evaluate-0
+    description: Test a evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no items in the world state databse.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      bytesize: 1000
+      range: 200
+      offset: 100
+      assets: 0
+      pagesize: '10'
+      nomatch: true
+      consensus: false
+    callback: benchmark/network-model/lib/range-query-asset.js
+  - label: range-query-evaluate-1000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 10 and a range keys that bound 200 assets created by the calling client. Each returned asset is of size 1000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      bytesize: 1000
+      range: 200
+      offset: 100
+      assets: 0
+      pagesize: '10'
+      consensus: false
+    callback: benchmark/network-model/lib/range-query-asset.js
+  - label: range-query-submit-0
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no items in the world state databse. This test includes involvement of the orderer, and appending to the ledger.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      bytesize: 1000
+      range: 200
+      offset: 100
+      assets: 0
+      pagesize: '10'
+      nomatch: true
+      consensus: true
+    callback: benchmark/network-model/lib/range-query-asset.js
+  - label: range-query-submit-1000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 10 and a range keys that bound 200 assets created by the calling client. Each returned asset is of size 1000 bytes. This test includes involvement of the orderer, and appending to the ledger.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 300
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 15
+    arguments:
+      bytesize: 1000
+      range: 200
+      offset: 100
+      assets: 0
+      pagesize: '10'
+      consensus: true
+    callback: benchmark/network-model/lib/range-query-asset.js
+monitor:
+  type:
+  - docker
+  - process
+  docker:
+    name:
+    - all
+  process:
+  - command: node
+    arguments: local-client.js
+    multiOutput: avg
+  interval: 1

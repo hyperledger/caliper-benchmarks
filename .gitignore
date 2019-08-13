@@ -1,0 +1,11 @@
+# Git Ignore file
+
+# No logs
+*.log
+/log
+
+# No html
+*.html
+
+# No mac files
+.DS_Store
