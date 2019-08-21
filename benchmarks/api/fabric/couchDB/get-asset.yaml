@@ -1,0 +1,160 @@
+---
+test:
+  name: get-asset-ramp-couchDB
+  description: This is a duration based benchmark targetting a Hyperledger Fabric network with a CouchDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
+    a Fabric-SDK-Node Gateway. Each test round invokes the 'getAsset()' API method. Successive rounds create and retrieve assets of larger bytesize.
+  clients:
+    type: local
+    number: 50
+  rounds:
+  - label: get-asset-evaluate-100
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 100 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      create_sizes: [100,1000,2000,4000,8000,16000,32000,64000]
+      assets: 1000
+      bytesize: 100
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-1000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 1000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      assets: 1000
+      bytesize: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-2000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 2000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 2000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-4000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 4000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 4000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 8000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 8000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-16000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 16000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 16000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-32000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 32000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 32000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-64000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 64000 bytes.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 500
+        sleep_time: 500
+    arguments:
+      nosetup: true
+      bytesize: 64000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+#   - label: get-asset-evaluate-8000-fixed-tps
+#     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 8000 bytes at a fixed TPS.
+#     chaincodeId: fixed-asset
+#     txDuration:
+#     - 120
+#     rateControl:
+#      - type: fixed-rate
+#        opts:
+#          tps: 350
+#     arguments:
+#       nosetup: true
+#       bytesize: 8000
+#       assets: 1000
+#       consensus: false
+#     callback: benchmarks/api/fabric/lib/get-asset.js
+monitor:
+  type:
+  - process
+  process:
+  - command: node
+    arguments: local-client.js
+    multiOutput: avg
+  interval: 10

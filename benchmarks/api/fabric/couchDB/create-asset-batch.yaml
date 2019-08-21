@@ -1,0 +1,115 @@
+---
+test:
+  name: create-asset-batch-couchDB
+  description: This is a duration based benchmark targetting a Hyperledger Fabric network with a CouchDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
+    a Fabric-SDK-Node Gateway. Each test round invokes the `createAssetsFromBatch` method, with successive rounds increasing the batchsize of the assets being
+    added into the world state databse.
+  clients:
+    type: local
+    number: 5
+  rounds:
+  - label: create-asset-batch-1-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 1 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 5
+        sleep_time: 500
+    arguments:
+      bytesize: 8000
+      batchsize: 1
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+  - label: create-asset-batch-10-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 10 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 5
+        sleep_time: 500
+    arguments:
+      bytesize: 8000
+      batchsize: 10
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+  - label: create-asset-batch-20-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 20 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        unfinished_per_client: 5
+        sleep_time: 500
+    arguments:
+      bytesize: 8000
+      batchsize: 20
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+  - label: create-asset-batch-30-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 30 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        sleep_time: 500
+        unfinished_per_client: 4
+    arguments:
+      bytesize: 8000
+      batchsize: 30
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+  - label: create-asset-batch-40-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 40 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        sleep_time: 500
+        unfinished_per_client: 3
+    arguments:
+      bytesize: 8000
+      batchsize: 40
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+  - label: create-asset-batch-50-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 50 assets of size 8k bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration:
+    - 120
+    rateControl:
+    - type: fixed-backlog
+      opts:
+        sleep_time: 500
+        unfinished_per_client: 2
+    arguments:
+      bytesize: 8000
+      batchsize: 50
+    callback: benchmarks/api/fabric/lib/batch-create-asset.js
+#   - label: create-asset-batch-20-8000-fixed-tps
+#     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which inserts a batch of 20 assets of size 8k bytes into the World State database at a fixed TPS.
+#     chaincodeId: fixed-asset
+#     txDuration:
+#     - 120
+#     rateControl:
+#     - type: fixed-rate
+#       opts:
+#         tps: 15
+#     arguments:
+#       bytesize: 8000
+#       batchsize: 20
+#     callback: benchmarks/api/fabric/lib/batch-create-asset.js
+monitor:
+  type:
+  - process
+  process:
+  - command: node
+    arguments: local-client.js
+    multiOutput: avg
+  interval: 10
