@@ -19,8 +19,8 @@ mutual-tls: false
 caliper:
     blockchain: fabric
     command:
-        start: export FABRIC_VERSION=1.4.1;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_raft/docker-compose-tls.yaml up -d;sleep 3s
-        end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
+        start: export FABRIC_VERSION=1.4.1;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml up -d;sleep 3s
+        end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
     Version: 1.4.1
@@ -38,9 +38,9 @@ clients:
                 cryptoStore:
                     path: /tmp/hfc-cvs/org1
             clientPrivateKey:
-                path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/key.pem
+                path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/key.pem
             clientSignedCert:
-                path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
+                path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
 
     client0.org2.example.com:
         client:
@@ -50,9 +50,9 @@ clients:
                 cryptoStore:
                     path: /tmp/hfc-cvs/org2
             clientPrivateKey:
-                path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/key.pem
+                path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/key.pem
             clientSignedCert:
-                path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
+                path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
 
 
 channels:
@@ -65,8 +65,6 @@ channels:
             version: 0
         orderers:
         - orderer0.example.com
-        - orderer1.example.com
-        - orderer2.example.com
         peers:
             peer0.org1.example.com:
                 eventSource: true
@@ -79,10 +77,10 @@ channels:
           language: node
           path: src/fabric/samples/marbles/node
           metadataPath: src/fabric/samples/marbles/node/metadata
-        - id: simple
+        - id: fabcar
           version: v0
           language: node
-          path: src/fabric/scenario/simple/node
+          path: src/fabric/samples/fabcar/javascript
 
 organizations:
     Org1:
@@ -92,9 +90,9 @@ organizations:
         certificateAuthorities:
         - ca.org1.example.com
         adminPrivateKey:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem
         signedCert:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
 
     Org2:
         mspid: Org2MSP
@@ -103,9 +101,9 @@ organizations:
         certificateAuthorities:
         - ca.org2.example.com
         adminPrivateKey:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem
         signedCert:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
 
 orderers:
     orderer0.example.com:
@@ -113,20 +111,7 @@ orderers:
         grpcOptions:
             ssl-target-name-override: orderer0.example.com
         tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-    orderer1.example.com:
-        url: grpcs://localhost:8050
-        grpcOptions:
-            ssl-target-name-override: orderer1.example.com
-        tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-    orderer2.example.com:
-        url: grpcs://localhost:9050
-        grpcOptions:
-            ssl-target-name-override: orderer2.example.com
-        tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-
+            path: networks/fabric/config_solo_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 peers:
     peer0.org1.example.com:
         url: grpcs://localhost:7051
@@ -134,7 +119,7 @@ peers:
             ssl-target-name-override: peer0.org1.example.com
             grpc.keepalive_time_ms: 600000
         tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
 
     peer0.org2.example.com:
         url: grpcs://localhost:8051
@@ -142,7 +127,7 @@ peers:
             ssl-target-name-override: peer0.org2.example.com
             grpc.keepalive_time_ms: 600000
         tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
 
 certificateAuthorities:
     ca.org1.example.com:
@@ -150,7 +135,7 @@ certificateAuthorities:
         httpOptions:
             verify: false
         tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
         registrar:
         - enrollId: admin
           enrollSecret: adminpw
@@ -160,7 +145,7 @@ certificateAuthorities:
         httpOptions:
             verify: false
         tlsCACerts:
-            path: networks/fabric/config_raft/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+            path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
         registrar:
         - enrollId: admin
           enrollSecret: adminpw
