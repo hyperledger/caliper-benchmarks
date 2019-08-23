@@ -1,68 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/technologies/composer/composer/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/content/fabric/overview/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/technologies/fabric/fabric/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/content/common/inprogress/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/content/community/chat/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/content/community/contribute/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/common/inprogress/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/technologies/iroha/iroha/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/community/chat/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/community/contribute/</loc>
-     <lastmod>2019-08-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://pages.github.ibm.com/BlockchainAB/BlockchainPlatformGuide/content/license/</loc>
-     <lastmod>2019-08-22</lastmod>
+     <loc>https://hyperledger.github.io/caliper-benchmarks/content/license/</loc>
+     <lastmod>2019-08-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
