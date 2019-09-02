@@ -1,11 +1,5 @@
-# Git Ignore file
-
-# No logs
-*.log
-/log
-
-# No html
-*.html
-
-# No mac files
+# No Mac files
 .DS_Store
+
+# If the site is built locally, do not let it get pushed
+/site
