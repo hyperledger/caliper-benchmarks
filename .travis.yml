@@ -1,0 +1,19 @@
+language: python
+cache: pip
+python:
+- '3.6'
+install:
+- pip install mkdocs
+- pip install mkdocs-material
+- pip install pymdown-extensions
+
+script:
+- mkdocs build --verbose --clean
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $https://travis-ci.com/hyperledger/caliper-benchmarks
+  local_dir: site
+  on:
+    branch: reports
