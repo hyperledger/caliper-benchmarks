@@ -13,7 +13,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $https://travis-ci.com/hyperledger/caliper-benchmarks
+  github_token: $github_token
   local_dir: site
   on:
     branch: reports
