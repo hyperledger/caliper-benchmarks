@@ -23,7 +23,7 @@ caliper:
     end: docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
-  Version: 1.4.0
+  Version: 1.4.1
   Size: 2 Orgs with 1 Peer
   Orderer: Solo,
   Distribution: Single Host
