@@ -19,15 +19,15 @@ mutual-tls: false
 caliper:
   blockchain: fabric
   command:
-    start: export FABRIC_VERSION=1.4.0;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb/docker-compose.yaml up -d;sleep 3s
-    end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb/docker-compose.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
+    start: export FABRIC_VERSION=1.4.0;docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_kafka/docker-compose.yaml up -d;sleep 10s
+    end: docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_kafka/docker-compose.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
   Version: 1.4.0
   Size: 2 Orgs with 1 Peer
-  Orderer: Solo
+  Orderer: Kafka
   Distribution: Single Host
-  StateDB: CouchDB
+  StateDB: GoLevelDB
 
 clients:
   client0.org1.example.com:
@@ -38,9 +38,9 @@ clients:
         cryptoStore:
           path: /tmp/hfc-cvs/org1
       clientPrivateKey:
-        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/key.pem
+        path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/key.pem
       clientSignedCert:
-        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
+        path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
 
   client0.org2.example.com:
     client:
@@ -50,21 +50,18 @@ clients:
         cryptoStore:
           path: /tmp/hfc-cvs/org2
       clientPrivateKey:
-        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/key.pem
+        path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/key.pem
       clientSignedCert:
-        path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
+        path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
 
 
 channels:
   mychannel:
+    configBinary: networks/fabric/config_kafka/mychannel.tx
     created: false
-    definition:
-        capabilities: []
-        consortium: 'SampleConsortium'
-        msps: ['Org1MSP', 'Org2MSP', 'Org3MSP']
-        version: 0
     orderers:
-    - orderer.example.com
+    - orderer0.example.com
+    - orderer1.example.com
     peers:
       peer0.org1.example.com:
         eventSource: true
@@ -74,8 +71,9 @@ channels:
     chaincodes:
     - id: fixed-asset
       version: v0
-      language: java
-      path: src/fabric/api/fixed-asset/java
+      language: golang
+      path: fabric/api/fixed-asset/go
+      metadataPath: src/fabric/api/fixed-asset/metadata
 
 organizations:
   Org1:
@@ -85,9 +83,9 @@ organizations:
     certificateAuthorities:
     - ca.org1.example.com
     adminPrivateKey:
-      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem
+      path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem
     signedCert:
-      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
 
   Org2:
     mspid: Org2MSP
@@ -96,15 +94,19 @@ organizations:
     certificateAuthorities:
     - ca.org2.example.com
     adminPrivateKey:
-      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem
+      path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem
     signedCert:
-      path: networks/fabric/config_solo/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
+      path: networks/fabric/config_kafka/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
 
 orderers:
-  orderer.example.com:
+  orderer0.example.com:
     url: grpc://localhost:7050
     grpcOptions:
-      ssl-target-name-override: orderer.example.com
+      ssl-target-name-override: orderer0.example.com
+  orderer1.example.com:
+    url: grpc://localhost:8050
+    grpcOptions:
+        ssl-target-name-override: orderer1.example.com
 
 peers:
   peer0.org1.example.com:
