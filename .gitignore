@@ -1,4 +1,5 @@
 # Git Ignore file
+launch.json
 
 # No logs
 *.log
@@ -9,3 +10,5 @@
 
 # No mac files
 .DS_Store
+
+src/fabric/samples/fabcar/java
