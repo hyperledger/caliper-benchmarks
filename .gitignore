@@ -11,4 +11,9 @@ launch.json
 # No mac files
 .DS_Store
 
+# No npm runtime artifacts
+node_modules/*
+package-lock.json
+package.json
+
 src/fabric/samples/fabcar/java
