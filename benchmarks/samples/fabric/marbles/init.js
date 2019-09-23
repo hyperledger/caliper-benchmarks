@@ -21,10 +21,26 @@ let colors = ['red', 'blue', 'green', 'black', 'white', 'pink', 'rainbow'];
 let owners = ['Alice', 'Bob', 'Claire', 'David'];
 let bc, contx;
 
-module.exports.init = function(blockchain, context, args) {
+module.exports.init = async function(blockchain, context, args) {
     bc = blockchain;
     contx = context;
 
+    for (let i=0; txIndex<40; i++) {
+        txIndex++;
+        let marbleName = 'marble_' + txIndex.toString() + '_' + process.pid.toString();
+        let marbleColor = colors[txIndex % colors.length];
+        let marbleSize = (((txIndex % 10) + 1) * 10).toString(); // [10, 100]
+        let marbleOwner = owners[txIndex % owners.length];
+
+        const args = {
+                chaincodeFunction: 'initMarble',
+                chaincodeArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
+            };
+
+        await bc.invokeSmartContract(contx, 'marbles', 'v1', args, 30);
+    }
+
+console.log('INIT DONE')
     return Promise.resolve();
 };
 
@@ -35,21 +51,10 @@ module.exports.run = function() {
     let marbleSize = (((txIndex % 10) + 1) * 10).toString(); // [10, 100]
     let marbleOwner = owners[txIndex % owners.length];
 
-    let args;
-    if (bc.bcType === 'fabric') {
-        args = {
+    const args = {
             chaincodeFunction: 'initMarble',
             chaincodeArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
         };
-    } else {
-        args = {
-            verb: 'initMarble',
-            name: marbleName,
-            color: marbleColor,
-            size: marbleSize,
-            owner: marbleOwner
-        };
-    }
 
     return bc.invokeSmartContract(contx, 'marbles', 'v1', args, 30);
 };

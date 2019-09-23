@@ -70,7 +70,6 @@ channels:
         eventSource: true
       peer0.org2.example.com:
         eventSource: true
-
     chaincodes:
     - id: marbles
       version: v0
