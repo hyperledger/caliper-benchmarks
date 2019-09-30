@@ -37,6 +37,11 @@ theme:
   name: material
   language: 'en'
 
+# Google analytics
+google_analytics:
+  - 'UA-99900088-14'
+  - 'auto'
+
 # Social Links
 extra:
   social:
