@@ -1,10 +1,16 @@
 # Hyperledger Caliper Benchmarks
 This repository contains sample benchmarks that may be used by Caliper, a blockchain performance benchmark framework. For more information on Caliper, please see the [Caliper main repository](https://github.com/hyperledger/caliper/)
 
-Associated performance reports, based on running these benchmarks, are published to the repository github pages.
+Associated performance reports, based on running these benchmarks, are published to the [repository github pages](https://hyperledger.github.io/caliper-benchmarks/).
 
-## Repository Contents
-The benchmarks contained within this repository are split into three directories:
+## Repository Branches
+This repository has three branches:
+1. **master**. Contains sample benchmarks
+2. **reports**. Contains md files that are built and published to the `gh-pages` branch
+3. **gh-pages**. Contains the build output from the `reports` branch 
+
+## Master Branch Contents
+The benchmarks contained within the master branch are split into three directories:
 1. **benchmarks**. Comprises the test configuration and callback files. The test configuration files describe the benchmark test parameters and also reference the callback files that are executed by Caliper clients during the benchmark. The Benchmark folder contains the following subfolders:
     - **api** Tests directed towards the API of a single target blockchain.
 	- **samples** Tests directed towards the native samples provided by target blockchain platforms.
@@ -23,3 +29,5 @@ For instance, to run the benchmark that targets the Fabric Marbles sample agains
 ```bash
 caliper benchmark run --caliper-benchconfig benchmarks/samples/fabric/marbles/config.yaml --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml --caliper-workspace <path_to_caliper_benchmarks_root_directory>
 ```
+## Extending the Documented Reports
+The documented reports are built automatically from the `reports` branch of this repository and subsequently hosted on the `gh-pages` branch; pull requests must be target the [`reports` branch](https://github.com/hyperledger/caliper-benchmarks/tree/reports) in order for any modifications to be built.
