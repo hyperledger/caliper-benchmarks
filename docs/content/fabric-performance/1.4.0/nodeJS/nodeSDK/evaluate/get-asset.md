@@ -1,6 +1,6 @@
 The asset retrieval benchmark consists of evaluating `getAsset` gateway transactions for the fixed-asset smart contract deployed within LevelDB and CouchDB networks that uses a 2-of-any endorsement policy. This will result in the method being run on a single Hyperledger Fabric Peer and will not result in any interaction with the Orderer. The investigated scenarios are targeted at reading from the world state database, resulting in the transaction pathway depicted in Figure 1.
 
-![alt text](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
+![evaluate contract get pathway](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
 
 Each transaction retrieves a single asset with a randomised UUID from the world state database.
 
@@ -36,14 +36,14 @@ Resource utilization is investigated for a fixed transaction rate of 350TPS, ret
 | 32K | 0.36 | 0.17 | 208.3 |
 | 64K | 0.75 | 0.35 | 107.0 |
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetTPS.png)
+![single query fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetTPS.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetLatency.png)
+![single query fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetLatency.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetCycles.png)
+![single query fabric cycles performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetCycles.png)
 
 *Resource Utilization- 8k Assets @350TPS*
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetRadar.png)
+![single query fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/getAsset/GetAssetRadar.png)
 
 ## Benchmark Observations
 The CouchDB world state database is observed to achieve comparable throughput and lower latencies than a LevelDB equivalent, with higher achievable TPS for assets that are larger than 10Kb.

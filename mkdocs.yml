@@ -1,6 +1,6 @@
 # Project Information
 site_name: Hyperledger Blockchain Performance Reports
-site_description: Performance reports for Hyperledger Fabric, measured using Hyperledger Caliper
+site_description: Blockchain performance reports for Hyperledger Fabric, measured using Hyperledger Caliper, providing insights into TPS, latency and resource consumption.
 site_url: https://hyperledger.github.io/caliper-benchmarks/
 
 # Repository Information
@@ -10,22 +10,22 @@ repo_url: 'https://github.com/hyperledger/caliper-benchmarks'
 # Navigation/Pages
 nav:
     - Overview: index.md
-    - Fabric:
-      - Approach: content/fabric/approach.md
-      - Results:
+    - Fabric Performance:
+      - Testing Approach: content/fabric-performance/approach.md
+      - Performance Results:
         - v1.4.0:
-          - Configuration: content/fabric/1.4.0/nodeJS/nodeSDK/configuration.md
+          - Fabric Test Configuration: content/fabric-performance/1.4.0/nodeJS/nodeSDK/configuration.md
           - Evaluate:
-            - Empty Contract: content/fabric/1.4.0/nodeJS/nodeSDK/evaluate/empty-contract.md
-            - Get Asset: content/fabric/1.4.0/nodeJS/nodeSDK/evaluate/get-asset.md
-            - Batch Get Asset: content/fabric/1.4.0/nodeJS/nodeSDK/evaluate/batch-get-asset.md
-            - Paginated Rage Query: content/fabric/1.4.0/nodeJS/nodeSDK/evaluate/paginated-range-query.md
-            - Paginated Rich Query: content/fabric/1.4.0/nodeJS/nodeSDK/evaluate/paginated-rich-query.md
+            - Empty Contract: content/fabric-performance/1.4.0/nodeJS/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: content/fabric-performance/1.4.0/nodeJS/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: content/fabric-performance/1.4.0/nodeJS/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Rage Query: content/fabric-performance/1.4.0/nodeJS/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: content/fabric-performance/1.4.0/nodeJS/nodeSDK/evaluate/paginated-rich-query.md
           - Submit:
-            - Empty Contract: content/fabric/1.4.0/nodeJS/nodeSDK/submit/empty-contract.md
-            - Create Asset: content/fabric/1.4.0/nodeJS/nodeSDK/submit/create-asset.md
-            - Batch Create Asset: content/fabric/1.4.0/nodeJS/nodeSDK/submit/batch-create-asset.md
-        - Download: content/fabric/downloads.md
+            - Empty Contract: content/fabric-performance/1.4.0/nodeJS/nodeSDK/submit/empty-contract.md
+            - Create Asset: content/fabric-performance/1.4.0/nodeJS/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: content/fabric-performance/1.4.0/nodeJS/nodeSDK/submit/batch-create-asset.md
+        - Download: content/fabric-performance/downloads.md
       - Tools: content/common/inprogress.md
     - Community:
       - RocketChat: content/community/chat.md

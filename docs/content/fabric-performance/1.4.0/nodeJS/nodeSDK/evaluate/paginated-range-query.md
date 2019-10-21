@@ -1,6 +1,6 @@
 The paginated range query benchmark consists of evaluating `paginatedRangeQuery` gateway transactions for the fixed-asset smart contract deployed within LevelDB and CouchDB networks that use a 2-of-any endorsement policy. This will result in the method being run on a single Hyperledger Fabric Peer and will not result in any interaction with the Orderer. The investigated scenarios are targeted at reading from the world state database, resulting in the transaction pathway depicted in Figure 1.
 
-![alt text](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
+![evaluate contract range query pathway](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
 
 Each transaction retrieves a fixed number of mixed byte size assets in the range [100, 1000, 2000, 4000, 8000, 16000, 32000, 64000] from the world state database.
 
@@ -32,14 +32,14 @@ Resource utilization is investigated for a fixed transaction rate of 30TPS and a
 | 200 | 16.55 | 5.32 | 5.0 |
 | 500  | 15.96 | 4.80 | 1.6 |
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedTPS.png)
+![paginated range query fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedTPS.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedLatency.png)
+![paginated range query fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedLatency.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedCycles.png)
+![paginated range query fabric cycles performance](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedCycles.png)
 
 *Resource Utilization- Batch Size 20 @30TPS*
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedRadar.png)
+![paginated range query fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedRadar.png)
 
 ## Benchmark Observations
 Use of a CouchDB world state database enables greater throughput but higher latencies than the LevelDB equivalent.
