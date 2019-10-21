@@ -1,6 +1,6 @@
 The batch create asset benchmark consists of submitting `createAssetsFromBatch` gateway transactions for the fixed-asset smart contract deployed within LevelDB and CouchDB networks that uses a 2-of-any endorsement policy. This will result on the method being run on Hyperledger Fabric Peers as required by the endorsement policy and appended to the ledger by the Orderer. The investigated scenarios are targeted at writing to the world state database, resulting in the transaction pathway as depicted in Figure 1.
 
-![alt text](../../../../diagrams/TransactionRoute_Submit.png)*Figure 1: Submit Transaction Pathway*
+![submit contract batch create pathway](../../../../diagrams/TransactionRoute_Submit.png)*Figure 1: Submit Transaction Pathway*
 
 Each transaction inserts a set of assets into the world state database.
 
@@ -31,14 +31,14 @@ Resource utilization is investigated for a fixed transaction rate of 15TPS and a
 | 40 | 2.82 | 1.42 | 9.8 |
 | 50 | 3.29 | 1.77 | 7.5 |
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchTPS.png)
+![batch submit fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchTPS.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchLatency.png)
+![batch submit fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchLatency.png)
 
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchCycles.png)
+![batch submit fabric cycles performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchCycles.png)
 
 *Resource Utilization- Batch Size 20 @15TPS*
-![alt text](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchRadar.png)
+![batch submit fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchRadar.png)
 
 ## Benchmark Observations
 Use of a LevelDB world state database is seen to enable higher throughput and lower latencies with small batch sizes, though this benefit is lost with large batch sizes.
