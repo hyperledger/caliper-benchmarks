@@ -73,7 +73,7 @@ channels:
       version: v0
       language: golang
       path: fabric/samples/marbles/go
-      metadatapath: src/fabric/samples/marbles/go/metadata
+      metadataPath: src/fabric/samples/marbles/go/metadata
     - id: drm
       version: v0
       language: golang

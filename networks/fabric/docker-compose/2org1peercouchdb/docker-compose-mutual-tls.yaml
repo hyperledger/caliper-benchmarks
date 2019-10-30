@@ -105,6 +105,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org1.example.com:5984
       - CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
       - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/caOrg1/ca.org1.example.com-cert.pem /etc/hyperledger/msp/caOrg2/ca.org2.example.com-cert.pem
+      - NO_PROXY=$NO_PROXY,orderer.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
@@ -156,6 +157,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org2.example.com:5984
       - CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
       - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/caOrg1/ca.org1.example.com-cert.pem /etc/hyperledger/msp/caOrg2/ca.org2.example.com-cert.pem
+      - NO_PROXY=$NO_PROXY,orderer.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:

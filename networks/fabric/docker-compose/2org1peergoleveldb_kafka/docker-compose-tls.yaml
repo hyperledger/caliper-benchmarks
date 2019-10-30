@@ -133,6 +133,7 @@ services:
         - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
         - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
         - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peergoleveldb_kafka_default
+        - NO_PROXY=$NO_PROXY,orderer0.example.com,orderer1.example.com
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric
         command: peer node start
         ports:
@@ -166,6 +167,7 @@ services:
         - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
         - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
         - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peergoleveldb_kafka_default
+        - NO_PROXY=$NO_PROXY,orderer0.example.com,orderer1.example.com
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric
         command: peer node start
         ports:

@@ -78,6 +78,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.org1.example.com:5984
       - CORE_OPERATIONS_LISTENADDRESS=peer0.org1.example.com:9443
       - CORE_METRICS_PROVIDER=prometheus
+      - NO_PROXY=$NO_PROXY,orderer.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
@@ -121,6 +122,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.org2.example.com:5984
       - CORE_OPERATIONS_LISTENADDRESS=peer0.org2.example.com:9443
       - CORE_METRICS_PROVIDER=prometheus
+      - NO_PROXY=$NO_PROXY,orderer.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
