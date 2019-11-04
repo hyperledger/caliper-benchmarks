@@ -19,30 +19,24 @@ test:
     number: 5
   rounds:
   - label: init
-    txNumber:
-    - 500
+    txNumber: 500
     rateControl:
-    - type: fixed-rate
+      type: fixed-rate
       opts:
         tps: 25
     callback: benchmarks/samples/fabric/marbles/init.js
   - label: query
-    txNumber:
-    - 15
+    txDuration: 15
     rateControl:
-    - type: fixed-rate
+      type: fixed-rate
       opts:
         tps: 5
     callback: benchmarks/samples/fabric/marbles/query.js
 monitor:
   type:
   - docker
-  - process
   docker:
-    name:
+    names:
     - all
-  process:
-  - command: node
-    arguments: fabricClientWorker.js
-    multiOutput: avg
+  
   interval: 1
