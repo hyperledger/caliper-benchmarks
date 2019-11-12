@@ -1,6 +1,6 @@
 The create asset benchmark consists of submitting `createAsset` gateway transactions for the fixed-asset smart contract deployed within LevelDB and CouchDB networks that uses a 2-of-any endorsement policy. This will result on the method being run on Hyperledger Fabric Peers as required by the endorsement policy and appended to the ledger by the Orderer. The investigated scenarios are targeted at writing to the world state database, resulting in the transaction pathway as depicted in Figure 1.
 
-![submit contract create pathway](../../../../diagrams/TransactionRoute_Submit.png)*Figure 1: Submit Transaction Pathway*
+![submit contract create pathway](../../../../../diagrams/TransactionRoute_Submit.png)*Figure 1: Submit Transaction Pathway*
 
 Each transaction inserts a single asset into the world state database.
 
@@ -33,14 +33,14 @@ Resource utilization is investigated for a fixed transaction rate of 125TPS and 
 | 32K | 0.99 | 0.48 | 88.3 |
 | 64K | 1.58 | 0.77 | 51.7 |
 
-![submit fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetTPS.png)
+![submit fabric tps performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetTPS.png)
 
-![submit fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetLatency.png)
+![submit fabric latency performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetLatency.png)
 
-![submit fabric cycles performance](../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetCycles.png)
+![submit fabric cycles performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetCycles.png)
 
 *Resource Utilization- 8k Assets @125TPS*
-![submit fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetRadar.png)
+![submit fabric resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/createAsset/CreateAssetRadar.png)
 
 ## Benchmark Observations
 LevelDB facilitates asset addition at higher TPS and lower latencies than CouchDB. The throughput advantage of LevelDB is lessened with large asset sizes, but the latency advantage is retained.

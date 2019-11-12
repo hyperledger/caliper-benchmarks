@@ -1,6 +1,6 @@
 The pageinated rich query enchmark consists of evaluating `paginatedRichQuery` gateway transactions for the fixed-asset smart contract deployed within a CouchDB network that uses a 2-of-any endorsement policy. This will result in the method being run on a single Hyperledger Fabric Peer and will not result in any interaction with the Orderer. The investigated scenarios are targeted at reading from the world state database, resulting in the transaction pathway depicted in Figure 1.
 
-![evaluate contract rich query pathway](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
+![evaluate contract rich query pathway](../../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
 
 Each transaction retrieves a fixed number of mixed byte size assets in the range [100, 1000, 2000, 4000, 8000, 16000, 32000, 64000] from the world state database based on the following Mango query that matches an index created in CouchDB:
 
@@ -27,11 +27,11 @@ Achievable throughput and associated latencies are investigated through maintain
 | 200 | 23.35 | 6.41 | 3.9 |
 | 500 | 23.48 | 4.49 | 1.1 |
 
-![paginated rich query fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryTPS.png)
+![paginated rich query fabric tps performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryTPS.png)
 
-![paginated rich query fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryLatency.png)
+![paginated rich query fabric latency performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryLatency.png)
 
-![paginated rich query fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryCycles.png)
+![paginated rich query fabric resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/richQuery/RichQueryCycles.png)
 
 ## Benchmark Observations
 Increasing the page size of a rich query has significant impact on the achievable throughput and latency. This corresponds with significantly increased network I/O across the target peer, smart contract and the CouchDB world state database.

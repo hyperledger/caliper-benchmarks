@@ -1,6 +1,6 @@
 The batch asset retrieval benchmark consists of evaluating `getAssetsFromBatch` gateway transactions for the fixed-asset smart contract deployed within LevelDB and CouchDB networks that uses a 2-of-any endorsement policy. This will result in the method being run on a single Hyperledger Fabric Peer and will not result in any interaction with the Orderer. The investigated scenarios are targeted at reading from the world state database, resulting in the transaction pathway depicted in Figure 1.
 
-![evaluate contract batch get pathway](../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
+![evaluate contract batch get pathway](../../../../../../diagrams/TransactionRoute_Evaluate.png)*Figure 1: Evaluate Transaction Pathway*
 
 Each transaction retrieves a set of assets, formed by a randomised selection of available UUIDs, from the world state database.
 
@@ -31,14 +31,14 @@ Resource utilization is investigated for a fixed transaction rate of 30TPS and a
 | 40 | 1.10 | 0.60 | 18.5 |
 | 50 | 1.32 | 0.74 | 14.9 |
 
-![batch query fabric tps performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchTPS.png)
+![batch query fabric tps performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchTPS.png)
 
-![batch query fabric latency performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchLatency.png)
+![batch query fabric latency performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchLatency.png)
 
-![batch query fabric cycles performance](../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchCycles.png)
+![batch query fabric cycles performance](../../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchCycles.png)
 
 *Resource Utilization- Batch Size 20 @30TPS*
-![batch query fabric resource utilization](../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchRadar.png)
+![batch query fabric resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchRadar.png)
 
 ## Benchmark Observations
 Use of a LevelDB world state enables higher throughput compared to CouchDB, though this occurs with higher latencies for each transaction.
