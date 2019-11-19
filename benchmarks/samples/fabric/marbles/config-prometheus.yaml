@@ -26,14 +26,14 @@ test:
       opts:
         tps: 25
     callback: benchmarks/samples/fabric/marbles/init.js
-  # - label: query
-  #   txDuration:
-  #   - 15
-  #   rateControl:
-  #   - type: fixed-rate
-  #     opts:
-  #       tps: 5
-  #   callback: benchmarks/samples/fabric/marbles/query.js
+  - label: query
+    txDuration:
+    - 15
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 5
+    callback: benchmarks/samples/fabric/marbles/query.js
 observer:
   type: prometheus
   interval: 5

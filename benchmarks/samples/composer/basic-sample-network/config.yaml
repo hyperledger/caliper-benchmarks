@@ -23,15 +23,11 @@ test:
   - label: basic-sample-network
     txNumber:
     - 25
-    - 50
     trim: 0
     rateControl:
     - type: fixed-rate
       opts:
         tps: 5
-    - type: fixed-rate
-      opts:
-        tps: 6
     arguments:
       testAssets: 50
     callback: benchmarks/samples/composer/basic-sample-network/sample-transaction.js

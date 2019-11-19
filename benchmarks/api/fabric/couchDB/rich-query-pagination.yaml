@@ -77,6 +77,6 @@ monitor:
   - process
   process:
   - command: node
-    arguments: local-client.js
+    arguments: fabricClientWorker.js
     multiOutput: avg
   interval: 10
