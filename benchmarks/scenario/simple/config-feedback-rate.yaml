@@ -8,10 +8,9 @@ test:
     number: 5
   rounds:
   - label: open
-    txNumber:
-    - 5000
+    txNumber: 5000
     rateControl:
-    - type: fixed-feedback-rate
+      type: fixed-feedback-rate
       opts:
         tps: 100
         sleep_time: 1000
