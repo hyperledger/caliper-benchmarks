@@ -16,7 +16,7 @@ version: '2'
 
 services:
   ca.org1.example.com:
-    image: hyperledger/fabric-ca:${FABRIC_VERSION}
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.org1.example.com
@@ -28,7 +28,7 @@ services:
     container_name: ca.org1.example.com
 
   ca.org2.example.com:
-    image: hyperledger/fabric-ca:${FABRIC_VERSION}
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
@@ -43,7 +43,7 @@ services:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer:${FABRIC_VERSION}
     environment:
-      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LOGLEVEL=info
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/orgs.genesis.block
@@ -61,8 +61,8 @@ services:
     container_name: peer0.org1.example.com
     image: hyperledger/fabric-peer:${FABRIC_VERSION}
     environment:
-      - CORE_LOGGING_PEER=debug
-      - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
+      - CORE_LOGGING_PEER=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
       - CORE_CHAINCODE_EXECUTETIMEOUT=999999
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org1.example.com
@@ -104,8 +104,8 @@ services:
     container_name: peer0.org2.example.com
     image: hyperledger/fabric-peer:${FABRIC_VERSION}
     environment:
-      - CORE_LOGGING_PEER=debug
-      - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
+      - CORE_LOGGING_PEER=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
       - CORE_CHAINCODE_EXECUTETIMEOUT=999999
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org2.example.com
@@ -141,6 +141,16 @@ services:
       - 6984:5984
     environment:
       DB_URL: http://localhost:5984/member_db
+
+  mosquitto:
+        image: eclipse-mosquitto
+        hostname: mosquitto
+        container_name: mosquitto
+        restart: always
+        ports:
+        - "1883:1883"
+        - "9001:9001"
+        
 
 networks:
     default:

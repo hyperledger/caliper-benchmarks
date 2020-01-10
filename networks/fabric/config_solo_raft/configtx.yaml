@@ -44,10 +44,10 @@ Orderer: &OrdererDefaults
     Addresses:
     - orderer0.example.com:7050
 
-    BatchTimeout: 500ms
+    BatchTimeout: 250ms
     BatchSize:
         MaxMessageCount: 50
-        AbsoluteMaxBytes: 1 MB
+        AbsoluteMaxBytes: 100 MB
         PreferredMaxBytes: 1 MB
 
     MaxChannels: 0

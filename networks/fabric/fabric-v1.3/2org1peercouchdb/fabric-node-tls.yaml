@@ -19,7 +19,7 @@ mutual-tls: false
 caliper:
   blockchain: fabric
   command:
-    start: export FABRIC_VERSION=1.3.0;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb/docker-compose-tls.yaml up -d;sleep 3s
+    start: export FABRIC_VERSION=1.3.0;export FABRIC_CA_VERSION=1.3.0;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb/docker-compose-tls.yaml up -d;sleep 3s
     end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:

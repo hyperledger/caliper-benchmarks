@@ -18,19 +18,19 @@ test:
   description: Perf test marbles
   workers:
     type: local
-    number: 5
+    number: 1
   rounds:
   - label: init
     description: Create marbles. Lots of them. So many marbles that if you lost them, you would still be sane.
-    txDuration: 5
+    txDuration: 20
     rateControl:
       type: fixed-rate
       opts:
-        tps: 25
+        tps: 5
     callback: benchmarks/samples/fabric/marbles/init.js
   - label: query
     description: Query marbles. Query them until you are bored of querying them. Then query them some more.
-    txDuration: 5
+    txDuration: 20
     rateControl:
       type: fixed-rate
       opts:
@@ -38,7 +38,7 @@ test:
     callback: benchmarks/samples/fabric/marbles/query.js
 observer:
   type: prometheus
-  interval: 5
+  interval: 1
 monitor:
   type:
   - docker

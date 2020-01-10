@@ -9,6 +9,21 @@ const bytes = (s) => {
 };
 
 /**
+ * Retrieve an array containing randomized UUIDs
+ * @param {number} assetNumber number of random asset uuids required to be in a return array
+ */
+module.exports.retrieveRandomAssetIds = function(assetNumber) {
+    const uuids = [...Array(assetNumber).keys()];
+    // shuffle array using Fisher-Yates shuffle
+    for (let i = uuids.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        // swap elements uuids[i] and uuids[j]
+        [uuids[i], uuids[j]] = [uuids[j], uuids[i]];
+    }
+    return uuids;
+}
+
+/**
  * Insert asset batches
  * @param {Object} bcObj the BC object
  * @param {Object} context the BC context
@@ -16,12 +31,12 @@ const bytes = (s) => {
  * @param {Object} args the client arguments
  */
 module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args) {
-    console.log('   -> Creating assets of size: ', args.create_sizes);
+    console.log('   -> Creating assets of sizes: ', args.create_sizes);
 
     const testAssetNum = args.assets ? parseInt(args.assets) : 0;
     for (let index in args.create_sizes) {
         const size = args.create_sizes[index];
-        console.log('   -> Creating asset set of size: ', size);
+        console.log('   -> Creating asset set of byte size: ', size);
         const uuidBase = 'client' + clientIdx + '_' + size + '_';
 
         // define the asset to be created in this loop
@@ -89,7 +104,7 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args) 
  * @param {Object} args the client arguments
  */
 module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, args) {
-    console.log('   -> Creating assets of size: ', args.create_sizes);
+    console.log('   -> Creating assets of byte-size: ', args.create_sizes);
 
     const testAssetNum = args.assets ? parseInt(args.assets) : 0;
     const uuidBase = 'client' + clientIdx + '_';

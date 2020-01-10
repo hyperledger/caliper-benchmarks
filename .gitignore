@@ -17,3 +17,9 @@ package-lock.json
 package.json
 
 src/fabric/samples/fabcar/java
+
+# No config updates
+networks/fabric/config_kafka/crypto-config
+networks/fabric/config_raft/crypto-config
+networks/fabric/config_solo/crypto-config
+networks/fabric/config_solo_raft/crypto-config
