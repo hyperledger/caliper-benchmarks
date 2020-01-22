@@ -10,13 +10,13 @@ Hyperledger Caliper at commit level 4156c4da7105fd1c2b848573a9943bfc9900becb was
 
 The report was generated on an IBM Cloud Softlayer machine with the following configuration:
 
- - OS: Ubuntu 16.04-64
- - RAM: 2x16GB Micron 16GB DDR4 2Rx8
- - Processor: 3.8GHz Intel Xeon-KabyLake (E3-1270-V6-Quadcore)
- - Motherboard: Lenovo Systemx3250-M6
- - Firmaware: M3E124G 2.10 10-12-2017
- - Network Card: Silicom PE310G4i40-T
- - HDD: 960GB SanDisk CloudSpeed 1000 SSD
+ - OS: Redhat EL 7.7-64
+ - RAM: 2x 32GB Hynix 32GB DDR4 2Rx8 NON REG
+ - Processor: 3.8GHz Intel Xeon-CoffeeLake (E-2174G-Quadcore)
+ - Motherboard: SuperMicro X11SCW-F_R1.02
+ - Firmware: 1.0b 8-30-2019
+ - Network Card: SuperMicro AOC-STG-i4T
+ - HDD: Intel S3710 Series	800 GB
  - Architecture: x86_64
  - CPU op-mode(s): 32-bit, 64-bit
  - Byte Order: Little Endian
