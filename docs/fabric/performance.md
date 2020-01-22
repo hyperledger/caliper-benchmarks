@@ -41,6 +41,7 @@ Benchmark results are available for the following:
 
 | Fabric Version | Smart Contract | SDK Client | Link |
 | --------- | --------------- | --------------- | ---------------- |
+| 2.0.0 | JavaScript | NodeJS | [Result](./performance/2.0.0/nodeJS/nodeSDK/configuration.md) |
 | 1.4.0 | JavaScript | NodeJS | [Result](./performance/1.4.0/nodeJS/nodeSDK/configuration.md) |
 
 ## Notes
