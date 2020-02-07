@@ -25,6 +25,8 @@ nav:
             - Empty Contract: fabric/performance/2.0.0/nodeJS/nodeSDK/submit/empty-contract.md
             - Create Asset: fabric/performance/2.0.0/nodeJS/nodeSDK/submit/create-asset.md
             - Batch Create Asset: fabric/performance/2.0.0/nodeJS/nodeSDK/submit/batch-create-asset.md
+            - Delete Asset: fabric/performance/2.0.0/nodeJS/nodeSDK/submit/delete-asset.md
+            - Batch Delete Asset: fabric/performance/2.0.0/nodeJS/nodeSDK/submit/batch-delete-asset.md
         - v1.4.0:
           - Configuration: fabric/performance/1.4.0/nodeJS/nodeSDK/configuration.md
           - Evaluate:

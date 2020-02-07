@@ -27,16 +27,16 @@ Resource utilization is investigated for fixed TPS rate of 350TPS.
 | submit | 1-of-any | 0.52 | 0.11 | 380.5 |
 | submit | 2-of-any | 0.32 | 0.13 | 3387 |
 
-*LevelDB Resource Utilization– Submit By Policy @750TPS*
+*LevelDB Resource Utilization– Submit By Policy @350TPS*
 ![submit empty contract fabric with LevelDB resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/policies/LevelDB_submitByPolicy.png)
 
-*CouchDB Resource Utilization– Submit By Policy @750TPS*
+*CouchDB Resource Utilization– Submit By Policy @350TPS*
 ![submit empty contract fabric with CouchDB resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/policies/CouchDB_submitByPolicy.png)
 
-*Resource Utilization– Submit 1ofAny Policy @750TPS*
+*Resource Utilization– Submit 1ofAny Policy @350TPS*
 ![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/policies/Submit_1ofAny.png)
 
-*Resource Utilization– Submit 2ofAny Policy @750TPS*
+*Resource Utilization– Submit 2ofAny Policy @350TPS*
 ![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/policies/Submit_2ofAny.png)
 
 ## Benchmark Observations
