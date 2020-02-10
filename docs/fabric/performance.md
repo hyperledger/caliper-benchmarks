@@ -12,6 +12,8 @@ All benchmarks are facilitated by the `fixed-asset` smart contract that is deplo
 | emptyContract         | Immediately returns an empty response and represents the minimum possible overhead incurred through evaluation or submission of a smart contract method via a gateway. |
 | createAsset | Performs a single `putState()` operation, inserting an asset of defined byte size into the World State database. |
 | createAssetsFromBatch | Performs multiple `putState()` operations over an array of assets, inserting each into the World State database. |
+| deleteAsset | Performs a single `deleteState()` operation, removing a single asset from the World State database using a passed UUID. |
+| deleteAssetFromBatch | Performs multiple `deleteState()` operations over an array of asset UUIDs, removing all assets from the World State database. |
 | getAsset | Performs a single `getState()` operation, extracting and returning a single asset from the World State database using a passed UUID. |
 | getAssetsFromBatch | Performs multiples `getState()` operations over an array of asset UUIDs, extracting and returning all asset from the World State database. |
 | paginatedRangeQuery | Performs a `getStateByRangeWithPagination()` operation, based on passed start/end keys, a desired page size and passed bookmark. The records obtained from the query are processed and returned in a JSON response that also includes a new bookmark. |
@@ -31,6 +33,8 @@ The complete output of the benchmark runs, and the resources used to perform the
 | Empty Contract | empty-contract-1of.yaml, empty-contract-2of.yaml | Evaluates and submits `emptyContract` gateway transactions for the fixed-asset smart contract. This transaction performs no action. Repeated for different Endorsement Policies. |
 | Create Asset | create-asset.yaml | Submits `createAsset` gateway transactions for the fixed-asset smart contract. Each transaction inserts a single asset into the world state database. Successive rounds increase the asset byte size inserted into the world state database. |
 | Create Asset Batch | create-asset-batch.yaml | Submits `createAssetsFromBatch` gateway transactions for the fixed-asset smart contract. Each transaction inserts a sequence of fixed size assets into the world state database. Successive rounds increase the batch size of assets inserted into the world state database. |
+| Delete Asset | delete-asset.yaml | Submits `deleteAsset` gateway transactions for the fixed-asset smart contract. Each transaction removes a single asset from the world state database. Successive rounds increase the asset byte size removed from the world state database. |
+| Delete Asset Batch | delete-asset-batch.yaml | Submits `deleteAssetsFromBatch` gateway transactions for the fixed-asset smart contract. Each transaction removes a series of assets from the world state database. Successive rounds increase the batch size of assets removed from the world state database. |
 | Get Asset | get-asset.yaml | Evaluates `getAsset` gateway transactions for the fixed-asset smart contract. Each transaction retrieves a single asset from the world state database. Successive rounds increase the asset byte size retrieved from the world state database. |
 | Get Asset Batch | get-asset-batch.yaml | Evaluates `getAssetsFromBatch` gateway transactions for the fixed-asset smart contract. Each transaction retrieves a series of assets from the world state database. Successive rounds increase the batch size of assets retrieved from the world state database. |
 | Paginated Range Query | mixed-range-query-pagination.yaml | Evaluates `paginatedRangeQuery` gateway transactions for the fixed-asset smart contract. Each transaction retrieves a set of assets from the world state database. Successive rounds increase the page size of assets retrieved from the world state database. |
@@ -41,6 +45,7 @@ Benchmark results are available for the following:
 
 | Fabric Version | Smart Contract | SDK Client | Link |
 | --------- | --------------- | --------------- | ---------------- |
+| 2.0.0 | JavaScript | NodeJS | [Result](./performance/2.0.0/nodeJS/nodeSDK/configuration.md) |
 | 1.4.0 | JavaScript | NodeJS | [Result](./performance/1.4.0/nodeJS/nodeSDK/configuration.md) |
 
 ## Notes
