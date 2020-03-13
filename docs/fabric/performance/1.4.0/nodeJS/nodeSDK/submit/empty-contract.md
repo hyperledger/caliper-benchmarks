@@ -25,7 +25,7 @@ Resource utilization is investigated for fixed TPS rate of 350TPS.
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
 | submit | 1-of-any | 0.52 | 0.11 | 380.5 |
-| submit | 2-of-any | 0.32 | 0.13 | 3387 |
+| submit | 2-of-any | 0.32 | 0.13 | 338.7 |
 
 *LevelDB Resource Utilization– Submit By Policy @350TPS*
 ![submit empty contract fabric with LevelDB resource utilization](../../../../../charts/1.4.0/nodeJS/nodeSDK/policies/LevelDB_submitByPolicy.png)
