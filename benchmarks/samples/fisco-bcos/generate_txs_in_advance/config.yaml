@@ -16,7 +16,7 @@
 test:
   name: Precompiled Transfer
   description: This is a precompiled transfer benchmark of FISCO BCOS for caliper
-  clients:
+  workers:
     type: local
     number: 4
   rounds:

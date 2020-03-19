@@ -3,7 +3,7 @@ test:
   name: get-asset-ramp-levelDB
   description: This is a duration based benchmark targetting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
     a Fabric-SDK-Node Gateway. Each test round invokes the 'getAsset()' API method. Successive rounds create and retrieve assets of larger bytesize.
-  clients:
+  workers:
     type: local
     number: 4
   rounds:
