@@ -2,7 +2,7 @@
 test:
   name: fixed-tps-runs
   description: Benchmark run to enable resource comparrison for benchmarks
-  clients:
+  workers:
     type: local
     number: 4
   rounds:

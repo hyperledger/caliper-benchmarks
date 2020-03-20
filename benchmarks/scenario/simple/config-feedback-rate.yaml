@@ -3,7 +3,7 @@ blockchain:
   type: fabric
   config: benchmarks/scenario/simple/fabric.json
 test:
-  clients:
+  workers:
     type: local
     number: 5
   rounds:

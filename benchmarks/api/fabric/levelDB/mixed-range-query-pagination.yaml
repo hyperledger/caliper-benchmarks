@@ -3,7 +3,7 @@ test:
   name: fixed-asset-mixed-range-query-pagination-levelDB
   description: This is a duration based benchmark targetting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
     a Fabric-SDK-Node Gateway. Each test round invokes the 'paginatedRangeQuery' method against a DB populated with mixed size assets. Successive rounds increase the pagesize of retrieved assets.
-  clients:
+  workers:
     type: local
     number: 1
   rounds:

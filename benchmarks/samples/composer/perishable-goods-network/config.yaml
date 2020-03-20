@@ -16,7 +16,7 @@
 test:
   name: Composer Performance test
   description: This is an example Composer performance test
-  clients:
+  workers:
     type: local
     number: 1
   rounds:

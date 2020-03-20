@@ -16,7 +16,7 @@
 test:
   name: Solidity Transfer
   description: This is a solidity transfer benchmark of FISCO BCOS for caliper
-  clients:
+  workers:
     type: local
     number: 4
   rounds:

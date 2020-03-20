@@ -175,7 +175,7 @@ module.exports.run = function() {
     let args = generateWorkload();
 
     // rearrange arguments for the Fabric adapter
-    if (bc.bcType === 'fabric') {
+    if (bc.getType() === 'fabric') {
         let ccpArgs = [];
         for (let arg of args) {
             let tempArgs = Object.values(arg);
