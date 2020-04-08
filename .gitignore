@@ -1,4 +1,5 @@
 # Git Ignore file
+.idea/
 launch.json
 
 # No logs
@@ -23,3 +24,5 @@ networks/fabric/config_kafka/crypto-config
 networks/fabric/config_raft/crypto-config
 networks/fabric/config_solo/crypto-config
 networks/fabric/config_solo_raft/crypto-config
+
+**/__pycache__/**

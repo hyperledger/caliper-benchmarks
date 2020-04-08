@@ -14,10 +14,11 @@
 
 'use strict';
 
-const BatchBuilder = require('caliper-sawtooth').BatchBuilder;
+const BatchBuilder = require('@hyperledger/caliper-sawtooth').BatchBuilder;
 const {createHash} = require('crypto');
 const {createContext, CryptoFactory} = require('sawtooth-sdk/signing');
 const {protobuf} = require('sawtooth-sdk');
+const cbor = require('cbor');
 
 /**
  * BatchBuilder for simple use case and it use case specific logic to
@@ -52,7 +53,6 @@ class SimpleBatchBuilder extends BatchBuilder {
             const address = this.calculateAddress(addr);
             const addresses = [address];
 
-            const cbor = require('cbor');
             const payloadBytes = cbor.encode(args[i]);
 
             const transactionHeaderBytes = protobuf.TransactionHeader.encode({

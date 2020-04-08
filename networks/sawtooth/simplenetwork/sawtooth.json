@@ -2,14 +2,14 @@
   "caliper":{
     "blockchain": "sawtooth",
     "command" : {
-      "start": "docker-compose -f networks/sawtooth/simplenetwork/sawtooth-simple.yaml up -d",
+      "start": "npm i --no-save cbor && docker-compose -f networks/sawtooth/simplenetwork/sawtooth-simple.yaml up -d",
       "end" : "docker-compose -f networks/sawtooth/simplenetwork/sawtooth-simple.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq)"
     }
   },
   "sawtooth": {
     "batchBuilders": {
       "simple": {
-        "1.0": "src/sawtooth/simple/SimpleBatchBuilder.js"
+        "1.0": "src/sawtooth/scenario/simple/SimpleBatchBuilder.js"
       }
     },
     "network": {
