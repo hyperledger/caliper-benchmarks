@@ -1,7 +1,7 @@
 version: "3"
 services:
   burrow-node-0:
-    image: hyperledger/burrow:0.23.1
+    image: hyperledger/burrow:0.30.2
     container_name: burrow_0
     network_mode: host
     volumes:
@@ -12,7 +12,7 @@ services:
     entrypoint: ./startup.sh
 
   burrow-node-1:
-    image: hyperledger/burrow:0.23.1
+    image: hyperledger/burrow:0.30.2
     container_name: burrow_1
     network_mode: host
     volumes:
