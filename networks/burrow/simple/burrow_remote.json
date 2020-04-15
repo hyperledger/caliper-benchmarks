@@ -1,0 +1,23 @@
+{
+  "caliper" : {
+    "blockchain": "burrow",
+    "command" : {
+      
+    }
+  },
+  "burrow": {
+    "network": {
+      "validator": {
+        "host": "47.57.XX.XX",
+        "port": "31896",
+        "address": "4E416FD3D6874846D510B82A040FB2AA69CE8C76"
+      }
+    }
+  },
+  "contract": { "path": "src/burrow/sample/storage.bin" },
+  "info" : {
+    "Version": "develop",
+    "Size": "5 Peers",
+    "Distribution": "openshift cluster"
+  }
+}

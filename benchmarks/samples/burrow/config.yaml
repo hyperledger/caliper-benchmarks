@@ -1,0 +1,43 @@
+---
+test:
+  name: simple
+  description: This is an example benchmark for caliper, to test the backend DLT's
+    performance with simple account transfer & querying transactions& invoking transactions
+  workers:
+    type: local
+    number: 1
+  rounds:
+  - label: account transfer
+    description: Test description for transfering money between accounts
+    txNumber: 2
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1
+    arguments:
+      money: 1000,
+      toAccount: "2F186F827E9DC641D6D08C98E55DA631556DDB0D"
+    callback: benchmarks/samples/burrow/transfer.js
+  - label: contract invoke
+    description: Test description for the invoke performance of the deployed chaincode
+    txNumber: 2
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1
+    callback: benchmarks/samples/burrow/invoke.js
+  - label: contract query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 2
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1
+    callback: benchmarks/samples/burrow/query.js
+monitor:
+  type:
+  - docker
+  docker:
+    name:
+    - all
+  interval: 1
