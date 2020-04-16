@@ -52,9 +52,9 @@ RUN pip3 install grpcio \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /project/src/sawtooth/simple/simple_python
+WORKDIR /project/src/sawtooth/scenario/simple/simple_python
 
-ENV PATH "$PATH:/project/:/project/src/sawtooth/simple/simple_python:."
+ENV PATH "$PATH:/project/:/project/src/sawtooth/scenario/simple/simple_python:."
 
 RUN echo "$PATH"
 RUN echo "`pwd`"
