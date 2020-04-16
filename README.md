@@ -25,9 +25,14 @@ Steps:
 1. Install the Caliper CLI - for details please see the [Caliper main repository](https://github.com/hyperledger/caliper/)
 2. Clone this repository
 3. Run a Caliper CLI command that targets one of the contained benchmarks. 
-For instance, to run the benchmark that targets the Fabric Marbles sample against a Fabric v1.4.1 network, you would use the command: 
-```bash
-caliper benchmark run --caliper-benchconfig benchmarks/samples/fabric/marbles/config.yaml --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml --caliper-workspace <path_to_caliper_benchmarks_root_directory>
-```
+For instance, to run the benchmark that targets the Fabric Marbles sample against a Fabric v1.4.1 network, you would:
+  - Ensure that the crypto configuration files have been generated. Do this by navigating to the relevant `/networks/fabric/config_x` directory and running the command:
+	```bash
+	./generate.sh
+	```
+ - Run the benchmark using the Caliper CLI command: 
+	```bash
+	caliper launch master --caliper-benchconfig benchmarks/samples/fabric/marbles/config.yaml --caliper-networkconfig networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml --caliper-workspace <path_to_caliper_benchmarks_root_directory>
+	```
 ## Extending the Documented Reports
 The documented reports are built automatically from the `reports` branch of this repository and subsequently hosted on the `gh-pages` branch; pull requests must be target the [`reports` branch](https://github.com/hyperledger/caliper-benchmarks/tree/reports) in order for any modifications to be built.
