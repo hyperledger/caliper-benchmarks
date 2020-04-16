@@ -56,12 +56,14 @@ services:
     restart: always
 
   cadvisor:
-    image: google/cadvisor
+    image: google/cadvisor:v0.27.4
+    privileged: true
     container_name: cadvisor
     volumes:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
     ports:
       - 8080:8080
     restart: always

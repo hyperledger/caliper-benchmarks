@@ -16,7 +16,7 @@ version: '2'
 
 services:
     ca.org1.example.com:
-        image: hyperledger/fabric-ca:${FABRIC_VERSION}
+        image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
         environment:
         - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
         - FABRIC_CA_SERVER_CA_NAME=ca.org1.example.com
@@ -34,7 +34,7 @@ services:
         container_name: ca.org1.example.com
 
     ca.org2.example.com:
-        image: hyperledger/fabric-ca:${FABRIC_VERSION}
+        image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
         environment:
         - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
         - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
@@ -55,8 +55,8 @@ services:
         container_name: orderer0.example.com
         image: hyperledger/fabric-orderer:${FABRIC_VERSION}
         environment:
-        - ORDERER_GENERAL_LOGLEVEL=debug
-        - FABRIC_LOGGING_SPEC=grpc=debug:debug
+        - ORDERER_GENERAL_LOGLEVEL=WARN
+        - FABRIC_LOGGING_SPEC=grpc=WARN:WARN
         - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
         - ORDERER_GENERAL_GENESISMETHOD=file
         - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
@@ -83,14 +83,14 @@ services:
         container_name: peer0.org1.example.com
         image: hyperledger/fabric-peer:${FABRIC_VERSION}
         environment:
-        - CORE_LOGGING_PEER=debug
+        - CORE_LOGGING_PEER=WARN
         - CORE_VM_DOCKER_ATTACHSTDOUT=true
         - CORE_CHAINCODE_DEPLOYTIMEOUT=1000s
         - CORE_CHAINCODE_STARTUPTIMEOUT=1000s
-        - CORE_CHAINCODE_EXECUTETIMEOUT=999999
-        - FABRIC_LOGGING_SPEC=grpc=debug:debug
-        - CORE_CHAINCODE_LOGGING_LEVEL=INFO
-        - CORE_CHAINCODE_LOGGING_SHIM=INFO
+        - CORE_CHAINCODE_EXECUTETIMEOUT=999999s
+        - FABRIC_LOGGING_SPEC=grpc=WARN:WARN
+        - CORE_CHAINCODE_LOGGING_LEVEL=WARN
+        - CORE_CHAINCODE_LOGGING_SHIM=WARN
         - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
         - CORE_PEER_ID=peer0.org1.example.com
         - CORE_PEER_ENDORSER_ENABLED=true
@@ -119,14 +119,14 @@ services:
         container_name: peer0.org2.example.com
         image: hyperledger/fabric-peer:${FABRIC_VERSION}
         environment:
-        - CORE_LOGGING_PEER=debug
+        - CORE_LOGGING_PEER=WARN
         - CORE_VM_DOCKER_ATTACHSTDOUT=true
         - CORE_CHAINCODE_DEPLOYTIMEOUT=1000s
         - CORE_CHAINCODE_STARTUPTIMEOUT=1000s
-        - CORE_CHAINCODE_EXECUTETIMEOUT=999999
-        - FABRIC_LOGGING_SPEC=grpc=debug:debug
-        - CORE_CHAINCODE_LOGGING_LEVEL=INFO
-        - CORE_CHAINCODE_LOGGING_SHIM=INFO
+        - CORE_CHAINCODE_EXECUTETIMEOUT=999999s
+        - FABRIC_LOGGING_SPEC=grpc=WARN
+        - CORE_CHAINCODE_LOGGING_LEVEL=WARN
+        - CORE_CHAINCODE_LOGGING_SHIM=WARN
         - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
         - CORE_PEER_ID=peer0.org2.example.com
         - CORE_PEER_ENDORSER_ENABLED=true

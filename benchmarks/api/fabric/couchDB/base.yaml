@@ -1,57 +1,41 @@
 ---
 test:
   name: fixed-asset-couchDB
-  description: This is a duration based benchmark targetting a Hyperledger Fabric network with a CouchDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a CouchDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
     a Fabric-SDK-Node Gateway. Each test round flexes a single chaincode method, and includes a null-operation to act as a performance cost baseline.
   workers:
     type: local
-    number: 4
+    number: 5
   rounds:
   - label: empty-contract-evaluate
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for an evaluateTransaction() method that does not touch the world state or perform any action.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       consensus: false
     callback: benchmarks/api/fabric/lib/empty-contract.js
   - label: empty-contract-submit
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for a submitTransaction() method that does not touch the world state or perform any action.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       consensus: true
     callback: benchmarks/api/fabric/lib/empty-contract.js
   - label: create-asset-1000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `create`, which performs a `putState()` operation on an asset of size 1000 bytes.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
     callback: benchmarks/api/fabric/lib/create-asset.js
   - label: get-asset-evaluate-1000
     description: Test a evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a `getState()` operation for a passed UUID, retrieving as asset of size 1000 bytes.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       nosetup: true
       bytesize: 1000
@@ -61,12 +45,8 @@ test:
   - label: get-asset-submit-1000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a `getState()` operation for a passed UUID, retrieving as asset of size 1000 bytes. This test includes involvement of the orderer, and appending to the ledger.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       nosetup: true
       bytesize: 1000
@@ -76,12 +56,8 @@ test:
   - label: rich-query-evaluate-0
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRichQuery`. This method performs a paginated rich query, with a passed pagesize of 10 and query string that matches no assets in the world state database.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       pagesize: '10'
@@ -92,12 +68,8 @@ test:
   - label: rich-query-evaluate-1000
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRichQuery`. This method performs a paginated rich query, with a passed pagesize of 10 and query string that matches all assets created by the calling client. Each returned asset is of size 1000 bytes.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       pagesize: '10'
@@ -107,12 +79,8 @@ test:
   - label: rich-query-submit-0
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRichQuery`. This method performs a paginated rich query, with a passed pagesize of 10 and query string that matches no assets in the world state database. This test includes involvement of the orderer, and appending to the ledger.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       pagesize: '10'
@@ -123,12 +91,8 @@ test:
   - label: rich-query-submit-1000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRichQuery`. This method performs a paginated rich query, with a passed pagesize of 10 and query string that matches all assets created by the calling client. Each returned asset is of size 1000 bytes. This test includes involvement of the orderer, and appending to the ledger.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       pagesize: '10'
@@ -136,14 +100,10 @@ test:
       consensus: true
     callback: benchmarks/api/fabric/lib/rich-query-asset.js
   - label: range-query-evaluate-0
-    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no assets in the world state databse.
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no assets in the world state database.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       range: 200
@@ -156,12 +116,8 @@ test:
   - label: range-query-evaluate-1000
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 10 and a range keys that bound 200 assets created by the calling client. Each returned asset is of size 1000 bytes.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       range: 200
@@ -171,14 +127,10 @@ test:
       consensus: false
     callback: benchmarks/api/fabric/lib/range-query-asset.js
   - label: range-query-submit-0
-    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no items in the world state databse. This test includes involvement of the orderer, and appending to the ledger.
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query that matches no items in the world state database. This test includes involvement of the orderer, and appending to the ledger.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       range: 200
@@ -191,12 +143,8 @@ test:
   - label: range-query-submit-1000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 10 and a range keys that bound 200 assets created by the calling client. Each returned asset is of size 1000 bytes. This test includes involvement of the orderer, and appending to the ledger.
     chaincodeId: fixed-asset
-    txDuration:
-    - 120
-    rateControl:
-    - type: fixed-backlog
-      opts:
-        unfinished_per_client: 15
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100} }
     arguments:
       bytesize: 1000
       range: 200
@@ -206,14 +154,12 @@ test:
       consensus: true
     callback: benchmarks/api/fabric/lib/range-query-asset.js
 monitor:
-  type:
-  - docker
-  - process
-  docker:
-    name:
-    - all
+  interval: 5
+  type: ['process', 'docker']
   process:
-  - command: node
-    arguments: fabricClientWorker.js
-    multiOutput: avg
-  interval: 1
+    processes: [{ command: 'node', arguments: 'fabricClientWorker.js', multiOutput: 'avg' }]
+  docker:
+    containers: ['all']
+observer:
+  type: local
+  interval: 30

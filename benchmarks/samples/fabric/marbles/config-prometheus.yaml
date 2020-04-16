@@ -14,41 +14,52 @@
 
 ---
 test:
+  name: Marble Benchmarking
+  description: Perf test marbles
   workers:
     type: local
-    number: 5
+    number: 1
   rounds:
   - label: init
-    txDuration:
-    - 50
+    description: Create marbles. Lots of them. So many marbles that if you lost them, you would still be sane.
+    txDuration: 20
     rateControl:
-    - type: fixed-rate
+      type: fixed-rate
       opts:
-        tps: 25
+        tps: 5
     callback: benchmarks/samples/fabric/marbles/init.js
   - label: query
-    txDuration:
-    - 15
+    description: Query marbles. Query them until you are bored of querying them. Then query them some more.
+    txDuration: 20
     rateControl:
-    - type: fixed-rate
+      type: fixed-rate
       opts:
         tps: 5
     callback: benchmarks/samples/fabric/marbles/query.js
 observer:
   type: prometheus
-  interval: 5
+  interval: 1
 monitor:
   type:
   - docker
   - process
   - prometheus
   docker:
-    name:
+    containers:
     - all
+    charting:
+      polar:
+        metrics: [all]
+      bar:
+        metrics: [Memory(max)]
   process:
-  - command: node
-    arguments: local-client.js
-    multiOutput: avg
+    processes:    
+    - command: node
+      arguments: fabricClientWorker.js
+      multiOutput: avg
+    charting:
+      bar:
+        metrics: [all]
   prometheus:
     push_url: "http://localhost:9091"
     url: "http://localhost:9090"
@@ -66,3 +77,8 @@ monitor:
           label: name		
           statistic: max
           multiplier: 0.000001
+    charting:
+      polar:
+        metrics: [Max Memory (MB)]
+      bar:
+        metrics: [all]

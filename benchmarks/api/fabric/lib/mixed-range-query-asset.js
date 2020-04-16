@@ -55,7 +55,7 @@ module.exports.init = async function(blockchain, context, args) {
         console.log('   -> Skipping asset creation stage');
     } else {
         console.log('   -> Entering asset creation stage');
-        await helper.addMixedBatchAssets(contx, clientIdx, args);
+        await helper.addMixedBatchAssets(bc.bcObj, contx, clientIdx, args);
         console.log('   -> Test asset creation complete');
     }
 
@@ -66,7 +66,7 @@ module.exports.run = function() {
     // Create argument array [functionName(String), otherArgs(String)]
     const myArgs = {
         chaincodeFunction: 'paginatedRangeQuery',
-        chaincodeArguments: [startKey, endKey, pagesize]
+        chaincodeArguments: [startKey, endKey, pagesize, '']
     };
 
     // consensus or non-con query
