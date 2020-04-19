@@ -83,7 +83,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 20 UUIDs that each match an asset of size 8000 bytes at a fixed TPS.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl:  { type: fixed-rate,  opts: { tpe: 30} }
+    rateControl:  { type: fixed-rate,  opts: { tps: 30} }
     arguments:
       nosetup: true
       assets: 8000
