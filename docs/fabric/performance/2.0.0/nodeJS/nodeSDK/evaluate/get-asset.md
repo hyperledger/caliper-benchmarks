@@ -38,6 +38,3 @@ Achievable throughput and associated latencies are investigated through maintain
 ![single query fabric latency performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAsset/GetAssetLatency.png)
 
 ![single query fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAsset/GetAssetCycles.png)
-
-## Benchmark Observations
-When compared with the CouchDB world state database, the LevelDB world state database is seen to achieve lower throughputs for smaller asset sizes and comparable throughputs for larger asset sizes. The LevelDB world state database achieves comparable transaction latencies at smaller asset sizes and lower transaction latencies at larger asset sizes compared to its CouchDB equivalent.

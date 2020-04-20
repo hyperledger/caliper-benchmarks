@@ -35,6 +35,3 @@ Achievable throughput and associated latencies are investigated through maintain
 ![paginated range query fabric latency performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedLatency.png)
 
 ![paginated range query fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedCycles.png)
-
-## Benchmark Observations
-The CouchDB world state database is observed to achieve comparable throughput and comparable latency when comapred with its LevelDB equivalent.

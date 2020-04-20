@@ -34,6 +34,3 @@ Achievable throughput and associated latencies are investigated through maintain
 ![batch query fabric latency performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchLatency.png)
 
 ![batch query fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAssetBatch/GetAssetBatchCycles.png)
-
-## Benchmark Observations
-The CouchDB world state database is observed to achieve comparable throughput and comparable latency when comapred with its LevelDB equivalent.

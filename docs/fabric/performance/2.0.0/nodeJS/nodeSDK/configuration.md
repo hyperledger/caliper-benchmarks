@@ -2,7 +2,7 @@ This report was generated using the following Hyperledger Fabric component level
 
 - Fabric images: 2.0.0
 - Fabric chaincode: 2.0.0
-- Fabric SDK Node: 2.0.0-snapshot.277
+- Fabric SDK Node: 2.1.0
 
 ## Machine Configuration
 
