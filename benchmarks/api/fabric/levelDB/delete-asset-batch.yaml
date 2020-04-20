@@ -5,13 +5,13 @@ test:
     a Fabric-SDK-Node Gateway. Each test round invokes the `deleteAssetsFromBatch` API method. Successive rounds delete a-priori created assets of larger byte size.
   workers:
     type: local
-    number: 10
+    number: 25
   rounds:
   - label: delete-asset-batch-1-8000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 1 UUID that matches an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 4000 # max number = (arguments.assets/assets.batchsize)
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 4000
@@ -23,7 +23,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 10 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 4000
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 40000
@@ -35,7 +35,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 20 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 4000
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 80000
@@ -47,7 +47,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 30 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 1000
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 30000
@@ -59,7 +59,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 40 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 1000
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 40000
@@ -71,7 +71,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This method performs a deleteState on a batch of 50 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txNumber: 500
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2, startingTps: 10} }
     arguments:
       create_sizes: [8000]
       assets: 25000

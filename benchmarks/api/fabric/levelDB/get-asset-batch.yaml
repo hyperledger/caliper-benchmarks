@@ -5,13 +5,13 @@ test:
     a Fabric-SDK-Node Gateway. Each test round invokes the `getAssetsFromBatch` API method. Successive rounds create and retrieve assets of larger bytesize.
   workers:
     type: local
-    number: 10
+    number: 25
   rounds:
   - label: get-asset-batch-evaluate-1-8000
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 1 UUID that matches an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       create_sizes: [8000]
       assets: 8000
@@ -23,7 +23,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 10 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       create_sizes: [8000]
       assets: 8000
@@ -35,7 +35,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 20 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       nosetup: true
       assets: 8000
@@ -47,7 +47,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 30 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       nosetup: true
       assets: 8000
@@ -59,7 +59,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 40 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       nosetup: true
       assets: 8000
@@ -71,7 +71,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 50 UUIDs that each match an asset of size 8000 bytes.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2 } }
     arguments:
       nosetup: true
       assets: 8000

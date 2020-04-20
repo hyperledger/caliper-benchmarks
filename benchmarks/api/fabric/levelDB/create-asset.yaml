@@ -6,7 +6,7 @@ test:
     added into the world state database.
   workers:
     type: local
-    number: 10
+    number: 25
   rounds:
   - label: create-asset-8000-fixed-tps
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 8000 bytes into the World State database at a fixed TPS rate.
@@ -20,7 +20,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 100 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 100
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -28,7 +28,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 2000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 2000
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -36,7 +36,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 4000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 4000
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -44,7 +44,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 8000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 8000
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -52,7 +52,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 16000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 16000
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -60,7 +60,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 32000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 32000
     callback: benchmarks/api/fabric/lib/create-asset.js
@@ -68,7 +68,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 64000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 2 } }
     arguments:
       bytesize: 64000
     callback: benchmarks/api/fabric/lib/create-asset.js

@@ -5,13 +5,13 @@ test:
     a Fabric-SDK-Node Gateway. Each test round flexes the `emptyContract` method. Rounds run for evaluate and submit Gateway routes.
   workers:
     type: local
-    number: 10
+    number: 25
   rounds:
   - label: empty-contract-evaluate
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `emptyContract`, which immediately returns a null response. This represents the fastest possible round trip time for an evaluateTransaction() method that does not touch the world state or perform any action.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
     arguments:
       consensus: false
     callback: benchmarks/api/fabric/lib/empty-contract.js
@@ -19,7 +19,7 @@ test:
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `nullResponse`, which immediately returns a null response. This represents the fastest possible round trip time for a submitTransaction() method that does not touch the world state or perform any action.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 100 } }
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
     arguments:
       consensus: true
     callback: benchmarks/api/fabric/lib/empty-contract.js
