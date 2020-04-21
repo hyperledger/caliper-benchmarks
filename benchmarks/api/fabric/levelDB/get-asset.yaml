@@ -100,7 +100,7 @@ test:
     description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 8000 bytes at a fixed TPS.
     chaincodeId: fixed-asset
     txDuration: 300
-    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    rateControl: { type: fixed-rate, opts: { tps: 350 }}
     arguments:
       nosetup: true
       bytesize: 8000
