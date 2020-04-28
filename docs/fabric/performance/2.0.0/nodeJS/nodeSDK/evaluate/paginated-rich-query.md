@@ -20,12 +20,12 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Page Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | --------- | --------------- | --------------- | ---------------- |
-| 10 | 14.24 | 3.71 | 87.7 |
-| 20 | 14.35 | 3.11 | 44.5 |
-| 50 | 10.57 | 3.08 | 20.6 |
-| 100 | 8.96 | 3.30 | 11.9 |
-| 200 | 9.29 | 3.99 | 4.9 |
-| 500 | 16.54 | 7.44 | 1.9 |
+| 10 | 16.4 | 3.74 | 90.5 |
+| 20 | 13.9 | 3.19 | 45.0 |
+| 50 | 10.99 | 2.84 | 21.1 |
+| 100 | 8.76 | 3.19 | 11.9 |
+| 200 | 8.73 | 3.81 | 5.0 |
+| 500 | 22.98 | 7.1 | 2.0 |
 
 ![paginated rich query fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/richQuery/RichQueryTPS.png)
 

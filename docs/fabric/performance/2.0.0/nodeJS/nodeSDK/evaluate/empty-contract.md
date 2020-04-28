@@ -16,15 +16,15 @@ Resource utilization is investigated for fixed TPS rate of 750TPS.
 
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
-| evaluate | 1-of-any | 0.95 | 0.49 | 1045.2 |
-| evaluate | 2-of-any | 1.29 | 0.50 | 1029.8 |
+| evaluate | 1-of-any | 1.18 | 0.39 | 1314.3 |
+| evaluate | 2-of-any | 1.30 | 0.50 | 1264.1 |
 
 *CouchDB- evaluate transactions with varying endorsement policy*
 
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
-| evaluate | 1-of-any | 1.16 | 0.49	| 1047.5 |
-| evaluate | 2-of-any | 0.95 | 0.51 | 1081.3 |
+| evaluate | 1-of-any | 1.23 | 0.55	| 992.4 |
+| evaluate | 2-of-any | 1.14 | 0.52 | 1072.03 |
 
 *LevelDB Resource Utilization– Evaluate By Policy @750TPS*
 ![evaluate empty contract fabric with LevelDB resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/policies/LevelDB_evaluateByPolicy.png)

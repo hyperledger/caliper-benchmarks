@@ -6,7 +6,7 @@ This report was generated using the following Hyperledger Fabric component level
 
 ## Machine Configuration
 
-Hyperledger Caliper at commit level 4156c4da7105fd1c2b848573a9943bfc9900becb was used.
+Hyperledger Caliper at commit level dce54d41a9920fe132992779ac1720d3634dad15 was used.
 
 The report was generated on an IBM Cloud Softlayer machine with the following configuration:
 
