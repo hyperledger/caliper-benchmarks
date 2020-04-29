@@ -22,12 +22,12 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Batch Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---------- | --------------- | --------------- | ---------------- |
-| 1 | 1.00 | 0.57 | 92.8 |
-| 10 | 2.7 | 1.46 | 54.3 |
-| 20 | 4.49 | 2.43 | 39.1 |
-| 30 | 6.78 | 3.31 | 21.7 |
-| 40 | 8.42 | 4.38 | 19.6 |
-| 50 | 10.9 | 3.77 | 13.2 |
+| 1 | 0.42 | 0.29 | 135.1 |
+| 10 | 1.43 | 0.68 | 77.5 |
+| 20 | 0.95 | 0.73 | 103.8 |
+| 30 | 0.72 | 0.59 | 6.3 |
+| 40 | 2.86 | 1.42 | 28.4 |
+| 50 | 0.84 | 0.78 | 7.1 |
 
 ![submit fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAssetBatch/DeleteAssetBatchTPS.png)
 
@@ -35,5 +35,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![submit fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAssetBatch/DeleteAssetBatchCycles.png)
 
-## Benchmark Observations
-When comapred with the CouchDB world state database, the LevelDB world state database has a higher throughput for smaller batch sizes and a comparable throughput for larger batch sizes. The transaction latency for a LevelDB world state databases is lower when comapred to a CouchDB world state database, especially for larger batch sizes.
+![submit fabric resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAssetBatch/DeleteAssetBatchRadar.png)

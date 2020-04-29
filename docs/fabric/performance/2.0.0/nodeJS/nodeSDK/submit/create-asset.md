@@ -11,25 +11,25 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 0.56 | 0.33 | 186.1 |
-| 2K | 0.51 | 0.34 | 180.1 |
-| 4K | 0.51 | 0.36 | 173.8 |
-| 8K | 0.54 | 0.36 | 170.0 |
-| 16K | 0.84 | 0.48 | 127.3 |
-| 32K | 2.24 | 1.01 | 53.4 |
-| 64K | 5.14 | 1.75 | 29.3 |
+| 100 | 0.61 | 0.32 | 219.7 |
+| 2K | 0.61 | 0.33 | 205.6 |
+| 4K | 0.63 | 0.35 | 198.4 |
+| 8K | 0.56 | 0.34 | 199.4 |
+| 16K | 0.88 | 0.48 | 123.8 |
+| 32K | 2.3 | 1.12 | 50.7 |
+| 64K | 4.2 | 1.93 | 30.6 |
 
 *CouchDB*
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 8.81 | 4.04 | 165.1 |
-| 2K | 9.02 | 4.17 | 160.0 |
-| 4K | 8.64 | 4.11 | 158.0 |
-| 8K | 8.66 | 4.28 | 153.7 |
-| 16K | 14.08 | 6.08 | 111.7 |
-| 32K | 25.23 | 10.75 | 55.9 |
-| 64K | 40.74 | 17.85 | 31.8 |
+| 100 | 0.43 | 0.3 | 111.0 |
+| 2K | 0.5 | 0.3 | 110.0 |
+| 4K | 0.4 | 0.3 | 109.9 |
+| 8K | 0.41 | 0.31 | 109.6 |
+| 16K | 0.58 | 0.35 | 99.6 |
+| 32K | 1.27 | 0.67 | 49.4 |
+| 64K | 2.46 | 1.13 | 28.2 |
 
 ![submit fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAsset/CreateAssetTPS.png)
 
@@ -37,5 +37,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![submit fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAsset/CreateAssetCycles.png)
 
-## Benchmark Observations
-LevelDB facilitates asset addition at higher throughput and lower latencies than CouchDB. The throughput advantage of LevelDB is lessened with large asset sizes, but the latency advantage is retained.
+![submit resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAsset/CreateAssetRadar.png)

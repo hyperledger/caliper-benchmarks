@@ -11,24 +11,24 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Page Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | --------- | --------------- | --------------- | ---------------- |
-| 10 | 0.70 | 0.17 | 39.6 |
-| 20 | 0.82 | 0.35 | 18.6 |
-| 50 | 2.71 | 1.38 | 4.9 |
-| 100 | 5.97 | 2.82 | 2.4 |
-| 200 | 15.17 | 6.52 | 1.0 |
-| 300 | 24.41 | 12.53 | 0.5 |
+| 10 | 0.71 | 0.21 | 39.6 |
+| 20 | 1.07 | 0.46 | 18.5 |
+| 50 | 3.49 | 1.68 | 5.2 |
+| 100 | 6.64 | 3.81 | 2.3 |
+| 200 | 20.43 | 9.05 | 1.0 |
+| 300 | 29.72 | 15.31 | 0.5 |
 
 
 *CouchDB*
 
 | Page Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | --------- | --------------- | --------------- | ---------------- |
-| 10 | 0.54 | 0.17 | 37.2 |
-| 20 | 0.72 | 0.35 | 18.4 |
-| 50 | 2.36 | 1.32 | 5.2 |
-| 100 | 5.12 | 2.86 | 2.2 |
-| 200 | 12.51 | 6.77 | 0.9 |
-| 300 | 19.57 | 12.18 | 0.4 |
+| 10 | 0.67 | 0.18 | 37.3 |
+| 20 | 0.70 | 0.35 | 18.9 |
+| 50 | 2.27 | 1.35 | 5.0 |
+| 100 | 5.14 | 2.84 | 2.4 |
+| 200 | 12.68 | 7.32 | 0.8 |
+| 300 | 19.70 | 12.07 | 0.4 |
 
 ![paginated range query fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedTPS.png)
 
@@ -36,5 +36,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![paginated range query fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedCycles.png)
 
-## Benchmark Observations
-The CouchDB world state database is observed to achieve comparable throughput and comparable latency when comapred with its LevelDB equivalent.
+![paginated range query resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/rangeQuery/RangeQueryMixedRadar.png)

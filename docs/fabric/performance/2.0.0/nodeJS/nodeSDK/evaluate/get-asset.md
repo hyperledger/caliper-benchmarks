@@ -11,27 +11,27 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 1.10 | 0.45 | 710.0 |
-| 1K | 1.15 | 0.66 | 555.9 |
-| 2K | 1.14 | 0.60 | 548.9 |
-| 4K | 1.55 | 0.91 | 363.5 |
-| 8K | 1.91 | 1.17 | 263.8 |
-| 16K | 2.50 | 1.20 | 229.3 |
-| 32K | 4.26 | 2.35 | 97.2 |
-| 64K | 7.83 | 5.19 | 59.0 |
+| 100 | 0.82 | 0.35 | 862.5 |
+| 1K | 1.25 | 0.78 | 458.8 |
+| 2K | 1.85 | 1.68 | 103.6 |
+| 4K | 1.51 | 0.87 | 381.4 |
+| 8K | 2.08 | 1.31 | 257.8 |
+| 16K | 2.21 | 1.14 | 226.3 |
+| 32K | 4.3 | 2.15 | 120.3 |
+| 64K | 9.16 | 6.45 | 31.7 |
 
 *CouchDB*
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 1.95 | 0.65 | 891.0 |
-| 1K | 2.00 | 0.71 | 819.4 |
-| 2K | 2.07 | 0.79 | 736.6 |
-| 4K | 2.50 | 0.94 | 603.3 |
-| 8K | 3.21 | 1.26 | 451.4 |
-| 16K | 4.28 | 1.77 | 287.2 |
-| 32K | 8.57 | 4.47 | 114.6 |
-| 64K | 15.35 | 7.80 | 68.7 |
+| 100 | 1.34 | 0.56 | 658.4 |
+| 1K | 1.91 | 0.83 | 566.4 |
+| 2K | 1.86 | 1.11 | 353.2 |
+| 4K | 2.18 | 1.17 | 347.8 |
+| 8K | 2.12 | 1.27 | 249.7 |
+| 16K | 2.47 | 1.28 | 199.2 |
+| 32K | 4.3 | 2.25 | 109.7 |
+| 64K | 7.63 | 3.25 | 63.8 |
 
 ![single query fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAsset/GetAssetTPS.png)
 
@@ -39,5 +39,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![single query fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAsset/GetAssetCycles.png)
 
-## Benchmark Observations
-When compared with the CouchDB world state database, the LevelDB world state database is seen to achieve lower throughputs for smaller asset sizes and comparable throughputs for larger asset sizes. The LevelDB world state database achieves comparable transaction latencies at smaller asset sizes and lower transaction latencies at larger asset sizes compared to its CouchDB equivalent.
+![single query resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/getAsset/GetAssetRadar.png)

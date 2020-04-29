@@ -11,23 +11,23 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Batch Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---------- | --------------- | --------------- | ---------------- |
-| 1 | 0.29 | 0.23 | 55.3 |
-| 10 | 0.96 | 0.55 | 24.9 |
-| 20 | 1.80 | 1.04 | 12.0 |
-| 30 | 2.87 | 1.71 | 7.5 |
-| 40 | 5.30 | 2.55 | 5.1 |
-| 50 | 5.23 | 3.25 | 4.0 |
+| 1 | 0.31 | 0.25 | 59.0 |
+| 10 | 1.18 | 0.78 | 19.2 |
+| 20 | 2.61 | 1.51 | 10.2 |
+| 30 | 5.21 | 2.39 | 6.2 |
+| 40 | 8.63 | 3.3 | 4.6 |
+| 50 | 9.76 | 4.29 | 3.4 |
 
 *CouchDB*
 
 | Batch Size | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---------- | --------------- | --------------- | ---------------- |
-| 1 | 0.32 | 0.25 | 54.1 |
-| 10 | 1.01 | 0.68 | 20.4 |
-| 20 | 2.73 | 1.27 | 10.3 |
-| 30 | 5.32 | 2.04 | 6.5 |
-| 40 | 7.87 | 2.98 | 4.5 |
-| 50 | 7.34 | 3.69 | 3.8 |
+| 1 | 0.29 | 0.22 | 59.9 |
+| 10 | 1.05 | 0.65 | 22.6 |
+| 20 | 2.18 | 1.27 | 11.6 |
+| 30 | 3.59 | 1.97 | 7.2 |
+| 40 | 8.06 | 2.92 | 4.7 |
+| 50 | 6.65 | 3.73 | 3.9 |
 
 ![batch submit fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchTPS.png)
 
@@ -35,5 +35,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![batch submit fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchCycles.png)
 
-## Benchmark Observations
-Use of a LevelDB world state database compared to a CouchDB world state database is seen to enable slighlt higher throughput and lower latencies with small batch sizes. The benefit of higher throughput of LevelDB over CouchDB is lost with larger batch sizes.
+![batch submit resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/createAssetBatch/CreateAssetBatchRadar.png)

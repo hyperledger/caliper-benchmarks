@@ -2,11 +2,11 @@ This report was generated using the following Hyperledger Fabric component level
 
 - Fabric images: 2.0.0
 - Fabric chaincode: 2.0.0
-- Fabric SDK Node: 2.0.0-snapshot.277
+- Fabric SDK Node: 2.1.0
 
 ## Machine Configuration
 
-Hyperledger Caliper at commit level 4156c4da7105fd1c2b848573a9943bfc9900becb was used.
+Hyperledger Caliper at commit level dce54d41a9920fe132992779ac1720d3634dad15 was used.
 
 The report was generated on an IBM Cloud Softlayer machine with the following configuration:
 

@@ -11,27 +11,27 @@ Achievable throughput and associated latencies are investigated through maintain
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 1.38 | 0.64 | 78.7 |
-| 1K | 0.27 | 0.24 | 133.9 |
-| 2K | 0.27 | 0.23 | 130.4 |
-| 4K | 0.27 | 0.24 | 133.6 |
-| 8K | 0.27 | 0.24 | 138.0 |
-| 16K | 0.27 | 0.24 | 122.9 |
-| 32K | 0.27 | 0.24 | 136.9 |
-| 64K | 3.11 | 0.24 | 136.0 |
+| 100 | 0.27 | 0.25 | 124.8 |
+| 1K | 0.26 | 0.25 | 142.8 |
+| 2K | 0.26 | 0.25 | 144.1 |
+| 4K | 0.26 | 0.25 | 144.4 |
+| 8K | 0.26 | 0.25 | 152.9 |
+| 16K | 0.27 | 0.25 | 129.4 |
+| 32K | 0.26 | 0.24 | 137.7 |
+| 64K | 0.26 | 0.25 | 148.4 |
 
 *CouchDB*
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ------------------ | --------------- | --------------- | ---------------- |
-| 100 | 2.33 | 1.30 | 183.5 |
-| 1K | 2.17 | 1.31 | 180.6 |
-| 2K | 2.58 | 1.27 | 180.7 |
-| 4K | 2.95 | 1.38 | 183.2 |
-| 8K | 2.85 | 1.33 | 171.4 |
-| 16K | 2.37 | 1.26 | 185.2 |
-| 32K | 2.28 | 1.36 | 182.5 |
-| 64K | 3.11 | 1.45 | 168.3 |
+| 100 | 3 | 2.56 | 21.8 |
+| 1K | 9.73 | 2.64 | 31.4 |
+| 2K | 3.29 | 2.68 | 22.4 |
+| 4K | 3.05 | 2.61 | 21.5 |
+| 8K | 2.97 | 2.59 | 22.2 |
+| 16K | 3.07 | 2.59 | 21.9 |
+| 32K | 2.92 | 2.59 | 21.6 |
+| 64K | 3.12 | 2.66 | 20.3 |
 
 ![submit fabric tps performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAsset/DeleteAssetTPS.png)
 
@@ -39,5 +39,4 @@ Achievable throughput and associated latencies are investigated through maintain
 
 ![submit fabric cycles performance](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAsset/DeleteAssetCycles.png)
 
-## Benchmark Obsevations
-The LevelDB world state database facilitates asset deletion at lower throughputs and lower latencies than the CouchDB world state database. The throughput advantage of CouchDB is maintained with larger asset sizes, and the latency advantage of LevelDB is maintained with larger asset sizes.
+![submit resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/deleteAsset/DeleteAssetRadar.png)
