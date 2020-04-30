@@ -180,7 +180,6 @@ func getAllResults(iterator shim.StateQueryIteratorInterface) (*[]*assets.FixedA
 
 	results := []*assets.FixedAsset{}
 
-	count := 0
 	for iterator.HasNext() {
 		keyValue, _ := iterator.Next()
 
@@ -195,7 +194,6 @@ func getAllResults(iterator shim.StateQueryIteratorInterface) (*[]*assets.FixedA
 		}
 
 		results = append(results, &fixedAsset)
-		count++
 	}
 
 	return &results, nil
