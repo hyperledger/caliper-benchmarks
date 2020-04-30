@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+: "${FABRIC_VERSION:=1.4.1}"
+: "${FABRIC_CA_VERSION:=1.4.1}"
+
 # if the binaries are not available, download them
 if [[ ! -d "bin" ]]; then
-  curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.1 1.4.1 0.4.15 -ds
+  curl -sSL http://bit.ly/2ysbOFE | bash -s -- ${FABRIC_VERSION} ${FABRIC_CA_VERSION} 0.4.14 -ds
 fi
 
 rm -rf ./crypto-config/

@@ -15,36 +15,6 @@
 ---
 ################################################################################
 #
-#   Profile
-#
-#   - Different configuration profiles may be encoded here to be specified
-#   as parameters to the configtxgen tool
-#
-################################################################################
-Profiles:
-
-    OrgsOrdererGenesis:
-        Orderer:
-            <<: *OrdererDefaults
-            Organizations:
-                - *OrdererOrg
-        Consortiums:
-            SampleConsortium:
-                Organizations:
-                    - *Org0
-                    - *Org1
-                    - *Org2
-    OrgsChannel:
-        Consortium: SampleConsortium
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *Org0
-                - *Org1
-                - *Org2
-
-################################################################################
-#
 #   Section: Organizations
 #
 #   - This section defines the different organizational identities which will
@@ -197,3 +167,33 @@ Application: &ApplicationDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the application side of the network
     Organizations:
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+Profiles:
+
+    OrgsOrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+            - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                - *Org0
+                - *Org1
+                - *Org2
+    OrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            - *Org0
+            - *Org1
+            - *Org2
