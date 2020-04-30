@@ -1,23 +1,21 @@
 version: "3"
 services:
   burrow-node-0:
-    image: hyperledger/burrow:0.23.1
+    image: hyperledger/burrow:0.30.2
     container_name: burrow_0
     network_mode: host
     volumes:
-    - ./chain:/chain
-    working_dir: /chain
-    environment:
-      NODEID: 0
-    entrypoint: ./startup.sh
+    - ./chain:/home/burrow
+    command: start -v0 --config=/home/burrow/burrow000.toml
+    ports:
+      - "10997"
 
   burrow-node-1:
-    image: hyperledger/burrow:0.23.1
+    image: hyperledger/burrow:0.30.2
     container_name: burrow_1
     network_mode: host
     volumes:
-    - ./chain:/chain
-    working_dir: /chain
-    environment:
-      NODEID: 1
-    entrypoint: ./startup.sh
+    - ./chain:/home/burrow
+    command: start -v1 --config=/home/burrow/burrow001.toml
+    ports:
+      - "10998"
