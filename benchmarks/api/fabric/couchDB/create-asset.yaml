@@ -24,13 +24,13 @@ test:
     arguments:
       bytesize: 100
     callback: benchmarks/api/fabric/lib/create-asset.js
-  - label: create-asset-2000
-    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 2000 bytes into the World State database.
+  - label: create-asset-1000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 1000 bytes into the World State database.
     chaincodeId: fixed-asset
     txDuration: 300
     rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10, startingTps: 1} }
     arguments:
-      bytesize: 2000
+      bytesize: 1000
     callback: benchmarks/api/fabric/lib/create-asset.js
   - label: create-asset-4000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 4000 bytes into the World State database.
@@ -55,6 +55,14 @@ test:
     rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10, startingTps: 1} }
     arguments:
       bytesize: 16000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-24000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 24000 bytes into the World State database.
+    chaincodeId: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10, startingTps: 1} }
+    arguments:
+      bytesize: 24000
     callback: benchmarks/api/fabric/lib/create-asset.js
   - label: create-asset-32000
     description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 32000 bytes into the World State database.
