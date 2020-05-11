@@ -16,24 +16,24 @@ Resource utilization is investigated for fixed TPS rate of 350TPS and 300TPS.
 
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
-| submit | 1-of-any | 1.97 | 0.99 | 569.5 |
-| submit | 2-of-any | 2.02 | 0.99 | 556.4 |
+| submit | 1-of-any | 1.64 | 0.88 | 623.2 |
+| submit | 2-of-any | 1.53 | 0.86 | 633.2 |
 
 *CouchDB- submit transactions with varying endorsement policy*
 
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
-| submit | 1-of-any | 3.85 | 1.39 | 407.3 |
-| submit | 2-of-any | 3.06 | 1.45 | 420.9 |
+| submit | 1-of-any | 2.36 | 0.98 | 575.4 |
+| submit | 2-of-any | 2.05 | 1.00 | 595.6 |
 
 *LevelDB Resource Utilization– Submit By Policy @350TPS*
-![submit empty contract fabric with LevelDB resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/policies/LevelDB_submitByPolicy.png)
+![submit empty contract fabric with LevelDB resource utilization](../../../../../charts/2.1.0/nodeJS/nodeSDK/policies/LevelDB_submitByPolicy.png)
 
 *CouchDB Resource Utilization– Submit By Policy @350TPS*
-![submit empty contract fabric with CouchDB resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/policies/CouchDB_submitByPolicy.png)
+![submit empty contract fabric with CouchDB resource utilization](../../../../../charts/2.1.0/nodeJS/nodeSDK/policies/CouchDB_submitByPolicy.png)
 
 *Resource Utilization– Submit 1ofAny Policy @350TPS*
-![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/policies/Submit_1ofAny.png)
+![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/2.1.0/nodeJS/nodeSDK/policies/Submit_1ofAny.png)
 
 *Resource Utilization– Submit 2ofAny Policy @350TPS*
-![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/2.0.0/nodeJS/nodeSDK/policies/Submit_2ofAny.png)
+![submit empty contract fabric with 1ofAny policy resource utilization](../../../../../charts/2.1.0/nodeJS/nodeSDK/policies/Submit_2ofAny.png)
