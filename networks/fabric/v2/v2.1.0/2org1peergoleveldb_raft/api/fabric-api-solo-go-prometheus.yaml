@@ -71,11 +71,11 @@ channels:
                 eventSource: true
 
         chaincodes:
-            - id: fixed-asset
+            - id: fixed-asset-base
               version: v0
               language: golang
-              path: fabric/api/fixed-asset/go
-              metadataPath: src/fabric/api/fixed-asset/metadata
+              path: fabric/api/fixed-asset-base/go
+              metadataPath: src/fabric/api/fixed-asset-base/metadata
 
 organizations:
     Org1:

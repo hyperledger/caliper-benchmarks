@@ -6,7 +6,7 @@
 
 // Investigate submitTransaction() using network model to create a batch of assets of specific size in the registry
 // - label: batch-create-asset-1000
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -14,18 +14,19 @@
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       bytesize: 1000
 //       batchsize: 100
 //     callback: benchmark/network-model/lib/batch-create-asset.js
 
 module.exports.info  = 'Batch Creating Assets in Registry';
 
-const chaincodeID = 'fixed-asset';
 const bytes = (s) => {
     return ~-encodeURI(s).split(/%..|./).length;
 };
 
 let txIndex = 0;
+let chaincodeID;
 let clientIdx;
 let asset = {docType: chaincodeID, content: ''};
 let bc, contx, bytesize, batchsize;
@@ -35,6 +36,7 @@ module.exports.init = async function(blockchain, context, args) {
     contx = context;
     clientIdx = context.clientIdx;
 
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     bytesize = args.bytesize ? parseInt(args.bytesize) : 100;
     batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
 

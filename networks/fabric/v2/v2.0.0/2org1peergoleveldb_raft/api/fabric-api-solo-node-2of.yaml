@@ -19,7 +19,7 @@ mutual-tls: false
 caliper:
     blockchain: fabric
     command:
-        start: export FABRIC_VERSION=2.1.0;export FABRIC_CA_VERSION=1.4.4;docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_solo_raft/docker-compose-tls.yaml up -d;sleep 10s
+        start: export FABRIC_VERSION=2.0.0;export FABRIC_CA_VERSION=1.4.4;docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_solo_raft/docker-compose-tls.yaml up -d;sleep 10s
         end: docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_solo_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
@@ -76,6 +76,12 @@ channels:
               language: node
               path: src/fabric/api/fixed-asset/node
               metadataPath: src/fabric/api/fixed-asset/metadata
+              endorsement-policy: { "identities": [{ "role": { "name": "member", "mspId": "Org1MSP" }},{ "role": { "name": "member", "mspId": "Org2MSP" }},{ "role": { "name": "admin", "mspId": "Org1MSP" }},{ "role": { "name": "admin", "mspId": "Org2MSP" }}],"policy": {"2-of": [{ "signed-by": 0}, { "signed-by": 1 }, { "signed-by": 2 }, { "signed-by": 3}]}}
+            - id: fixed-asset-base
+              version: v0
+              language: node
+              path: src/fabric/api/fixed-asset-base/node
+              metadataPath: src/fabric/api/fixed-asset-base/metadata
               endorsement-policy: { "identities": [{ "role": { "name": "member", "mspId": "Org1MSP" }},{ "role": { "name": "member", "mspId": "Org2MSP" }},{ "role": { "name": "admin", "mspId": "Org1MSP" }},{ "role": { "name": "admin", "mspId": "Org2MSP" }}],"policy": {"2-of": [{ "signed-by": 0}, { "signed-by": 1 }, { "signed-by": 2 }, { "signed-by": 3}]}}
 organizations:
     Org1:

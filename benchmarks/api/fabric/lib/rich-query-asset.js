@@ -9,7 +9,7 @@
 // with a byte size that is specified as in input argument. Pagesize and the number of existing test assets are also cofigurable. The argument
 // "nosetup" and "consensus" are optional items that are default false. Resulting mago query is that whch targets assets created by the same client
 // - label: query-asset-100
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -17,6 +17,7 @@
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       bytesize: 100
 //       pagesize: 10
 //       assets: 5000
@@ -28,7 +29,7 @@ module.exports.info  = 'Paginated Rich Querying Assets of fixed size.';
 
 const helper = require('./helper');
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 let clientIdx, pagesize, mangoQuery, consensus;
 let bc, contx, bytesize, nomatch;
 
@@ -39,6 +40,7 @@ module.exports.init = async function(blockchain, context, args) {
 
     contx = context;
 
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     bytesize = args.bytesize;
     pagesize = args.pagesize;
 

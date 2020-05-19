@@ -1,0 +1,150 @@
+---
+test:
+  name: fixed-asset-mixed-range-query-pagination-levelDB
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
+    a Fabric-SDK-Node Gateway. Each test round invokes the 'paginatedRangeQuery' method against a DB populated with mixed size assets. Successive rounds increase the pagesize of retrieved assets.
+  workers:
+    type: local
+    number: 4
+  rounds:
+  - label: mixed-range-query-evaluate-10
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 10 and a range keys that bound 200 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {   unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      create_sizes: [100,1000,2000,4000,8000,16000,32000,64000]
+      assets: 8000
+      range: 200
+      offset: 100
+      pagesize: '10'      
+      nomatch: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-20
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 20 and a range keys that bound 200 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {   unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '20'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-50
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 50 and a range keys that bound 200 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {   unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '50'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-100
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 100 and a range keys that bound 200 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '100'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-200
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 200 and a range keys that bound 200 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '200'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-300
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 500 and a range keys that bound 500 assets created by the calling client.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 2   } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '300'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+  - label: mixed-range-query-evaluate-20-fixed-tps
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `paginatedRangeQuery`. This method performs a paginated range query, with a passed pagesize of 20 and a range keys that bound 200 assets created by the calling client at a fixed TPS.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-rate,  opts: { tps: 10} }
+    arguments:
+      chaincodeID: fixed-asset-base
+      range: 200
+      offset: 100
+      pagesize: '20'
+      nosetup: true
+      consensus: false
+    callback: benchmarks/api/fabric/lib/mixed-range-query-asset.js
+monitor:
+  type:
+  - prometheus
+  prometheus:  
+    url: "http://localhost:9090"
+    push_url: "http://localhost:9091"
+    metrics:
+      ignore: [prometheus, pushGateway, cadvisor, grafana, node-exporter, ca.org1.example.com, ca.org2.example.com]
+      include:
+        Avg Memory (MB):
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 0.000001
+        CPU (%):
+          query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 100
+        Network In (MB):
+          query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Network Out (MB):
+          query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Write (MB):
+          query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Read (MB):
+          query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+observer:
+  type: prometheus
+  interval: 10

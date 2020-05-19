@@ -1,0 +1,166 @@
+---
+test:
+  name: get-asset-ramp-levelDB
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
+    a Fabric-SDK-Node Gateway. Each test round invokes the 'getAsset()' API method. Successive rounds create and retrieve assets of larger bytesize.
+  workers:
+    type: local
+    number: 10
+  rounds:
+  - label: get-asset-evaluate-100
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 100 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      create_sizes: [100,1000,2000,4000,8000,16000,32000,64000]
+      assets: 1000
+      bytesize: 100
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-1000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 1000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 1000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-2000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 2000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 2000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-4000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 4000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 4000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 8000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-16000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 16000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 16000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-32000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 32000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 32000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-64000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 64000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 64000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+  - label: get-asset-evaluate-8000-fixed-tps
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAsset`. This method performs a getState on an item that matches an asset of size 8000 bytes at a fixed TPS.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-rate, opts: { tps: 350 }}
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 8000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-asset.js
+monitor:
+  type:
+  - prometheus
+  prometheus:  
+    url: "http://localhost:9090"
+    push_url: "http://localhost:9091"
+    metrics:
+      ignore: [prometheus, pushGateway, cadvisor, grafana, node-exporter, ca.org1.example.com, ca.org2.example.com]
+      include:
+        Avg Memory (MB):
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 0.000001
+        CPU (%):
+          query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 100
+        Network In (MB):
+          query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Network Out (MB):
+          query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Write (MB):
+          query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Read (MB):
+          query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+observer:
+  type: prometheus
+  interval: 10

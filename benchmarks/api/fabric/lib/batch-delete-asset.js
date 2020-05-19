@@ -9,10 +9,11 @@
 // with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
 // Must be run in a txNumber operation mode, as assets must exist for the benchmark to be valid.
 // - label: batch-delete-asset-100
-//      chaincodeId: fixed-asset
+//      chaincodeID: fixed-asset
 //      txNumber: 1000
 //      rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
 //      arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //          create_sizes: [8000]
 //          assets: 50000
 //          bytesize: 8000
@@ -24,7 +25,7 @@ const helper = require('./helper');
 
 module.exports.info  = 'Batch Delete Asset of fixed size.';
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 let clientIdx, assets, bytesize, consensus, batchsize;
 let bc, contx;
 
@@ -35,6 +36,7 @@ module.exports.init = async function(blockchain, context, args) {
 
     contx = context;
 
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     let assetNumber = args.assets ? parseInt(args.assets) : 0;
     assets = helper.retrieveRandomAssetIds(assetNumber);
 
