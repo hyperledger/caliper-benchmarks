@@ -13,6 +13,20 @@ nav:
     - Fabric:
       - Performance: fabric/performance.md
       - Results:
+        - v2.1.0:
+          - Configuration: fabric/performance/2.1.0/nodeJS/nodeSDK/configuration.md
+          - Evaluate:
+            - Empty Contract: fabric/performance/2.1.0/nodeJS/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Range Query: fabric/performance/2.1.0/nodeJS/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: fabric/performance/2.1.0/nodeJS/nodeSDK/evaluate/paginated-rich-query.md
+          - Submit:
+            - Empty Contract: fabric/performance/2.1.0/nodeJS/nodeSDK/submit/empty-contract.md
+            - Create Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/submit/batch-create-asset.md
+            - Delete Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/submit/delete-asset.md
+            - Batch Delete Asset: fabric/performance/2.1.0/nodeJS/nodeSDK/submit/batch-delete-asset.md
         - v2.0.0:
           - Configuration: fabric/performance/2.0.0/nodeJS/nodeSDK/configuration.md
           - Evaluate:
