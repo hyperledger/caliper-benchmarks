@@ -6,7 +6,7 @@
 
 // Investigate submitTransaction() using network model to create an asset of specific size in the registry
 // - label: create-asset-100
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -14,12 +14,13 @@
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       bytesize: 100
 //     callback: benchmark/network-model/lib/create-asset.js
 
 module.exports.info  = 'Creating Asset in Registry';
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 // const appmetrics = require('appmetrics');
 // require('appmetrics-dash').monitor({appmetrics: appmetrics});
 // appmetrics.enable('profiling');
@@ -36,6 +37,7 @@ module.exports.init = async function(blockchain, context, args) {
     bc = blockchain;
     contx = context;
     clientIdx = context.clientIdx;
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     bytesize = args.bytesize;
 
     asset.creator = 'client' + clientIdx;

@@ -8,7 +8,7 @@
 // Investigate submitTransaction() or evaluateTransaction() by calling a nullRepsonse chaincode function. Passed argument
 // "consensus" is an optional (default false) argument to conditionally use the ordering service.
 // - label: null-response-ordered
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -16,16 +16,18 @@
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       consensus: true
 //     callback: benchmark/network-model/lib/null-response.js
 
 module.exports.info  = 'Null Repsonse';
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 let bc, contx, consensus;
 
 module.exports.init = async function(blockchain, context, args) {
     bc = blockchain;
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
     contx = context;
 };

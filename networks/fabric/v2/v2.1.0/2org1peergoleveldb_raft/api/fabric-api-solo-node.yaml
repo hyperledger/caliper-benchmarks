@@ -76,7 +76,11 @@ channels:
               language: node
               path: src/fabric/api/fixed-asset/node
               metadataPath: src/fabric/api/fixed-asset/metadata
-
+            - id: fixed-asset-base
+              version: v0
+              language: node
+              path: src/fabric/api/fixed-asset-base/node
+              metadataPath: src/fabric/api/fixed-asset-base/metadata
 organizations:
     Org1:
         mspid: Org1MSP

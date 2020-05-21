@@ -10,7 +10,7 @@ const helper = require('./helper');
 // with a byte size that is specified as in input argument. Pagesize and the number of existing test assets, as well as the range and offset, are also cofigurable. The arguments
 // "nosetup" and "consensus" are optional items that are default false.
 // - label: query-asset-100
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -18,6 +18,7 @@ const helper = require('./helper');
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       bytesize: 100
 //       pagesize: 10
 //       range: 10
@@ -30,7 +31,7 @@ const helper = require('./helper');
 
 module.exports.info  = 'Paginated Range Querying Assets of fixed size.';
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 let clientIdx, pagesize, offset, range, consensus;
 let bc, contx, bytesize, nomatch, startKey, endKey;
 
@@ -41,6 +42,7 @@ module.exports.init = async function(blockchain, context, args) {
 
     contx = context;
 
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     offset = parseInt(args.offset);
     range = parseInt(args.range);
     pagesize = args.pagesize;

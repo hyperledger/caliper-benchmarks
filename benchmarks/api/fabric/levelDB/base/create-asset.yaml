@@ -1,0 +1,130 @@
+---
+test:
+  name: create-asset-size-ramp-levelDB
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via
+    a Fabric-SDK-Node Gateway. Each test round invokes the `createAsset` method, with successive rounds increasing the bytesize of the asset
+    added into the world state database.
+  workers:
+    type: local
+    number: 10
+  rounds:
+  - label: create-asset-8000-fixed-tps
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 8000 bytes into the World State database at a fixed TPS rate.
+    chaincodeID: fixed-asset-base
+    txDuration: 30
+    rateControl:  { type: fixed-rate,  opts: { tps: 15} }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 8000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-100
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 100 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 100
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-2000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 2000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 2000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-4000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 4000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 4000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-8000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 8000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 8000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-16000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 16000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 16000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-32000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 32000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 32000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-64000
+    description: Test a submitTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `createAsset`, which inserts an asset of size 64000 bytes into the World State database.
+    chaincodeID: fixed-asset-base
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 10 } }
+    arguments:
+      chaincodeID: fixed-asset-base
+      bytesize: 64000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+monitor:
+  type:
+  - prometheus
+  prometheus:  
+    url: "http://localhost:9090"
+    push_url: "http://localhost:9091"
+    metrics:
+      ignore: [prometheus, pushGateway, cadvisor, grafana, node-exporter, ca.org1.example.com, ca.org2.example.com]
+      include:
+        Avg Memory (MB):
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 0.000001
+        CPU (%):
+          query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 100
+        Network In (MB):
+          query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Network Out (MB):
+          query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Write (MB):
+          query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Read (MB):
+          query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+observer:
+  type: prometheus
+  interval: 10

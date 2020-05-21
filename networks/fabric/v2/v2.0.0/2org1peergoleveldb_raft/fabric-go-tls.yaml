@@ -24,7 +24,7 @@ caliper:
     end: docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
-  Version: 2.0.0
+  Version: 2.1.0
   Size: 2 Orgs with 1 Peer
   Orderer: Raft
   Distribution: Single Host

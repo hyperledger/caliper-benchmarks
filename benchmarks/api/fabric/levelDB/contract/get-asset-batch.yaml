@@ -1,0 +1,148 @@
+---
+test:
+  name: get-asset-batch-levelDB
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
+    a Fabric-SDK-Node Gateway. Each test round invokes the `getAssetsFromBatch` API method. Successive rounds create and retrieve assets of larger bytesize.
+  workers:
+    type: local
+    number: 10
+  rounds:
+  - label: get-asset-batch-evaluate-1-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 1 UUID that matches an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      create_sizes: [8000]
+      assets: 8000
+      bytesize: 8000
+      batchsize: 1
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-10-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 10 UUIDs that each match an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      create_sizes: [8000]
+      assets: 8000
+      bytesize: 8000
+      batchsize: 10
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-20-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 20 UUIDs that each match an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      assets: 8000
+      bytesize: 8000
+      batchsize: 20
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-30-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 30 UUIDs that each match an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      assets: 8000
+      bytesize: 8000
+      batchsize: 30
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-40-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 40 UUIDs that each match an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      assets: 8000
+      bytesize: 8000
+      batchsize: 40
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-50-8000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 50 UUIDs that each match an asset of size 8000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 20 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      assets: 8000
+      bytesize: 8000
+      batchsize: 50
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+  - label: get-asset-batch-evaluate-20-8000-fixed-tps
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This method performs a getState on a batch of 20 UUIDs that each match an asset of size 8000 bytes at a fixed TPS.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:  { type: fixed-rate,  opts: { tps: 30} }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      assets: 8000
+      bytesize: 8000
+      batchsize: 20
+      consensus: false
+    callback: benchmarks/api/fabric/lib/batch-get-asset.js
+monitor:
+  type:
+  - prometheus
+  prometheus:  
+    url: "http://localhost:9090"
+    push_url: "http://localhost:9091"
+    metrics:
+      ignore: [prometheus, pushGateway, cadvisor, grafana, node-exporter, ca.org1.example.com, ca.org2.example.com]
+      include:
+        Avg Memory (MB):
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 0.000001
+        CPU (%):
+          query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 100
+        Network In (MB):
+          query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Network Out (MB):
+          query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Write (MB):
+          query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Read (MB):
+          query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+observer:
+  type: prometheus
+  interval: 10

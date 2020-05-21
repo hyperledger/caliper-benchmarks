@@ -9,7 +9,7 @@
 // with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
 // This *must* be run using a txNumber test style because we can only delete assets that have been created
 // - label: delete-asset-100
-//     chaincodeId: fixed-asset
+//     chaincodeID: fixed-asset
 //     txNumber:
 //     - 1000
 //     rateControl:
@@ -17,6 +17,7 @@
 //       opts:
 //         tps: 50
 //     arguments:
+//       chaincodeID: fixed-asset | fixed-asset-base
 //       bytesize: 100
 //       assets: 1000
 //       nosetup: false
@@ -27,7 +28,7 @@ const helper = require('./helper');
 
 module.exports.info  = 'Delete Asset of fixed size.';
 
-const chaincodeID = 'fixed-asset';
+let chaincodeID;
 let clientIdx, assets, bytesize, consensus;
 let bc, contx;
 
@@ -38,6 +39,7 @@ module.exports.init = async function(blockchain, context, args) {
 
     contx = context;
 
+    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     let assetNumber = args.assets ? parseInt(args.assets) : 0;
     assets = helper.retrieveRandomAssetIds(assetNumber);
 

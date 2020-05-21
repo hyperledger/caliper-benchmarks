@@ -23,7 +23,7 @@ caliper:
         end: docker-compose -f networks/prometheus-grafana/docker-compose-fabric.yaml down;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls-prometheus.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
 
 info:
-    Version: 2.0.0
+    Version: 2.1.0
     Size: 2 Orgs with 1 Peer
     Orderer: Raft
     Distribution: Single Host
@@ -76,6 +76,12 @@ channels:
               language: node
               path: src/fabric/api/fixed-asset/node
               metadataPath: src/fabric/api/fixed-asset/metadata
+              endorsement-policy: { "identities": [{ "role": { "name": "member", "mspId": "Org1MSP" }},{ "role": { "name": "member", "mspId": "Org2MSP" }},{ "role": { "name": "admin", "mspId": "Org1MSP" }},{ "role": { "name": "admin", "mspId": "Org2MSP" }}],"policy": {"1-of": [{ "signed-by": 0}, { "signed-by": 1 }, { "signed-by": 2 }, { "signed-by": 3}]}}
+            - id: fixed-asset-base
+              version: v0
+              language: node
+              path: src/fabric/api/fixed-asset-base/node
+              metadataPath: src/fabric/api/fixed-asset-base/metadata
               endorsement-policy: { "identities": [{ "role": { "name": "member", "mspId": "Org1MSP" }},{ "role": { "name": "member", "mspId": "Org2MSP" }},{ "role": { "name": "admin", "mspId": "Org1MSP" }},{ "role": { "name": "admin", "mspId": "Org2MSP" }}],"policy": {"1-of": [{ "signed-by": 0}, { "signed-by": 1 }, { "signed-by": 2 }, { "signed-by": 3}]}}
 organizations:
     Org1:
