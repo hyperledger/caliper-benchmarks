@@ -1,0 +1,154 @@
+---
+test:
+  name: get-private-asset-ramp-levelDB
+  description: This is a duration based benchmark targeting a Hyperledger Fabric network with a LevelDB world state database using the `fixed-asset` NodeJS chaincode contract that is interacted with via 
+    a Fabric-SDK-Node Gateway. Each test round invokes the 'getPrivateAsset()' API method. Successive rounds create and retrieve assets of larger bytesize.
+  workers:
+    type: local
+    number: 10
+  rounds:
+  - label: get-private-asset-evaluate-100
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 100 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      create_sizes: [100,200,500,1000,2000,5000,10000]
+      assets: 1000
+      bytesize: 100
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-200
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 200 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 200
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-500
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 500 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 500
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-1000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 1000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 1000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-2000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 2000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 2000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-5000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 5000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 5000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-10000
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 10000 bytes.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-backlog,  opts: {  unfinished_per_client: 50 } }
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 10000
+      uuid: '500'
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+  - label: get-private-asset-evaluate-8000-fixed-tps
+    description: Test an evaluateTransaction() Gateway method against the NodeJS `fixed-asset` Smart Contract method named `getPrivateAsset`. This method performs a getPrivateData on an item that matches an asset of size 8000 bytes at a fixed TPS.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl: { type: fixed-rate, opts: { tps: 350 }}
+    arguments:
+      chaincodeID: fixed-asset
+      nosetup: true
+      bytesize: 8000
+      assets: 1000
+      consensus: false
+    callback: benchmarks/api/fabric/lib/get-private-asset.js
+monitor:
+  type:
+  - prometheus
+  prometheus:  
+    url: "http://localhost:9090"
+    push_url: "http://localhost:9091"
+    metrics:
+      ignore: [prometheus, pushGateway, cadvisor, grafana, node-exporter, ca.org1.example.com, ca.org2.example.com]
+      include:
+        Avg Memory (MB):
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 0.000001
+        CPU (%):
+          query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: avg
+          multiplier: 100
+        Network In (MB):
+          query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Network Out (MB):
+          query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Write (MB):
+          query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+        Disc Read (MB):
+          query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+          step: 10
+          label: name		
+          statistic: sum
+          multiplier: 0.000001
+observer:
+  type: prometheus
+  interval: 10

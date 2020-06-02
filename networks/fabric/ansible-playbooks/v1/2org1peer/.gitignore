@@ -1,0 +1,9 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+gateways
+nodes
+wallets
+!**/.gitkeep
+service-creds.json

@@ -11,6 +11,8 @@ const { Contract } = require('fabric-contract-api');
 const logLevel = process.env.CORE_CHAINCODE_LOGGING_LEVEL;
 const isVerbose = (logLevel && (logLevel.toUpperCase() === 'INFO' || logLevel.toUpperCase() === 'DEBUG' ));
 
+const collection = "CollectionOne";
+
 /**
  * Simple chaincode to create an asset that may have a user provided body
  */
@@ -57,6 +59,34 @@ class Asset extends Contract {
         await ctx.stub.putState(uuid, Buffer.from(content));
         if (isVerbose) {
             console.log('Exiting createAsset');
+        }
+    }
+
+    /**
+     * Create an Asset in the private data store based on the transient data that is provided of the form
+     * {
+     *   uuid: unique identifier
+     *   creator: the creator
+     *   bytesize: target bytesize of asset
+     *   content: variable content
+     * }
+     * 
+     * Writes transient data against the passed uuid
+     * @param {Context} ctx the context
+     * @param {number} uuid the uuid to persist the body under
+     */
+    async createPrivateAsset(ctx, uuid) {
+        if (isVerbose) {
+            console.log('Entering createPrivateAsset');
+        }
+        const privateAsset = {};
+        const transientData = ctx.stub.getTransient();
+        privateAsset.content = transientData.get('content').toString('utf8');
+
+        await ctx.stub.putPrivateData(collection, uuid, Buffer.from(JSON.stringify(privateAsset)));
+
+        if (isVerbose) {
+            console.log('Exiting createPrivateAsset');
         }
     }
 
@@ -111,6 +141,40 @@ class Asset extends Contract {
     }
 
     /**
+     * Create a set of Assets in the registry based on the body that is provided of the form
+     * [{
+     *   uuid: unique identifier
+     *   creator: the creator
+     *   bytesize: target bytesize of asset
+     *   content: variable content
+     * }, ...]
+     * @param {Context} ctx the context
+     * @param {String} batch the content to persist within an array
+     */
+    async createPrivateAssetsFromBatch(ctx, batch_size) {
+
+        if (isVerbose) {
+            console.log('Entering createPrivateAssetsFromBatch');
+        }
+
+        const transientContent = ctx.stub.getTransient().get('content');
+        const transientData = JSON.parse(transientContent);
+
+        for (let i=0; i<batch_size; i++) {
+            let privateAsset = {};
+            
+            for (let j in transientData) {
+                privateAsset.content = transientData[j];
+                await ctx.stub.putPrivateData(collection, transientData[j].uuid, JSON.stringify(privateAsset));
+            }
+        }
+
+        if (isVerbose) {
+            console.log('Exiting createPrivateAssetsFromBatch');
+        }
+    }
+
+    /**
      * Get an Asset from the registry that was created by createAsset
      * - directly returns the string
      * @param {Context} ctx the context
@@ -123,6 +187,21 @@ class Asset extends Contract {
             console.log(`Returning result for getAsset with uuid: ${uuid}`);
         }
         return await ctx.stub.getState(uuid);
+    }
+
+    /**
+     * Get an Asset from the registry that was created by createPrivateAsset
+     * - directly returns the string
+     * @param {Context} ctx the context
+     * @param {String} uuid the uuid to query
+     * @returns the result of the query
+     */
+    async getPrivateAsset(ctx, uuid) {
+        if (isVerbose) {
+            console.log('Entering getPrivateAsset');
+            console.log(`Returning result for getPrivateAsset with uuid: ${uuid}`);
+        }
+        return await ctx.stub.getPrivateData(collection, uuid);
     }
 
     /**
