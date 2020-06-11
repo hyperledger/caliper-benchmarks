@@ -30,7 +30,7 @@ module.exports.retrieveRandomAssetIds = function(assetNumber) {
  * @param {Integer} clientIdx the client index
  * @param {Object} args the client arguments
  */
-module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args) {
+module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, isPrivateData = false) {
     console.log('   -> Creating assets of sizes: ', args.create_sizes);
 
     const testAssetNum = args.assets ? parseInt(args.assets) : 0;
@@ -83,10 +83,20 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args) 
         for (const index in batches){
             const batch = batches[index];
             try {
-                const myArgs = {
-                    chaincodeFunction: 'createAssetsFromBatch',
-                    chaincodeArguments: [JSON.stringify(batch)]
-                };
+                let myArgs;
+                if(!isPrivateData) {
+                    myArgs = {
+                        chaincodeFunction: 'createAssetsFromBatch',
+                        chaincodeArguments: [JSON.stringify(batch)]
+                    };
+                } else {
+                    myArgs = {
+                        chaincodeFunction: 'createPrivateAssetsFromBatch',
+                        chaincodeArguments: ['50'],
+                        transientData: {content: JSON.stringify(batch)}
+                    }
+                }
+
                 await bcObj.invokeSmartContract(context, 'fixed-asset', undefined, myArgs, undefined, false);
             } catch (err) {
                 console.error('Error: ', err);
