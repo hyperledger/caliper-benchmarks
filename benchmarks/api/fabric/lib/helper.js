@@ -93,7 +93,7 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, 
                     myArgs = {
                         chaincodeFunction: 'createPrivateAssetsFromBatch',
                         chaincodeArguments: ['50'],
-                        transientData: {content: JSON.stringify(batch)}
+                        transientMap: {content: JSON.stringify(batch)}
                     }
                 }
 

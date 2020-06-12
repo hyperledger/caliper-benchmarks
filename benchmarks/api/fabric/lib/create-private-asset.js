@@ -43,7 +43,7 @@ module.exports.run = function() {
     const myArgs = {
         chaincodeFunction: 'createPrivateAsset',
         chaincodeArguments: [uuid],
-        transientData: {content: JSON.stringify(asset)}
+        transientMap: {content: JSON.stringify(asset)}
     }
 
     return bc.bcObj.invokeSmartContract(contx, chaincodeID, undefined, myArgs);
