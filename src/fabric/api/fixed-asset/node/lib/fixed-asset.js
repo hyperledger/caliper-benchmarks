@@ -234,7 +234,7 @@ class Asset extends Contract {
             console.log('Entering getAssetsFromBatch()');
         }
         const items = [];
-        const uuids = JSON.parse(batch).uuids;
+        const uuids = JSON.parse(batch);
         for (let i in uuids) {
             const uuid = uuids[i];
             const item = await ctx.stub.getState(uuid);

@@ -68,12 +68,9 @@ module.exports.run = function() {
         uuids.push(key);
     }
 
-    const batch = {};
-    batch.uuids = uuids;
-
     const myArgs = {
         chaincodeFunction: 'getAssetsFromBatch',
-        chaincodeArguments: [JSON.stringify(batch)]
+        chaincodeArguments: [JSON.stringify(uuids)]
     };
 
     if (consensus) {
