@@ -163,11 +163,11 @@
       - package: "{{ playbook_dir }}/fixed-asset@1.0.0.tar.gz"
         channels:
           - <<: *Channel1
+            collections_config: "{{ playbook_dir }}/collections-config.json"
             definitions:
               - name: fixed-asset
                 version: 1.0.0
                 endorsement_policy: "AND('Org1MSP.member','Org2MSP.member')"
-                collections_config: "{{ playbook_dir }}/collections-config.json"
                 endorsing_members:
                   - <<: *Org1
                     endorsing_peers:
