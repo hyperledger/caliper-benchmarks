@@ -14,82 +14,106 @@
 
 'use strict';
 
-const chalk = require('chalk');
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let accountList;
-let bc, contx;
-let txnPerBatch;
-
-module.exports.info = ' transferring money';
-
-module.exports.init = function (blockchain, context, args) {
-    args = args || {};
-    if (!args.hasOwnProperty('txnPerBatch')) {
-        args.txnPerBatch = 1;
-    }
-    txnPerBatch = args.txnPerBatch;
-
-    bc = blockchain;
-    contx = context;
-
-    const addUser = require('./addUser');
-    accountList = addUser.accountList;
-};
-
-let index = 0;
 /**
- * Generates simple workload
- * @return {Object} array of json objects
+ * Workload module for the benchmark round.
  */
-function generateWorkload() {
-    let workload = [];
-    for (let i = 0; i < txnPerBatch; i++) {
-        let fromIndex = index % accountList.length;
-        let toIndex = (index + Math.floor(accountList.length / 2)) % accountList.length;
-        let value = Math.floor(Math.random() * 100);
-        let args = {
-            'transaction_type': 'userTransfer(string,string,uint256)',
-            'from': accountList[fromIndex].accountID,
-            'to': accountList[toIndex].accountID,
-            'num': value
-        };
-        workload.push(args);
-
-        index++;
-        accountList[fromIndex].balance -= value;
-        accountList[toIndex].balance += value;
+class TransferWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.index = 0;
+        this.accountList = [];
+        this.txnPerBatch = 1;
     }
-    return workload;
-}
 
-module.exports.run = function () {
-    let workload = generateWorkload();
-    return bc.invokeSmartContract(contx, 'dagtransfer', 'v0', workload, null);
+    /**
+     * Generates simple workload
+     * @return {Object} array of json objects
+     */
+    _generateWorkload() {
+        let workload = [];
+        for (let i = 0; i < this.txnPerBatch; i++) {
+            let fromIndex = this.index % this.accountList.length;
+            let toIndex = (this.index + Math.floor(this.accountList.length / 2)) % this.accountList.length;
+            let value = Math.floor(Math.random() * 100);
+            let args = {
+                'transaction_type': 'userTransfer(string,string,uint256)',
+                'from': this.accountList[fromIndex].accountID,
+                'to': this.accountList[toIndex].accountID,
+                'num': value
+            };
+            workload.push(args);
 
-};
+            this.index++;
+            this.accountList[fromIndex].balance -= value;
+            this.accountList[toIndex].balance += value;
+        }
+        return workload;
+    }
 
-module.exports.end = async function () {
-    console.info(chalk.blue.bold('Start balance validation ...'));
-    let correctAcccountNum = accountList.length;
-    for (let i = 0; i < accountList.length; ++i) {
-        let account = accountList[i];
-        let accountID = account.accountID;
-        let balance = account.balance;
-        let state = await bc.queryState(contx, 'dagtransfer', 'v0', accountID, 'userBalance(string)');
-        let remoteBalance = state.status.result.result.output;
-        remoteBalance = parseInt(remoteBalance, 16);
-        if (remoteBalance !== balance) {
-            console.error(chalk.red.bold(`Abnormal account state: AccountID=${accountID}, LocalBalance=${balance}, RemoteBalance=${remoteBalance}`));
-            correctAcccountNum--;
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        this.txnPerBatch = this.roundArguments.txnPerBatch || 1;
+
+        const addUser = require('./addUser');
+        this.accountList = addUser.accountList;
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let workload = this._generateWorkload();
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'dagtransfer', 'v0', workload, null);
+    }
+
+    async cleanupWorkloadModule() {
+        console.info('Start balance validation ...');
+        let correctAcccountNum = this.accountList.length;
+        for (let i = 0; i < this.accountList.length; ++i) {
+            let account = this.accountList[i];
+            let accountID = account.accountID;
+            let balance = account.balance;
+            let state = await this.sutAdapter.queryState(this.sutContext, 'dagtransfer', 'v0', accountID, 'userBalance(string)');
+            let remoteBalance = state.status.result.result.output;
+            remoteBalance = parseInt(remoteBalance, 16);
+            if (remoteBalance !== balance) {
+                console.error(`Abnormal account state: AccountID=${accountID}, LocalBalance=${balance}, RemoteBalance=${remoteBalance}`);
+                correctAcccountNum--;
+            }
+        }
+
+        if (correctAcccountNum === this.accountList.length) {
+            console.info('Balance validation succeeded');
+        }
+        else {
+            throw new Error(`Balance validation failed: success=${correctAcccountNum}, fail=${this.accountList.length - correctAcccountNum}`);
         }
     }
+}
 
-    if (correctAcccountNum === accountList.length) {
-        console.info(chalk.green.bold('Balance validation succeeded'));
-        return Promise.resolve();
-    }
-    else {
-        console.error(chalk.red.bold(`Balance validation failed: success=${correctAcccountNum}, fail=${accountList.length - correctAcccountNum}`));
-        return Promise.reject();
-    }
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new TransferWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

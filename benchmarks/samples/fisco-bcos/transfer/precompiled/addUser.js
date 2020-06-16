@@ -14,61 +14,86 @@
 
 'use strict';
 
-const uuidv4 = require('uuid/v4');
-
-module.exports.info = ' adding users';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 let accountList = [];
-let initMoney = 100000000;
-let prefix;
-let bc, contx;
-
-module.exports.init = function (blockchain, context, args) {
-    prefix = uuidv4();
-
-    bc = blockchain;
-    contx = context;
-
-    return Promise.resolve();
-};
+const initMoney = 100000000;
 
 /**
- * Generate unique account key for the transaction
- * @param {Number} index account index
- * @returns {String} account key
+ * Workload module for the benchmark round.
  */
-function generateAccount(index) {
-    return prefix + index;
+class AddUserWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.prefix = '';
+    }
+
+    /**
+     * Generate unique account key for the transaction
+     * @param {Number} index account index
+     * @returns {String} account key
+     */
+    _generateAccount(index) {
+        return this.prefix + index.toString();
+    }
+
+    /**
+     * Generates simple workload
+     * @returns {Object} array of json objects
+     */
+    _generateWorkload() {
+        let workload = [];
+        let index = accountList.length;
+        let accountID = this._generateAccount(index);
+        accountList.push({
+            'accountID': accountID,
+            'balance': initMoney
+        });
+
+        workload.push({
+            'transaction_type': 'userAdd(string,uint256)',
+            'name': accountID,
+            'num': initMoney
+        });
+        return workload;
+    }
+
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        this.prefix = this.workerIndex.toString();
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = this._generateWorkload();
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'dagtransfer', 'v0', args, null);
+    }
 }
 
 /**
- * Generates simple workload
- * @returns {Object} array of json objects
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
  */
-function generateWorkload() {
-    let workload = [];
-    let index = accountList.length;
-    let accountID = generateAccount(index);
-    accountList.push({
-        'accountID': accountID,
-        'balance': initMoney
-    });
-
-    workload.push({
-        'transaction_type': 'userAdd(string,uint256)',
-        'name': accountID,
-        'num': initMoney
-    });
-    return workload;
+function createWorkloadModule() {
+    return new AddUserWorkload();
 }
 
-module.exports.run = function () {
-    let args = generateWorkload();
-    return bc.invokeSmartContract(contx, 'dagtransfer', 'v0', args, null);
-};
-
-module.exports.end = function () {
-    return Promise.resolve();
-};
-
+module.exports.createWorkloadModule = createWorkloadModule;
 module.exports.accountList = accountList;

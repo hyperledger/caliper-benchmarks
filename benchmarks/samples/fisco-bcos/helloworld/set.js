@@ -14,40 +14,52 @@
 
 'use strict';
 
-module.exports.info = ' setting name';
-
-let bc, contx;
-let txnPerBatch;
-
-module.exports.init = function (blockchain, context, args) {
-    txnPerBatch = 1;
-    bc = blockchain;
-    contx = context;
-    return Promise.resolve();
-};
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
- * Generates simple workload
- * @return {Object} array of json objects
+ * Workload module for the benchmark round.
  */
-function generateWorkload() {
-    let workload = [];
-    for (let i = 0; i < txnPerBatch; i++) {
-        let w = {
-            'transaction_type': 'set(string)',
-            'name': 'hello! - from ' + process.pid.toString(),
-        };
-        workload.push(w);
+class SetWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txnPerBatch = 1;
     }
-    return workload;
+
+    /**
+     * Generates simple workload
+     * @return {Object} array of json objects
+     */
+    _generateWorkload() {
+        let workload = [];
+        for (let i = 0; i < this.txnPerBatch; i++) {
+            let w = {
+                'transaction_type': 'set(string)',
+                'name': 'hello! - from ' + this.workerIndex.toString(),
+            };
+            workload.push(w);
+        }
+        return workload;
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = this._generateWorkload();
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'helloworld', 'v0', args, null);
+    }
 }
 
-module.exports.run = function () {
-    let args = generateWorkload();
-    return bc.invokeSmartContract(contx, 'helloworld', 'v0', args, null);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new SetWorkload();
+}
 
-module.exports.end = function () {
-    // Do nothing
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;

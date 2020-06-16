@@ -14,25 +14,31 @@
 
 'use strict';
 
-module.exports.info  = 'querying contract state';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let bc, contx;
+/**
+ * Workload module for the benchmark round.
+ */
+class QueryWorkload extends WorkloadModuleBase {
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = [{
+            funName: 'getInt',
+            funArgs: []
+        }];
+        return this.sutAdapter.querySmartContract(this.sutContext, 'SimpleStorage', 'v0', args, 10);
+    }
+}
 
-module.exports.init = function(blockchain, context, args) {
-    bc       = blockchain;
-    contx    = context;
-    return Promise.resolve();
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new QueryWorkload();
+}
 
-module.exports.run = function() {
-    let args = [{
-        funName: 'getInt',
-        funArgs: []
-    }];
-    return bc.querySmartContract(contx, 'SimpleStorage', 'v0', args, 10);
-};
-
-module.exports.end = function() {
-    // do nothing
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;

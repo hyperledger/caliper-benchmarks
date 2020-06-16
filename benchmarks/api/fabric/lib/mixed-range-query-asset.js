@@ -28,57 +28,86 @@ const helper = require('./helper');
 //       consensus: false
 //     callback: benchmark/network-model/lib/mixed-range-query-asset.js
 
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-module.exports.info  = 'Paginated Range Querying Assets of mixed size.';
-
-let chaincodeID;
-let clientIdx, pagesize, offset, range, consensus;
-let bc, contx, startKey, endKey;
-
-module.exports.init = async function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    clientIdx = context.clientIdx;
-
-    contx = context;
-    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-
-    offset = parseInt(args.offset);
-    range = parseInt(args.range);
-    pagesize = args.pagesize;
-
-    startKey = 'client' + clientIdx + '_' + offset;
-    endKey = 'client' + clientIdx + '_' + (offset + range);
-
-    consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
-    const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-
-    if (nosetup) {
-        console.log('   -> Skipping asset creation stage');
-    } else {
-        console.log('   -> Entering asset creation stage');
-        await helper.addMixedBatchAssets(bc.bcObj, contx, clientIdx, args);
-        console.log('   -> Test asset creation complete');
+/**
+ * Workload module for the benchmark round.
+ */
+class MixedRangeQueryAssetWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.chaincodeID = '';
+        this.pagesize = '';
+        this.offset = 0;
+        this.range = 0;
+        this.consensus = false;
+        this.startKey = '';
+        this.endKey = '';
     }
 
-    return Promise.resolve();
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-module.exports.run = function() {
-    // Create argument array [functionName(String), otherArgs(String)]
-    const myArgs = {
-        chaincodeFunction: 'paginatedRangeQuery',
-        chaincodeArguments: [startKey, endKey, pagesize, '']
-    };
+        const args = this.roundArguments;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
 
-    // consensus or non-con query
-    if (consensus) {
-        return bc.bcObj.invokeSmartContract(contx, chaincodeID, undefined, myArgs);
-    } else {
-        return bc.bcObj.querySmartContract(contx, chaincodeID, undefined, myArgs);
+        this.offset = parseInt(args.offset);
+        this.range = parseInt(args.range);
+        this.pagesize = args.pagesize;
+
+        this.startKey = 'client' + this.workerIndex + '_' + this.offset;
+        this.endKey = 'client' + this.workerIndex + '_' + (this.offset + this.range);
+        this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
+
+        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
+        if (nosetup) {
+            console.log('   -> Skipping asset creation stage');
+        } else {
+            console.log('   -> Entering asset creation stage');
+            await helper.addMixedBatchAssets(this.sutAdapter, this.sutContext, this.workerIndex, args);
+            console.log('   -> Test asset creation complete');
+        }
     }
-};
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        // Create argument array [functionName(String), otherArgs(String)]
+        const myArgs = {
+            chaincodeFunction: 'paginatedRangeQuery',
+            chaincodeArguments: [this.startKey, this.endKey, this.pagesize, '']
+        };
+
+        // consensus or non-con query
+        if (this.consensus) {
+            return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        } else {
+            return this.sutAdapter.querySmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        }
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new MixedRangeQueryAssetWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

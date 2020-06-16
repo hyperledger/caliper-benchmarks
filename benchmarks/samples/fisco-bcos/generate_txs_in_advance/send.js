@@ -14,80 +14,109 @@
 
 'use strict';
 
-const chalk = require('chalk');
+const path = require('path');
 const fs = require('fs');
 
-let accountList;
-let file;
-let transactions;
-let bc, contx;
-let txnPerBatch;
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-module.exports.info = ' transferring money';
-
-module.exports.init = function (blockchain, context, args) {
-    args = args || {};
-    if (!args.hasOwnProperty('txnPerBatch')) {
-        args.txnPerBatch = 1;
-    }
-    txnPerBatch = args.txnPerBatch;
-
-    bc = blockchain;
-    contx = context;
-
-    const addUser = require('./addUser');
-    accountList = addUser.accountList;
-
-    const generate = require('./generate');
-    file = generate.file;
-
-    transactions = fs.readFileSync(file).toString().split('\n');
-};
-
-let index = 0;
 /**
- * Generates simple workload
- * @return {Object} array of json objects
+ * Workload module for the benchmark round.
  */
-function generateWorkload() {
-    let workload = [];
-    for (let i = 0; i < txnPerBatch; i++) {
-        let transaction = transactions[index];
-        workload.push(transaction);
-        index++;
+class SendWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.index = 0;
+        this.accountList = [];
+        this.file = '';
+        this.transactions = [];
+        this.txnPerBatch = 1;
     }
-    return workload;
-}
 
-module.exports.run = function () {
-    let workload = generateWorkload();
-    return bc.bcObj.sendRawTransaction(contx, workload);
-};
+    /**
+     * Generates simple workload
+     * @return {Object} array of json objects
+     */
+    _generateWorkload() {
+        let workload = [];
+        for (let i = 0; i < this.txnPerBatch; i++) {
+            let transaction = this.transactions[this.index];
+            workload.push(transaction);
+            this.index++;
+        }
+        return workload;
+    }
 
-module.exports.end = async function () {
-    console.info(chalk.blue.bold('Start balance validation ...'));
-    let correctAcccountNum = accountList.length;
-    for (let i = 0; i < accountList.length; ++i) {
-        let account = accountList[i];
-        let accountID = account.accountID;
-        let balance = account.balance;
-        let state = await bc.queryState(contx, 'dagtransfer', 'v0', accountID, 'userBalance(string)');
-        let remoteBalance = state.status.result.result.output;
-        remoteBalance = parseInt(remoteBalance, 16);
-        if (remoteBalance !== balance) {
-            console.error(chalk.red.bold(`Abnormal account state: AccountID=${accountID}, LocalBalance=${balance}, RemoteBalance=${remoteBalance}`));
-            correctAcccountNum--;
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        this.txnPerBatch = this.roundArguments.txnPerBatch || 1;
+
+        const addUser = require('./addUser');
+        this.accountList = addUser.accountList;
+
+        this.file = path.join(__dirname, `.${this.workerIndex}.transactions`);
+        this.transactions = fs.readFileSync(this.file).toString().split('\n');
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let workload = this._generateWorkload();
+        return this.sutAdapter.bcObj.sendRawTransaction(this.sutContext, workload);
+    }
+
+    /**
+     * Clean up the workload module at the end of the round.
+     * @async
+     */
+    async cleanupWorkloadModule() {
+        console.info('Start balance validation ...');
+        let correctAccountNum = this.accountList.length;
+        for (let i = 0; i < this.accountList.length; ++i) {
+            let account = this.accountList[i];
+            let accountID = account.accountID;
+            let balance = account.balance;
+            let state = await this.sutAdapter.queryState(this.sutContext, 'dagtransfer', 'v0', accountID, 'userBalance(string)');
+            let remoteBalance = state.status.result.result.output;
+            remoteBalance = parseInt(remoteBalance, 16);
+            if (remoteBalance !== balance) {
+                console.error(`Abnormal account state: AccountID=${accountID}, LocalBalance=${balance}, RemoteBalance=${remoteBalance}`);
+                correctAccountNum--;
+            }
+        }
+
+        fs.unlinkSync(this.file);
+
+        if (correctAccountNum === this.accountList.length) {
+            console.info('Balance validation succeeded');
+        }
+        else {
+            throw new Error(`Balance validation failed: success=${correctAccountNum}, fail=${this.accountList.length - correctAccountNum}`);
         }
     }
+}
 
-    fs.unlinkSync(file);
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new SendWorkload();
+}
 
-    if (correctAcccountNum === accountList.length) {
-        console.info(chalk.green.bold('Balance validation succeeded'));
-        return Promise.resolve();
-    }
-    else {
-        console.error(chalk.red.bold(`Balance validation failed: success=${correctAcccountNum}, fail=${accountList.length - correctAcccountNum}`));
-        return Promise.reject();
-    }
-};
+module.exports.createWorkloadModule = createWorkloadModule;

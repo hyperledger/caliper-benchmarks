@@ -14,35 +14,61 @@
 
 'use strict';
 
-module.exports.info = 'Querying all cars.';
-
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 const helper = require('./helper');
 
-let startingKey, endingKey, bc, contx;
+/**
+ * Workload module for the benchmark round.
+ */
+class QueryAllCarsWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.startingKey = '';
+        this.endingKey = '';
+    }
 
-module.exports.init = async function (blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-    await helper.createCar(bc, contx, args);
+        await helper.createCar(this.sutAdapter, this.sutContext, this.roundArguments);
 
-    startingKey = 'Client' + contx.clientIdx + '_CAR' + args.startKey;
-    endingKey = 'Client' + contx.clientIdx + '_CAR' + args.endKey;
+        this.startingKey = 'Client' + this.workerIndex + '_CAR' + this.roundArguments.startKey;
+        this.endingKey = 'Client' + this.workerIndex + '_CAR' + this.roundArguments.endKey;
+    }
 
-    return Promise.resolve();
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = {
+            chaincodeFunction: 'queryAllCars',
+            chaincodeArguments: [this.startingKey, this.endingKey]
+        };
 
-module.exports.run = function () {
+        return this.sutAdapter.querySmartContract(this.sutContext, 'fabcar', 'v1', args, 60)
+    }
+}
 
-    let args = {
-        chaincodeFunction: 'queryAllCars',
-        chaincodeArguments: [startingKey, endingKey]     
-    };
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new QueryAllCarsWorkload();
+}
 
-    return bc.bcObj.querySmartContract(contx, 'fabcar', 'v1', args, 60)
-
-};
-
-module.exports.end = function () {
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;

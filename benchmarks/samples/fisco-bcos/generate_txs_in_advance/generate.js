@@ -15,52 +15,77 @@
 'use strict';
 
 const path = require('path');
-const uuid = require('uuid/v4');
-
-let accountList, bc, contx;
-let file = path.join(__dirname, `.${uuid()}.transactions`);
-
-module.exports.info = ' generate transactions';
-
-module.exports.init = function (blockchain, context) {
-    bc = blockchain;
-    contx = context;
-
-    const addUser = require('./addUser');
-    accountList = addUser.accountList;
-};
-
-let index = 0;
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
- * Generates simple workload
- * @return {Object} array of json objects
+ * Workload module for the benchmark round.
  */
-function generateWorkload() {
-    let fromIndex = index % accountList.length;
-    let toIndex = (index + Math.floor(accountList.length / 2)) % accountList.length;
-    let value = Math.floor(Math.random() * 100);
-    let args = {
-        'transaction_type': 'userTransfer(string,string,uint256)',
-        'from': accountList[fromIndex].accountID,
-        'to': accountList[toIndex].accountID,
-        'num': value
-    };
+class GenerateWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.index = 0;
+        this.file = '';
+        this.accountList = [];
+    }
 
-    index++;
-    accountList[fromIndex].balance -= value;
-    accountList[toIndex].balance += value;
-    return args;
+    /**
+     * Generates simple workload
+     * @return {Object} array of json objects
+     */
+    _generateWorkload() {
+        let fromIndex = this.index % this.accountList.length;
+        let toIndex = (this.index + Math.floor(this.accountList.length / 2)) % this.accountList.length;
+        let value = Math.floor(Math.random() * 100);
+        let args = {
+            'transaction_type': 'userTransfer(string,string,uint256)',
+            'from': this.accountList[fromIndex].accountID,
+            'to': this.accountList[toIndex].accountID,
+            'num': value
+        };
+
+        this.index++;
+        this.accountList[fromIndex].balance -= value;
+        this.accountList[toIndex].balance += value;
+        return args;
+    }
+
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        const addUser = require('./addUser');
+        this.accountList = addUser.accountList;
+        this.file = path.join(__dirname, `.${this.workerIndex}.transactions`);
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let workload = this._generateWorkload();
+        return this.sutAdapter.bcObj.generateRawTransaction(this.sutContext, 'dagtransfer', workload, this.file);
+    }
 }
 
-module.exports.run = function () {
-    let workload = generateWorkload();
-    return bc.bcObj.generateRawTransaction(contx, 'dagtransfer', workload, file);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new GenerateWorkload();
+}
 
-module.exports.end = function () {
-    return Promise.resolve();
-};
-
-module.exports.file = file;
-
+module.exports.createWorkloadModule = createWorkloadModule;

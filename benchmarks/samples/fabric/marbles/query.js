@@ -14,39 +14,53 @@
 
 'use strict';
 
-module.exports.info  = 'Querying marbles.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let owners = ['Alice', 'Bob', 'Claire', 'David'];
-let bc, contx;
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
+const owners = ['Alice', 'Bob', 'Claire', 'David'];
 
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    txIndex++;
-    let marbleOwner = owners[txIndex % owners.length];
-    let args;
-
-    if (bc.getType() === 'fabric') {
-        args = {
-            chaincodeFunction: 'queryMarblesByOwner',
-            chaincodeArguments: [marbleOwner]
-        };
-    } else {
-        args = {
-            verb: 'queryMarblesByOwner',
-            owner: marbleOwner
-        };
+/**
+ * Workload module for the benchmark round.
+ */
+class QueryWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
 
-    // TODO: until Fabric query is implemented, use invoke
-    return bc.querySmartContract(contx, 'marbles', 'v1', args, 120);
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let marbleOwner = owners[this.txIndex % owners.length];
+        let args;
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+        if (this.sutAdapter.getType() === 'fabric') {
+            args = {
+                chaincodeFunction: 'queryMarblesByOwner',
+                chaincodeArguments: [marbleOwner]
+            };
+        } else {
+            args = {
+                verb: 'queryMarblesByOwner',
+                owner: marbleOwner
+            };
+        }
+
+        return this.sutAdapter.querySmartContract(this.sutContext, 'marbles', 'v1', args, 120);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new QueryWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
