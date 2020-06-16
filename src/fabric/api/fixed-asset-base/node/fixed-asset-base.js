@@ -176,7 +176,7 @@ const FixedAssetBase = class {
             console.log('Entering getAssetsFromBatch()');
         }
         const items = [];
-        const uuids = JSON.parse(args[0]).uuids;
+        const uuids = JSON.parse(args[0]);
         for (let i in uuids) {
             const uuid = uuids[i];
             const item = await stub.getState(uuid);

@@ -12,7 +12,6 @@
 # limitations under the License.
 #
 
-
 name: Fabric
 version: "1.0"
 mutual-tls: false
@@ -55,13 +54,12 @@ clients:
       clientSignedCert:
         path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
 
-
 channels:
   mychannel:
     configBinary: networks/fabric/config_solo_raft/mychannel.tx
     created: false
     orderers:
-    - orderer0.example.com
+      - orderer0.example.com
     peers:
       peer0.org1.example.com:
         eventSource: true
@@ -69,19 +67,24 @@ channels:
         eventSource: true
 
     chaincodes:
-    - id: fixed-asset-base
-      version: v0
-      language: golang
-      path: fabric/api/fixed-asset-base/go
-      metadataPath: src/fabric/api/fixed-asset-base/metadata
+      - id: fixed-asset
+        version: v0
+        language: golang
+        path: fabric/api/fixed-asset/go
+        metadataPath: src/fabric/api/fixed-asset/metadata
+      - id: fixed-asset-base
+        version: v0
+        language: golang
+        path: fabric/api/fixed-asset-base/go
+        metadataPath: src/fabric/api/fixed-asset-base/metadata
 
 organizations:
   Org1:
     mspid: Org1MSP
     peers:
-    - peer0.org1.example.com
+      - peer0.org1.example.com
     certificateAuthorities:
-    - ca.org1.example.com
+      - ca.org1.example.com
     adminPrivateKey:
       path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/key.pem
     signedCert:
@@ -90,9 +93,9 @@ organizations:
   Org2:
     mspid: Org2MSP
     peers:
-    - peer0.org2.example.com
+      - peer0.org2.example.com
     certificateAuthorities:
-    - ca.org2.example.com
+      - ca.org2.example.com
     adminPrivateKey:
       path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/key.pem
     signedCert:
@@ -104,7 +107,7 @@ orderers:
     grpcOptions:
       ssl-target-name-override: orderer0.example.com
     tlsCACerts:
-        path: networks/fabric/config_solo_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+      path: networks/fabric/config_solo_raft/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 peers:
   peer0.org1.example.com:
@@ -113,7 +116,7 @@ peers:
       ssl-target-name-override: peer0.org1.example.com
       grpc.keepalive_time_ms: 600000
     tlsCACerts:
-        path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+      path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
 
   peer0.org2.example.com:
     url: grpcs://localhost:8051
@@ -121,7 +124,7 @@ peers:
       ssl-target-name-override: peer0.org2.example.com
       grpc.keepalive_time_ms: 600000
     tlsCACerts:
-        path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+      path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
 
 certificateAuthorities:
   ca.org1.example.com:
@@ -129,17 +132,17 @@ certificateAuthorities:
     httpOptions:
       verify: false
     tlsCACerts:
-        path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
     registrar:
-    - enrollId: admin
-      enrollSecret: adminpw
+      - enrollId: admin
+        enrollSecret: adminpw
 
   ca.org2.example.com:
     url: https://localhost:8054
     httpOptions:
       verify: false
     tlsCACerts:
-        path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      path: networks/fabric/config_solo_raft/crypto-config/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
     registrar:
-    - enrollId: admin
-      enrollSecret: adminpw
+      - enrollId: admin
+        enrollSecret: adminpw
