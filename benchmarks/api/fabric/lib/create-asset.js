@@ -30,7 +30,7 @@ const bytes = (s) => {
 
 let txIndex = 0;
 let clientIdx;
-let asset = {docType: chaincodeID, content: ''};
+let asset;
 let bc, contx, bytesize;
 
 module.exports.init = async function(blockchain, context, args) {
@@ -40,6 +40,7 @@ module.exports.init = async function(blockchain, context, args) {
     chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
     bytesize = args.bytesize;
 
+    asset = {docType: chaincodeID, content: ''};
     asset.creator = 'client' + clientIdx;
     asset.bytesize = bytesize;
 
