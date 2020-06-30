@@ -14,94 +14,117 @@
 
 'use strict';
 
-module.exports.info  = 'opening accounts';
-
-let account_array = [];
-let txnPerBatch;
-let initMoney;
-let bc, contx;
-module.exports.init = function(blockchain, context, args) {
-    if(!args.hasOwnProperty('money')) {
-        return Promise.reject(new Error('simple.open - \'money\' is missed in the arguments'));
-    }
-
-    if(!args.hasOwnProperty('txnPerBatch')) {
-        args.txnPerBatch = 1;
-    }
-    initMoney = args.money;
-    txnPerBatch = args.txnPerBatch;
-    bc = blockchain;
-    contx = context;
-
-    return Promise.resolve();
-};
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 const dic = 'abcdefghijklmnopqrstuvwxyz';
+let account_array = [];
+
 /**
- * Generate string by picking characters from dic variable
- * @param {*} number character to select
- * @returns {String} string generated based on @param number
+ * Workload module for the benchmark round.
  */
-function get26Num(number){
-    let result = '';
-    while(number > 0) {
-        result += dic.charAt(number % 26);
-        number = parseInt(number/26);
+class Workload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txnPerBatch = 1;
+        this.initMoney = 0;
+        this.prefix = '';
     }
-    return result;
-}
 
-let prefix;
-/**
- * Generate unique account key for the transaction
- * @returns {String} account key
- */
-function generateAccount() {
-    // should be [a-z]{1,9}
-    if(typeof prefix === 'undefined') {
-        prefix = get26Num(process.pid);
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        if(!this.roundArguments.hasOwnProperty('money')) {
+            throw new Error('simple.open - \'money\' is missed in the arguments');
+        }
+
+        this.initMoney = this.roundArguments.money;
+        this.txnPerBatch = this.roundArguments.txnPerBatch || 1;
+        this.prefix = this.workerIndex.toString();
     }
-    return prefix + get26Num(account_array.length+1);
-}
 
-/**
- * Generates simple workload
- * @returns {Object} array of json objects
- */
-function generateWorkload() {
-    let workload = [];
-    for(let i= 0; i < txnPerBatch; i++) {
-        let acc_id = generateAccount();
-        account_array.push(acc_id);
+    /**
+     * Generate string by picking characters from dic variable
+     * @param {*} number character to select
+     * @returns {String} string generated based on @param number
+     */
+    _get26Num(number){
+        let result = '';
+        while(number > 0) {
+            result += dic.charAt(number % 26);
+            number = Math.floor(number/26);
+        }
+        return result;
+    }
 
-        if (bc.getType() === 'fabric') {
-            workload.push({
-                chaincodeFunction: 'open',
-                chaincodeArguments: [acc_id, initMoney.toString()],
-            });
-        } else if (bc.getType() === 'ethereum') {
+    /**
+     * Generate unique account key for the transaction
+     * @returns {String} account key
+     */
+    _generateAccount() {
+        return this.prefix + this._get26Num(account_array.length+1);
+    }
+
+    /**
+     * Generates simple workload
+     * @returns {Object} array of json objects
+     */
+    _generateWorkload() {
+        let workload = [];
+        for(let i= 0; i < this.txnPerBatch; i++) {
+            let acc_id = this._generateAccount();
+            account_array.push(acc_id);
+
+            if (this.sutAdapter.getType() === 'fabric') {
+                workload.push({
+                    chaincodeFunction: 'open',
+                    chaincodeArguments: [acc_id, this.initMoney.toString()],
+                });
+            } else if (this.sutAdapter.getType() === 'ethereum') {
                 workload.push({
                     verb: 'open',
-                    args: [acc_id, initMoney]
+                    args: [acc_id, this.initMoney]
                 });
-        } else {
-            workload.push({
-                'verb': 'open',
-                'account': acc_id,
-                'money': initMoney
-            });
+            } else {
+                workload.push({
+                    'verb': 'open',
+                    'account': acc_id,
+                    'money': this.initMoney
+                });
+            }
         }
+        return workload;
     }
-    return workload;
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = this._generateWorkload();
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'simple', 'v0', args, 100);
+    }
 }
 
-module.exports.run = function() {
-    let args = generateWorkload();
-    return bc.invokeSmartContract(contx, 'simple', 'v0', args, 100);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new Workload();
+}
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
-
+module.exports.createWorkloadModule = createWorkloadModule;
 module.exports.account_array = account_array;

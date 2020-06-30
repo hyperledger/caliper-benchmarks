@@ -14,46 +14,60 @@
 
 'use strict';
 
-module.exports.info  = 'Creating marbles.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let colors = ['red', 'blue', 'green', 'black', 'white', 'pink', 'rainbow'];
-let owners = ['Alice', 'Bob', 'Claire', 'David'];
-let bc, contx;
+const colors = ['red', 'blue', 'green', 'black', 'white', 'pink', 'rainbow'];
+const owners = ['Alice', 'Bob', 'Claire', 'David'];
 
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    txIndex++;
-    let marbleName = 'marble_' + txIndex.toString() + '_' + process.pid.toString();
-    let marbleColor = colors[txIndex % colors.length];
-    let marbleSize = (((txIndex % 10) + 1) * 10).toString(); // [10, 100]
-    let marbleOwner = owners[txIndex % owners.length];
-
-    let args;
-    if (bc.getType() === 'fabric') {
-        args = {
-            chaincodeFunction: 'initMarble',
-            chaincodeArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
-        };
-    } else {
-        args = {
-            verb: 'initMarble',
-            name: marbleName,
-            color: marbleColor,
-            size: marbleSize,
-            owner: marbleOwner
-        };
+/**
+ * Workload module for the benchmark round.
+ */
+class InitWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
 
-    return bc.invokeSmartContract(contx, 'marbles', 'v1', args, 30);
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let marbleName = 'marble_' + this.txIndex.toString() + '_' + this.workerIndex.toString();
+        let marbleColor = colors[this.txIndex % colors.length];
+        let marbleSize = (((this.txIndex % 10) + 1) * 10).toString(); // [10, 100]
+        let marbleOwner = owners[this.txIndex % owners.length];
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+        let args;
+        if (this.sutAdapter.getType() === 'fabric') {
+            args = {
+                chaincodeFunction: 'initMarble',
+                chaincodeArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
+            };
+        } else {
+            args = {
+                verb: 'initMarble',
+                name: marbleName,
+                color: marbleColor,
+                size: marbleSize,
+                owner: marbleOwner
+            };
+        }
+
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'marbles', 'v1', args, 30);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new InitWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

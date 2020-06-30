@@ -19,59 +19,89 @@
 //       batchsize: 100
 //     callback: benchmark/network-model/lib/batch-create-asset.js
 
-module.exports.info  = 'Batch Creating Assets in Registry';
-
 const bytes = (s) => {
     return ~-encodeURI(s).split(/%..|./).length;
 };
 
-let txIndex = 0;
-let chaincodeID;
-let clientIdx;
-let asset;
-let bc, contx, bytesize, batchsize;
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-module.exports.init = async function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    clientIdx = context.clientIdx;
-
-    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-    bytesize = args.bytesize ? parseInt(args.bytesize) : 100;
-    batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
-
-    asset = {docType: chaincodeID, content: ''};
-    asset.creator = 'client' + clientIdx;
-    asset.bytesize = bytesize;
-
-    const rand = 'random';
-    let idx = 0;
-    while (bytes(JSON.stringify(asset)) < bytesize) {
-        const letter = rand.charAt(idx);
-        idx = idx >= rand.length ? 0 : idx+1;
-        asset.content = asset.content + letter;
+/**
+ * Workload module for the benchmark round.
+ */
+class BatchCreateAssetWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+        this.chaincodeID = '';
+        this.asset = {};
+        this.bytesize = 0;
+        this.batchsize = 0;
     }
 
-    contx = context;
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-module.exports.run = function() {
+        const args = this.roundArguments;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
+        this.bytesize = args.bytesize ? parseInt(args.bytesize) : 100;
+        this.batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
 
-    const batch = [];
-    for (let i=0; i<batchsize; i++) {
-        asset.uuid = 'client' + clientIdx + '_' + bytesize + '_' + txIndex;
-        const batchAsset = JSON.parse(JSON.stringify(asset));
-        batch.push(batchAsset);
-        txIndex++;
+        this.asset = {
+            docType: this.chaincodeID,
+            content: '',
+            creator: 'client' + this.workerIndex,
+            bytesize: this.bytesize
+        };
+
+        const rand = 'random';
+        let idx = 0;
+        while (bytes(JSON.stringify(this.asset)) < this.bytesize) {
+            const letter = rand.charAt(idx);
+            idx = idx >= rand.length ? 0 : idx+1;
+            this.asset.content = this.asset.content + letter;
+        }
     }
 
-    const myArgs = {
-        chaincodeFunction: 'createAssetsFromBatch',
-        chaincodeArguments: [JSON.stringify(batch)]
-    };
-    return bc.bcObj.invokeSmartContract(contx, chaincodeID, undefined, myArgs);
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        const batch = [];
+        for (let i = 0; i < this.batchsize; i++) {
+            this.asset.uuid = 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.txIndex;
+            const batchAsset = JSON.parse(JSON.stringify(this.asset));
+            batch.push(batchAsset);
+            this.txIndex++;
+        }
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+        const myArgs = {
+            chaincodeFunction: 'createAssetsFromBatch',
+            chaincodeArguments: [JSON.stringify(batch)]
+        };
+        return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new BatchCreateAssetWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

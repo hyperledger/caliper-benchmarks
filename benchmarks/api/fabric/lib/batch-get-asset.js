@@ -26,60 +26,87 @@
 
 const helper = require('./helper');
 
-module.exports.info  = 'Batch Get Asset of fixed size.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let chaincodeID;
-let clientIdx, assets, bytesize, consensus, batchsize;
-let bc, contx;
-
-module.exports.init = async function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    clientIdx = context.clientIdx;
-
-    contx = context;
-
-    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-    assets = args.assets ? parseInt(args.assets) : 0;
-    batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
-
-    bytesize = args.bytesize;
-    consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
-    const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-
-    if (nosetup) {
-        console.log('   -> Skipping asset creation stage');
-    } else {
-        console.log('   -> Entering asset creation stage');
-        await helper.addBatchAssets(bc.bcObj, contx, clientIdx, args);
-        console.log('   -> Test asset creation complete');
+/**
+ * Workload module for the benchmark round.
+ */
+class BatchGetAssetWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.chaincodeID = '';
+        this.assets = 0;
+        this.bytesize = 0;
+        this.batchsize = 0;
+        this.consensus = false;
     }
 
-    return Promise.resolve();
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-module.exports.run = function() {
-    // Create argument array [consensus(boolean), functionName(String), otherArgs(String)]
-    const uuids = [];
-    for (let i=0; i<batchsize; i++) {
-        // take a uuid in the range of known asset numbers
-        const uuid = Math.floor(Math.random() * Math.floor(assets));
-        const key = 'client' + clientIdx + '_' + bytesize + '_' + uuid;
-        uuids.push(key);
+        const args = this.roundArguments;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
+        this.assets = args.assets ? parseInt(args.assets) : 0;
+        this.batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
+        this.bytesize = args.bytesize;
+        this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
+
+        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
+        if (nosetup) {
+            console.log('   -> Skipping asset creation stage');
+        } else {
+            console.log('   -> Entering asset creation stage');
+            await helper.addBatchAssets(this.sutAdapter, this.sutContext, this.workerIndex, args);
+            console.log('   -> Test asset creation complete');
+        }
     }
 
-    const myArgs = {
-        chaincodeFunction: 'getAssetsFromBatch',
-        chaincodeArguments: [JSON.stringify(uuids)]
-    };
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        // Create argument array [consensus(boolean), functionName(String), otherArgs(String)]
+        const uuids = [];
+        for (let i = 0; i < this.batchsize; i++) {
+            // take a uuid in the range of known asset numbers
+            const uuid = Math.floor(Math.random() * Math.floor(this.assets));
+            const key = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
+            uuids.push(key);
+        }
 
-    if (consensus) {
-        return bc.bcObj.invokeSmartContract(contx, chaincodeID, undefined, myArgs);
-    } else {
-        return bc.bcObj.querySmartContract(contx, chaincodeID, undefined, myArgs);
+        const myArgs = {
+            chaincodeFunction: 'getAssetsFromBatch',
+            chaincodeArguments: [JSON.stringify(uuids)]
+        };
+
+        if (this.consensus) {
+            return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        } else {
+            return this.sutAdapter.querySmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        }
     }
-};
+}
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new BatchGetAssetWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

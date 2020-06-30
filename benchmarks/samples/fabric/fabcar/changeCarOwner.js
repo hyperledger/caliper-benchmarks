@@ -14,42 +14,67 @@
 
 'use strict';
 
-module.exports.info = 'Changing car owner.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 const helper = require('./helper');
+const owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
 
-let txIndex = 0;
-let owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
-let bc, contx, clientArgs;
-
-module.exports.init = async function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    clientArgs = args;
-
-    await helper.createCar(bc, contx, args);
-
-    return Promise.resolve();
-
-};
-
-module.exports.run = function() {
-    txIndex++;
-    let carNumber = 'Client' + contx.clientIdx + '_CAR' + txIndex.toString();
-    let newCarOwner = owners[Math.floor(Math.random() * owners.length)];
-
-    let args = {
-        chaincodeFunction: 'changeCarOwner',
-        chaincodeArguments: [carNumber, newCarOwner]
-    };
-
-    if (txIndex === clientArgs.assets) {
-        txIndex = 0;
+/**
+ * Workload module for the benchmark round.
+ */
+class ChangeCarOwnerWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
 
-    return bc.invokeSmartContract(contx, 'fabcar', 'v1', args, 60);
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-module.exports.end = async function() {
-    return Promise.resolve();
-};
+        await helper.createCar(this.sutAdapter, this.sutContext, this.roundArguments);
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
+        let newCarOwner = owners[Math.floor(Math.random() * owners.length)];
+
+        let args = {
+            chaincodeFunction: 'changeCarOwner',
+            chaincodeArguments: [carNumber, newCarOwner]
+        };
+
+        if (this.txIndex === this.roundArguments.assets) {
+            this.txIndex = 0;
+        }
+
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'fabcar', 'v1', args, 60);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new ChangeCarOwnerWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

@@ -14,38 +14,52 @@
 
 'use strict';
 
-module.exports.info = 'Creating cars.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let colors = ['blue', 'red', 'green', 'yellow', 'black', 'purple', 'white', 'violet', 'indigo', 'brown'];
-let makes = ['Toyota', 'Ford', 'Hyundai', 'Volkswagen', 'Tesla', 'Peugeot', 'Chery', 'Fiat', 'Tata', 'Holden'];
-let models = ['Prius', 'Mustang', 'Tucson', 'Passat', 'S', '205', 'S22L', 'Punto', 'Nano', 'Barina'];
-let owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
-let bc, contx;
+const colors = ['blue', 'red', 'green', 'yellow', 'black', 'purple', 'white', 'violet', 'indigo', 'brown'];
+const makes = ['Toyota', 'Ford', 'Hyundai', 'Volkswagen', 'Tesla', 'Peugeot', 'Chery', 'Fiat', 'Tata', 'Holden'];
+const models = ['Prius', 'Mustang', 'Tucson', 'Passat', 'S', '205', 'S22L', 'Punto', 'Nano', 'Barina'];
+const owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
 
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
 
-    return Promise.resolve();
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
+        let carColor = colors[Math.floor(Math.random() * colors.length)];
+        let carMake = makes[Math.floor(Math.random() * makes.length)];
+        let carModel = models[Math.floor(Math.random() * models.length)];
+        let carOwner = owners[Math.floor(Math.random() * owners.length)];
 
-module.exports.run = function() {
-    txIndex++;
-    let carNumber = 'Client' + contx.clientIdx + '_CAR' + txIndex.toString();
-    let carColor = colors[Math.floor(Math.random() * colors.length)];
-    let carMake = makes[Math.floor(Math.random() * makes.length)];
-    let carModel = models[Math.floor(Math.random() * models.length)];
-    let carOwner = owners[Math.floor(Math.random() * owners.length)];
+        let args = {
+            chaincodeFunction: 'createCar',
+            chaincodeArguments: [carNumber, carMake, carModel, carColor, carOwner]
+        };
 
-    let args = {
-        chaincodeFunction: 'createCar',
-        chaincodeArguments: [carNumber, carMake, carModel, carColor, carOwner]
-    };
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'fabcar', 'v1', args, 30);
+    }
+}
 
-    return bc.invokeSmartContract(contx, 'fabcar', 'v1', args, 30);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;

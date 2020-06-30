@@ -14,34 +14,62 @@
 
 'use strict';
 
-module.exports.info  = 'querying accounts';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-
-let bc, contx;
-let accounts;
-module.exports.init = function(blockchain, context, args) {
-    let acc = require('./smallbankOperations.js');
-    bc       = blockchain;
-    contx    = context;
-    accounts = acc.account_array;
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    let acc_num  = accounts[Math.floor(Math.random()*(accounts.length))];
-    if (bc.getType() === 'fabric') {
-        let args = {
-            chaincodeFunction: 'query',
-            chaincodeArguments: [acc_num.toString()],
-        };
-        return bc.bcObj.querySmartContract(contx, 'smallbank', '1.0', args, 3);
-    } else {
-        // NOTE: the query API is inconsistent with the invoke API
-        return bc.queryState(contx, 'smallbank', '1.0', acc_num);
+/**
+ * Workload module for the benchmark round.
+ */
+class QueryWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.accounts = [];
     }
-};
 
-module.exports.end = function() {
-    // do nothing
-    return Promise.resolve();
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        let acc = require('./smallbankOperations.js');
+        this.accounts = acc.account_array;
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let acc_num  = this.accounts[Math.floor(Math.random()*(this.accounts.length))];
+        if (this.sutAdapter.getType() === 'fabric') {
+            let args = {
+                chaincodeFunction: 'query',
+                chaincodeArguments: [acc_num.toString()],
+            };
+            return this.sutAdapter.querySmartContract(this.sutAdapter, 'smallbank', '1.0', args, 3);
+        } else {
+            // NOTE: the query API is inconsistent with the invoke API
+            return this.sutAdapter.queryState(this.sutContext, 'smallbank', '1.0', acc_num);
+        }
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new QueryWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

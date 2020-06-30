@@ -18,54 +18,82 @@
 //       bytesize: 100
 //     callback: benchmark/network-model/lib/create-asset.js
 
-module.exports.info  = 'Creating Asset in Registry';
-
-let chaincodeID;
-// const appmetrics = require('appmetrics');
-// require('appmetrics-dash').monitor({appmetrics: appmetrics});
-// appmetrics.enable('profiling');
 const bytes = (s) => {
     return ~-encodeURI(s).split(/%..|./).length;
 };
 
-let txIndex = 0;
-let clientIdx;
-let asset;
-let bc, contx, bytesize;
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-module.exports.init = async function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    clientIdx = context.clientIdx;
-    chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-    bytesize = args.bytesize;
-
-    asset = {docType: chaincodeID, content: ''};
-    asset.creator = 'client' + clientIdx;
-    asset.bytesize = bytesize;
-
-    const rand = 'random';
-    let idx = 0;
-    while (bytes(JSON.stringify(asset)) < bytesize) {
-        const letter = rand.charAt(idx);
-        idx = idx >= rand.length ? 0 : idx+1;
-        asset.content = asset.content + letter;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateAssetWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+        this.chaincodeID = '';
+        this.asset = {};
+        this.bytesize = 0;
     }
 
-    contx = context;
-};
+    /**
+     * Initialize the workload module with the given parameters.
+     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
+     * @param {number} totalWorkers The total number of workers participating in the round.
+     * @param {number} roundIndex The 0-based index of the currently executing round.
+     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
+     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {Object} sutContext The custom context object provided by the SUT adapter.
+     * @async
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-module.exports.run = function() {
-    const uuid = 'client' + clientIdx + '_' + bytesize + '_' + txIndex;
-    asset.uuid = uuid;
-    txIndex++;
-    const myArgs = {
-        chaincodeFunction: 'createAsset',
-        chaincodeArguments: [uuid, JSON.stringify(asset)]
-    };
-    return bc.bcObj.invokeSmartContract(contx, chaincodeID, undefined, myArgs);
-};
+        const args = this.roundArguments;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
+        this.bytesize = args.bytesize;
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+        this.asset = {
+            docType: chaincodeID,
+            content: '',
+            creator: 'client' + this.workerIndex,
+            bytesize: this.bytesize
+        };
+
+        const rand = 'random';
+        let idx = 0;
+        while (bytes(JSON.stringify(this.asset)) < this.bytesize) {
+            const letter = rand.charAt(idx);
+            idx = idx >= rand.length ? 0 : idx+1;
+            this.asset.content = this.asset.content + letter;
+        }
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        const uuid = 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.txIndex;
+        this.asset.uuid = uuid;
+        this.txIndex++;
+        const myArgs = {
+            chaincodeFunction: 'createAsset',
+            chaincodeArguments: [uuid, JSON.stringify(this.asset)]
+        };
+        return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateAssetWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

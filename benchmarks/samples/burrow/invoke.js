@@ -14,27 +14,32 @@
 
 'use strict';
 
-module.exports.info  = 'invoke contract  set state';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let bc, contx;
+/**
+ * Workload module for the benchmark round.
+ */
+class InvokeWorkload extends WorkloadModuleBase {
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        let args = [{
+            verb:'invoke',
+            funName: 'setInt',
+            funArgs: [1000]
+        }];
+        return this.sutAdapter.invokeSmartContract(this.sutContext, 'SimpleStorage', 'v0', args, 10);
+    }
+}
 
-module.exports.init = function(blockchain, context, args) {
-    bc        = blockchain;
-    contx     = context;
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new InvokeWorkload();
+}
 
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    let args = [{
-        verb:'invoke',
-        funName: 'setInt',
-        funArgs: [1000]
-    }];
-    return bc.invokeSmartContract(contx, 'SimpleStorage', 'v0', args, 10);
-};
-
-module.exports.end = function() {
-    return Promise.resolve();
-};
-
+module.exports.createWorkloadModule = createWorkloadModule;
