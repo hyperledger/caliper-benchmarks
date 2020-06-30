@@ -1,4 +1,3 @@
----
 blockchain:
   type: fabric
   config: benchmarks/scenario/simple/fabric.json
@@ -7,21 +6,22 @@ test:
     type: local
     number: 5
   rounds:
-  - label: open
-    txNumber: 5000
-    rateControl:
-      type: fixed-feedback-rate
-      opts:
-        tps: 100
-        sleep_time: 1000
-        unfinished_per_client: 10
-    arguments:
-      money: 10000
-    callback: benchmarks/scenario/simple/open.js
+    - label: open
+      txNumber: 5000
+      rateControl:
+        type: fixed-feedback-rate
+        opts:
+          tps: 100
+          sleep_time: 1000
+          unfinished_per_client: 10
+      workload:
+        module: benchmarks/scenario/simple/open.js
+        arguments:
+          money: 10000
 monitor:
   type:
-  - docker
+    - docker
   docker:
     name:
-    - all
+      - all
   interval: 1
