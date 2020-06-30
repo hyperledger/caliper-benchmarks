@@ -12,7 +12,7 @@ nav:
     - Overview: index.md
     - Fabric:
       - Performance: fabric/performance.md
-      - Results:
+      - Node Contract:
         - v2.1.0:
           - Configuration: fabric/performance/2.1.0/nodeJS/nodeSDK/configuration.md
           - Evaluate:
