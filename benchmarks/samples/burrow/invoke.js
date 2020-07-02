@@ -30,7 +30,7 @@ class InvokeWorkload extends WorkloadModuleBase {
             funName: 'setInt',
             funArgs: [1000]
         }];
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'SimpleStorage', 'v0', args, 10);
+        return this.sutAdapter.invokeSmartContract('SimpleStorage', 'v0', args, 10);
     }
 }
 

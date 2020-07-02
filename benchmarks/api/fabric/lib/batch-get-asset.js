@@ -94,9 +94,9 @@ class BatchGetAssetWorkload extends WorkloadModuleBase {
         };
 
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
         } else {
-            return this.sutAdapter.querySmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
         }
     }
 }

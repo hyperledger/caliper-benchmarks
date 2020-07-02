@@ -58,7 +58,7 @@ class InitWorkload extends WorkloadModuleBase {
             };
         }
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'marbles', 'v1', args, 30);
+        return this.sutAdapter.invokeSmartContract('marbles', 'v1', args, 30);
     }
 }
 

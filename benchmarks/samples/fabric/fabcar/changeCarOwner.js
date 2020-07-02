@@ -65,7 +65,7 @@ class ChangeCarOwnerWorkload extends WorkloadModuleBase {
             this.txIndex = 0;
         }
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'fabcar', 'v1', args, 60);
+        return this.sutAdapter.invokeSmartContract('fabcar', 'v1', args, 60);
     }
 }
 

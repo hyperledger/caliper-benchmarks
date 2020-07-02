@@ -65,7 +65,7 @@ class QueryCarWorkload extends WorkloadModuleBase {
             this.txIndex = 0;
         }
 
-        return this.sutAdapter.querySmartContract(this.sutContext, 'fabcar', 'v1', args, 30);
+        return this.sutAdapter.querySmartContract('fabcar', 'v1', args, 30);
     }
 }
 

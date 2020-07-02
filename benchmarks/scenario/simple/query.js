@@ -58,10 +58,10 @@ class QueryWorkload extends WorkloadModuleBase {
                 chaincodeArguments: [acc],
             };
 
-            return this.sutAdapter.querySmartContract(this.sutContext, 'simple', 'v0', args, 10);
+            return this.sutAdapter.querySmartContract('simple', 'v0', args, 10);
         } else {
             // NOTE: the query API is not consistent with the invoke API
-            return this.sutAdapter.queryState(this.sutContext, 'simple', 'v0', acc);
+            return this.sutAdapter.queryState('simple', 'v0', acc);
         }
     }
 }

@@ -92,7 +92,7 @@ class BatchCreateAssetWorkload extends WorkloadModuleBase {
             chaincodeFunction: 'createAssetsFromBatch',
             chaincodeArguments: [JSON.stringify(batch)]
         };
-        return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
     }
 }
 
