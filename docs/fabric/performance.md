@@ -45,7 +45,10 @@ Benchmark results are available for the following:
 
 | Fabric Version | Smart Contract | SDK Client | Link |
 | --------- | --------------- | --------------- | ---------------- |
-| 1.4.0 | JavaScript | NodeJS | [Result](./performance/1.4.0/nodeJS/nodeSDK/configuration.md) |
+| 1.4.0 | JavaScript | NodeJS | [Result](./performance/1.4.0/nodeContract/nodeSDK/configuration.md) |
+| 2.0.0 | JavaScript | NodeJS | [Result](./performance/2.0.0/nodeContract/nodeSDK/configuration.md) |
+| 2.1.0 | JavaScript | NodeJS | [Result](./performance/2.1.0/nodeContract/nodeSDK/configuration.md) |
+| 2.1.0 | Go | NodeJS | [Result](./performance/2.1.0/goContract/nodeSDK/configuration.md) |
 
 ## Notes
 The performance information is obtained by measuring the transaction throughput for different types of smart contract transactions. The term “transaction” is used in a generic sense, and refers to any interaction with a smart contract, regardless of the complexity of the subsequent interaction(s) with the blockchain platform.
