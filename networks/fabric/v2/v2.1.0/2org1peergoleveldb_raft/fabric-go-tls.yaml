@@ -70,7 +70,7 @@ channels:
       peer0.org2.example.com:
         eventSource: true
 
-    chaincodes:
+    contracts:
     - id: marbles
       version: v0
       language: golang
