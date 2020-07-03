@@ -90,7 +90,7 @@ class AddUserWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let args = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'parallelok', 'v0', args, null);
+        return this.sutAdapter.invokeSmartContract('parallelok', 'v0', args, null);
     }
 }
 

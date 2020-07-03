@@ -114,7 +114,7 @@ class Workload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let args = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'simple', 'v0', args, 100);
+        return this.sutAdapter.invokeSmartContract('simple', 'v0', args, 100);
     }
 }
 

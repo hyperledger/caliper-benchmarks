@@ -29,7 +29,7 @@ class QueryWorkload extends WorkloadModuleBase {
             funName: 'getInt',
             funArgs: []
         }];
-        return this.sutAdapter.querySmartContract(this.sutContext, 'SimpleStorage', 'v0', args, 10);
+        return this.sutAdapter.querySmartContract('SimpleStorage', 'v0', args, 10);
     }
 }
 

@@ -81,7 +81,7 @@ class Workload extends WorkloadModuleBase {
             };
         }
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'simple', 'v0', args, 10);
+        return this.sutAdapter.invokeSmartContract('simple', 'v0', args, 10);
     }
 }
 

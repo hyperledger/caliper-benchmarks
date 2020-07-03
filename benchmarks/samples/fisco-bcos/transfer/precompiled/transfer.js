@@ -80,7 +80,7 @@ class TransferWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let workload = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'dagtransfer', 'v0', workload, null);
+        return this.sutAdapter.invokeSmartContract('dagtransfer', 'v0', workload, null);
     }
 
     async cleanupWorkloadModule() {

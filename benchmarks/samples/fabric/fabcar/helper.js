@@ -31,13 +31,13 @@ module.exports.createCar = async function (bc, contx, args, color, make, model, 
         make = makes[Math.floor(Math.random() * makes.length)];
         model = models[Math.floor(Math.random() * models.length)];
         owner = owners[Math.floor(Math.random() * owners.length)];
-    
+
         let myArgs = {
             chaincodeFunction: 'createCar',
             chaincodeArguments: [carNumber, make, model, color, owner]
         };
-    
-        await bc.invokeSmartContract(contx, 'fabcar', 'v1', myArgs, 30);
+
+        await bc.invokeSmartContract('fabcar', 'v1', myArgs, 30);
     }
 
 };

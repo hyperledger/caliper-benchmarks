@@ -72,7 +72,7 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
             transientMap: {content: JSON.stringify(this.asset)}
         }
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
+        return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
     }
 }
 

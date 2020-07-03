@@ -77,7 +77,7 @@ class SendWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let workload = this._generateWorkload();
-        return this.sutAdapter.bcObj.sendRawTransaction(this.sutContext, workload);
+        return this.sutAdapter.bcObj.sendRawTransaction(workload);
     }
 
     /**

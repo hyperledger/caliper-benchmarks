@@ -206,7 +206,7 @@ class QueryWorkload extends WorkloadModuleBase {
             });
         }
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'smallbank', '1.0', args, 30);
+        return this.sutAdapter.invokeSmartContract('smallbank', '1.0', args, 30);
     }
 }
 

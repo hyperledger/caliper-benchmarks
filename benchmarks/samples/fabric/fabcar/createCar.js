@@ -50,7 +50,7 @@ class CreateCarWorkload extends WorkloadModuleBase {
             chaincodeArguments: [carNumber, carMake, carModel, carColor, carOwner]
         };
 
-        return this.sutAdapter.invokeSmartContract(this.sutContext, 'fabcar', 'v1', args, 30);
+        return this.sutAdapter.invokeSmartContract('fabcar', 'v1', args, 30);
     }
 }
 

@@ -51,7 +51,7 @@ class QueryWorkload extends WorkloadModuleBase {
             };
         }
 
-        return this.sutAdapter.querySmartContract(this.sutContext, 'marbles', 'v1', args, 120);
+        return this.sutAdapter.querySmartContract('marbles', 'v1', args, 120);
     }
 }
 

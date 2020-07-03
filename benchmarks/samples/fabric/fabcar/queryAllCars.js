@@ -59,7 +59,7 @@ class QueryAllCarsWorkload extends WorkloadModuleBase {
             chaincodeArguments: [this.startingKey, this.endingKey]
         };
 
-        return this.sutAdapter.querySmartContract(this.sutContext, 'fabcar', 'v1', args, 60)
+        return this.sutAdapter.querySmartContract('fabcar', 'v1', args, 60)
     }
 }
 

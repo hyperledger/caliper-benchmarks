@@ -76,7 +76,7 @@ class GenerateWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let workload = this._generateWorkload();
-        return this.sutAdapter.bcObj.generateRawTransaction(this.sutContext, 'dagtransfer', workload, this.file);
+        return this.sutAdapter.bcObj.generateRawTransaction('dagtransfer', workload, this.file);
     }
 }
 
