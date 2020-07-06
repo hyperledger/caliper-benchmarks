@@ -5,7 +5,8 @@ test:
     with a CouchDB world state database using the `fixed-asset` NodeJS chaincode
     contract that is interacted with via a Fabric-SDK-Node Gateway. Each test
     round invokes the `createPrivateAsset` method, with successive rounds
-    increasing the bytesize of the asset added into the Private data store.
+    increasing the bytesize of the asset added into the Private Data 
+    Collection of the authorized organization.
   workers:
     type: local
     number: 5
@@ -14,8 +15,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 8000 bytes into the Private data store at a
-        fixed TPS rate.
+        inserts an asset of size 8000 bytes into the Private Data Collection
+        of the authorized organization at a fixed TPS rate.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -31,7 +32,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 100 bytes into the Private data store.
+        inserts an asset of size 100 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -48,7 +50,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 200 bytes into the Private data store.
+        inserts an asset of size 200 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -65,7 +68,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 500 bytes into the Private data store.
+        inserts an asset of size 500 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -82,7 +86,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 1000 bytes into the Private data store.
+        inserts an asset of size 1000 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -99,7 +104,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 2000 bytes into the Private data store.
+        inserts an asset of size 2000 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -116,7 +122,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 5000 bytes into the Private data store.
+        inserts an asset of size 5000 bytes into the Private Data Collection
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -133,7 +140,8 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 10000 bytes into the Private data store.
+        inserts an asset of size 10000 bytes into the Private Data Collection 
+        of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
