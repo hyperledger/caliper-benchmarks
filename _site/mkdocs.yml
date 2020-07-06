@@ -1,0 +1,93 @@
+# Project Information
+site_name: Hyperledger Blockchain Performance Reports
+site_description: Blockchain performance reports for Hyperledger Fabric, measured using Hyperledger Caliper, providing insights into TPS, latency and resource consumption.
+site_url: https://hyperledger.github.io/caliper-benchmarks/
+
+# Repository Information
+repo_name: 'Caliper Benchmarks'
+repo_url: 'https://github.com/hyperledger/caliper-benchmarks'
+
+# Navigation/Pages
+nav:
+    - Overview: index.md
+    - Fabric:
+      - Performance: fabric/performance.md
+      - Node Contract:
+        - v2.1.0:
+          - Configuration: fabric/performance/2.1.0/nodeContract/nodeSDK/configuration.md
+          - Evaluate:
+            - Empty Contract: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Range Query: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/paginated-rich-query.md
+          - Submit:
+            - Empty Contract: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/empty-contract.md
+            - Create Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/batch-create-asset.md
+            - Delete Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/delete-asset.md
+            - Batch Delete Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/batch-delete-asset.md
+        - v2.0.0:
+          - Configuration: fabric/performance/2.0.0/nodeContract/nodeSDK/configuration.md
+          - Evaluate:
+            - Empty Contract: fabric/performance/2.0.0/nodeContract/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Range Query: fabric/performance/2.0.0/nodeContract/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: fabric/performance/2.0.0/nodeContract/nodeSDK/evaluate/paginated-rich-query.md
+          - Submit:
+            - Empty Contract: fabric/performance/2.0.0/nodeContract/nodeSDK/submit/empty-contract.md
+            - Create Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/submit/batch-create-asset.md
+            - Delete Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/submit/delete-asset.md
+            - Batch Delete Asset: fabric/performance/2.0.0/nodeContract/nodeSDK/submit/batch-delete-asset.md
+        - v1.4.0:
+          - Configuration: fabric/performance/1.4.0/nodeContract/nodeSDK/configuration.md
+          - Evaluate:
+            - Empty Contract: fabric/performance/1.4.0/nodeContract/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: fabric/performance/1.4.0/nodeContract/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: fabric/performance/1.4.0/nodeContract/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Range Query: fabric/performance/1.4.0/nodeContract/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: fabric/performance/1.4.0/nodeContract/nodeSDK/evaluate/paginated-rich-query.md
+          - Submit:
+            - Empty Contract: fabric/performance/1.4.0/nodeContract/nodeSDK/submit/empty-contract.md
+            - Create Asset: fabric/performance/1.4.0/nodeContract/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: fabric/performance/1.4.0/nodeContract/nodeSDK/submit/batch-create-asset.md
+        - Download: fabric/downloads.md
+      - Go Contract:
+        - v2.1.0:
+          - Configuration: fabric/performance/2.1.0/goContract/nodeSDK/configuration.md
+          - Evaluate:
+            - Empty Contract: fabric/performance/2.1.0/goContract/nodeSDK/evaluate/empty-contract.md
+            - Get Asset: fabric/performance/2.1.0/goContract/nodeSDK/evaluate/get-asset.md
+            - Batch Get Asset: fabric/performance/2.1.0/goContract/nodeSDK/evaluate/batch-get-asset.md
+            - Paginated Range Query: fabric/performance/2.1.0/goContract/nodeSDK/evaluate/paginated-range-query.md
+            - Paginated Rich Query: fabric/performance/2.1.0/goContract/nodeSDK/evaluate/paginated-rich-query.md
+          - Submit:
+            - Empty Contract: fabric/performance/2.1.0/goContract/nodeSDK/submit/empty-contract.md
+            - Create Asset: fabric/performance/2.1.0/goContract/nodeSDK/submit/create-asset.md
+            - Batch Create Asset: fabric/performance/2.1.0/goContract/nodeSDK/submit/batch-create-asset.md
+            - Delete Asset: fabric/performance/2.1.0/goContract/nodeSDK/submit/delete-asset.md
+            - Batch Delete Asset: fabric/performance/2.1.0/goContract/nodeSDK/submit/batch-delete-asset.md
+      - Tools: common/inprogress.md
+    - Community:
+      - RocketChat: community/chat.md
+      - Contribute: community/contribute.md
+    - License : license.md
+
+# Configuration
+theme:
+  name: material
+  language: 'en'
+  custom_dir: custom_theme/
+
+# Google analytics
+google_analytics:
+  - 'UA-99900088-14'
+  - 'auto'
+
+# Social Links
+extra:
+  social:
+    - type: github
+      link: https://github.com/hyperledger/caliper-benchmarks
