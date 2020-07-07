@@ -2,4 +2,4 @@
 .DS_Store
 
 # If the site is built locally, do not let it get pushed
-/site
+/_site
