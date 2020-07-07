@@ -19,12 +19,14 @@ nav:
             - Empty Contract: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/empty-contract.md
             - Get Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/get-asset.md
             - Batch Get Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/batch-get-asset.md
+            - Get Private Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/get-private-asset.md
             - Paginated Range Query: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/paginated-range-query.md
             - Paginated Rich Query: fabric/performance/2.1.0/nodeContract/nodeSDK/evaluate/paginated-rich-query.md
           - Submit:
             - Empty Contract: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/empty-contract.md
             - Create Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/create-asset.md
             - Batch Create Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/batch-create-asset.md
+            - Create Private Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/create-private-asset.md
             - Delete Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/delete-asset.md
             - Batch Delete Asset: fabric/performance/2.1.0/nodeContract/nodeSDK/submit/batch-delete-asset.md
         - v2.0.0:
