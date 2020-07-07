@@ -8,6 +8,12 @@ This is repeated for networks that use the following endorsement policies:
  - 2-of-any
 
 ## Benchmark Results
+*LevelDB- evaluate transactions with varying endorsement policy*
+
+| Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
+| ---- | ------ | --------------- | --------------- | ---------------- |
+| evaluate | 1-of-any | 1.56 | 0.37	| 1794.9 |
+| evaluate | 2-of-any | 1.47 | 0.38 | 1731.7 |
 
 *CouchDB- evaluate transactions with varying endorsement policy*
 
@@ -17,6 +23,61 @@ This is repeated for networks that use the following endorsement policies:
 | evaluate | 2-of-any | 0.73 | 0.36 | 1381.9 |
 
 ## Benchmark Configuration File
+<details>
+  <summary>Click to expand LevelDB 1OF Benchmark Configuration</summary>
+
+```
+workers:
+  type: local
+  number: 10
+rounds:
+  - label: empty-contract-evaluate
+    description: >-
+      Test an evaluateTransaction() Gateway method against the Go
+      `fixed-asset` Smart Contract method named `emptyContract`, which
+      immediately returns a null response. This represents the fastest possible
+      round trip time for an evaluateTransaction() method that does not touch
+      the world state or perform any action.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 200
+    arguments:
+      chaincodeID: fixed-asset
+      consensus: false
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+```
+</details>
+
+<details>
+  <summary>Click to expand LevelDB 2OF Benchmark Configuration</summary>
+
+```
+workers:
+  type: local
+  number: 10
+rounds:
+  - label: empty-contract-evaluate
+    description: >-
+      Test an evaluateTransaction() Gateway method against the Go
+      `fixed-asset` Smart Contract method named `emptyContract`, which
+      immediately returns a null response. This represents the fastest possible
+      round trip time for an evaluateTransaction() method that does not touch
+      the world state or perform any action.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 200
+    arguments:
+      chaincodeID: fixed-asset
+      consensus: false
+    callback: benchmarks/api/fabric/lib/empty-contract.js
+```
+</details>
 
 <details>
   <summary>Click to expand CouchDB 1OF Benchmark Configuration</summary>

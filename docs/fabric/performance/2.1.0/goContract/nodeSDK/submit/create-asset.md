@@ -5,6 +5,18 @@ The create asset benchmark consists of submitting `createAsset` gateway transact
 Each transaction inserts a single asset into the world state database.
 
 ## Benchmark Results
+*LevelDB*
+
+| Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
+| ------------------ | --------------- | --------------- | ---------------- |
+|100 | 0.70	| 0.46	| 356.6 |
+|1k  | 0.82	| 0.51	| 330.2 |
+|4k	 | 0.86	| 0.58	| 290.9 |
+|8k	 | 0.96	| 0.64	| 256.3 |
+|16k | 1.50	| 0.88	| 183.8 |
+|32k | 2.14	| 1.29	| 127.7 |
+|64k | 3.66	| 2.08	| 75.1 |
+
 *CouchDB*
 
 | Asset Size (bytes) | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
@@ -19,6 +31,136 @@ Each transaction inserts a single asset into the world state database.
 |64k	|3.23	|2.08	|74.8 |
 
 ## Benchmark Configuration File
+<details>
+  <summary>Click to expand LevelDB Benchmark Configuration</summary>
+  
+```
+workers:
+  type: local
+  number: 5
+rounds:
+  - label: create-asset-8000-fixed-tps
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      8000 bytes into the World State database at a fixed TPS rate.
+    chaincodeID: fixed-asset
+    txDuration: 30
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 15
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 8000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-100
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      100 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 100
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-1000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      1000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 1000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-4000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      4000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 4000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-8000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      8000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 8000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-16000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      16000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 16000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-32000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      32000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 32000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+  - label: create-asset-64000
+    description: >-
+      Test a submitTransaction() Gateway method against the Go `fixed-asset`
+      Smart Contract method named `createAsset`, which inserts an asset of size
+      64000 bytes into the World State database.
+    chaincodeID: fixed-asset
+    txDuration: 300
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 50
+    arguments:
+      chaincodeID: fixed-asset
+      bytesize: 64000
+    callback: benchmarks/api/fabric/lib/create-asset.js
+```
+</details>
 
 <details>
   <summary>Click to expand CouchDB Benchmark Configuration</summary>
