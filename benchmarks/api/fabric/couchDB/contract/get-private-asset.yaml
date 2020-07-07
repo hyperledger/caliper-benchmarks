@@ -14,7 +14,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 100 bytes.
+        performs a getPrivateData on an item that matches an asset of size 100 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -40,7 +40,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 200 bytes.
+        performs a getPrivateData on an item that matches an asset of size 200 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -59,7 +59,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 500 bytes.
+        performs a getPrivateData on an item that matches an asset of size 500 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -78,7 +78,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 1000 bytes.
+        performs a getPrivateData on an item that matches an asset of size 1000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -97,7 +97,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 2000 bytes.
+        performs a getPrivateData on an item that matches an asset of size 2000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -116,7 +116,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 5000 bytes.
+        performs a getPrivateData on an item that matches an asset of size 5000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
@@ -135,7 +135,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 10000
+        performs a getPrivateData on an item that matches an asset of size 10000
         bytes.
       chaincodeID: fixed-asset
       txDuration: 300
@@ -155,7 +155,7 @@ test:
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
-        performs a getState on an item that matches an asset of size 8000 bytes
+        performs a getPrivateData on an item that matches an asset of size 8000 bytes
         at a fixed TPS.
       chaincodeID: fixed-asset
       txDuration: 300
