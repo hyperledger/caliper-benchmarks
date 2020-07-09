@@ -20,7 +20,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -48,7 +48,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -67,7 +67,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -86,7 +86,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -105,7 +105,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -125,7 +125,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -145,7 +145,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
@@ -165,7 +165,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 50
+          transaction_load: 50
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:

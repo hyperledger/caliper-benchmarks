@@ -22,7 +22,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:
@@ -53,7 +53,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:
@@ -74,7 +74,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:
@@ -95,7 +95,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:
@@ -116,7 +116,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:
@@ -137,7 +137,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 2
+          transaction_load: 2
       workload:
         module: benchmarks/api/fabric/lib/mixed-range-query-asset.js
         arguments:

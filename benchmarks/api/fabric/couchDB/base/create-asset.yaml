@@ -37,7 +37,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -54,7 +54,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -71,7 +71,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -88,7 +88,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -105,7 +105,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -122,7 +122,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
@@ -139,7 +139,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
           startingTps: 1
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js

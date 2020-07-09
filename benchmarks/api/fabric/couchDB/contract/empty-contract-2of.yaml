@@ -22,7 +22,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 100
+          transaction_load: 100
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/empty-contract.js
@@ -41,7 +41,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 100
+          transaction_load: 100
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/empty-contract.js
