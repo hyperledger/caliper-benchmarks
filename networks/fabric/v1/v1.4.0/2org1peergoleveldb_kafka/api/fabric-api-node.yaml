@@ -71,7 +71,7 @@ channels:
             peer0.org2.example.com:
                 eventSource: true
 
-        chaincodes:
+        contracts:
             - id: fixed-asset
               version: v0
               language: node
