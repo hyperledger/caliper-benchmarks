@@ -21,7 +21,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js
@@ -44,7 +44,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js
@@ -67,7 +67,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js
@@ -90,7 +90,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js
@@ -113,7 +113,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js
@@ -136,7 +136,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 20
+          transaction_load: 20
           startingTps: 10
       workload:
         module: benchmarks/api/fabric/lib/batch-delete-asset.js

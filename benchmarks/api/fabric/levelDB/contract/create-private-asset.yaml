@@ -39,7 +39,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -56,7 +56,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -73,7 +73,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -90,7 +90,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -107,7 +107,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -124,7 +124,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:
@@ -141,7 +141,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 10
+          transaction_load: 10
       workload:
         module: benchmarks/api/fabric/lib/create-private-asset.js
         arguments:

@@ -11,7 +11,7 @@
 // - label: batch-delete-asset-100
 //      chaincodeID: fixed-asset
 //      txNumber: 1000
-//      rateControl: { type: fixed-backlog,  opts: { unfinished_per_client: 20, startingTps: 10} }
+//      rateControl: { type: fixed-backlog,  opts: { transaction_load: 20, startingTps: 10} }
 //      arguments:
 //       chaincodeID: fixed-asset | fixed-asset-base
 //          create_sizes: [8000]

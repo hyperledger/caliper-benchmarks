@@ -9,7 +9,7 @@ test:
       rateControl:
         - type: fixed-backlog
           opts:
-            unfinished_per_client: 5
+            transaction_load: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/changeCarOwner.js
         arguments:
@@ -20,7 +20,7 @@ test:
       rateControl:
         - type: fixed-backlog
           opts:
-            unfinished_per_client: 5
+            transaction_load: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/queryAllCars.js
         arguments:
@@ -33,7 +33,7 @@ test:
       rateControl:
         - type: fixed-backlog
           opts:
-            unfinished_per_client: 5
+            transaction_load: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/queryCar.js
         arguments:
@@ -44,7 +44,7 @@ test:
       rateControl:
         - type: fixed-backlog
           opts:
-            unfinished_per_client: 5
+            transaction_load: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/createCar.js
 monitor:

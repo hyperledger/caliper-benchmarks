@@ -40,7 +40,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
@@ -58,7 +58,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
@@ -76,7 +76,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
@@ -94,7 +94,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
@@ -112,7 +112,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
@@ -130,7 +130,7 @@ test:
       rateControl:
         type: fixed-backlog
         opts:
-          unfinished_per_client: 5
+          transaction_load: 5
       workload:
         module: benchmarks/api/fabric/lib/batch-create-asset.js
         arguments:
