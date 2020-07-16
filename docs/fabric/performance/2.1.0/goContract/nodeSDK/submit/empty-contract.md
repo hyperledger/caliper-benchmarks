@@ -12,8 +12,8 @@ This is repeated for networks that use the following endorsement policies:
 
 | Type | Policy | Max Latency (s) | Avg Latency (s) | Throughput (TPS) |
 | ---- | ------ | --------------- | --------------- | ---------------- |
-| submit | 1-of-any | 3.76 | 1.70 | 621.3 |
-| submit | 2-of-any | 3.28 | 1.77 | 624.4 |
+| submit | 1-of-any | 2.96 | 1.54 | 692.1 |
+| submit | 2-of-any | 2.80 | 1.59 | 676.9 |
 
 *CouchDB- submit transactions with varying endorsement policy*
 
