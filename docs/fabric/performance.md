@@ -1,8 +1,10 @@
-Hyperledger Fabric performance observations are obtained from testing smart contracts, driven by Fabric-SDK-Node clients through a series of benchmarks; the test topology is given in Figure 1 below
+Hyperledger Fabric performance observations are obtained from testing smart contracts, driven by Fabric-SDK-Node clients through a series of benchmarks.
+The benchmarks use a single machine test topology with an orderer and two peers, as depicted in Figure 1 below:
 
 ![alt text](./diagrams/Topology.png)*Figure 1: Test Topology*
 
 During benchmarking, all transactions are driven via a Hyperledger Fabric client gateway. Throughput and latencies for each benchmark are measured, as are resource statistics during the benchmark process.
+The benchmarks utilize a single machine test topology for ease of test recreation. You can expect higher throughput if you were to use dedicated hardware for each peer and orderer node.
 
 ## The Smart Contract
 All benchmarks are facilitated by the `fixed-asset` smart contract that is deployed to the Hyperledger Fabric network. The smart contract facilitates the driving of core API methods that are commonly used by a smart contract developer.
