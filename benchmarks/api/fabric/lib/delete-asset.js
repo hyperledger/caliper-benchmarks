@@ -4,28 +4,7 @@
 
 'use strict';
 
-
-// Investigate a 'delete' that may or may not result in ledger appending via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
-// This *must* be run using a txNumber test style because we can only delete assets that have been created
-// - label: delete-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 100
-//       assets: 1000
-//       nosetup: false
-//       consensus: false
-//     callback: benchmark/network-model/lib/delete-asset.js
-
 const helper = require('./helper');
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -40,7 +19,7 @@ class DeleteAssetWorkload extends WorkloadModuleBase {
         this.txIndex = 0;
         this.chaincodeID = '';
         this.assets = [];
-        this.bytesize = 0;
+        this.byteSize = 0;
         this.consensus = false;
     }
 
@@ -62,11 +41,11 @@ class DeleteAssetWorkload extends WorkloadModuleBase {
         let assetNumber = args.assets ? parseInt(args.assets) : 0;
         this.assets = helper.retrieveRandomAssetIds(assetNumber);
 
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -82,19 +61,16 @@ class DeleteAssetWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         // Create argument array [functionName(String), otherArgs(String)]
         const uuid = this.assets.shift();
-        const itemKey = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
+        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
 
-        const myArgs = {
-            chaincodeFunction: 'deleteAsset',
-            chaincodeArguments: [itemKey]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'deleteAsset',
+            contractArguments: [itemKey],
+            readOnly: false
         };
-
-        // consensus or non-consensus query
-        if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.sutContext, this.chaincodeID, undefined, myArgs);
-        } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
-        }
+    
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

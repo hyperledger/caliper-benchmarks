@@ -7,9 +7,9 @@ test:
       txDuration:
         - 30
       rateControl:
-        - type: fixed-backlog
+        - type: fixed-load
           opts:
-            transaction_load: 5
+            transactionLoad: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/changeCarOwner.js
         arguments:
@@ -18,9 +18,9 @@ test:
       txDuration:
         - 30
       rateControl:
-        - type: fixed-backlog
+        - type: fixed-load
           opts:
-            transaction_load: 5
+            transactionLoad: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/queryAllCars.js
         arguments:
@@ -31,9 +31,9 @@ test:
       txDuration:
         - 30
       rateControl:
-        - type: fixed-backlog
+        - type: fixed-load
           opts:
-            transaction_load: 5
+            transactionLoad: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/queryCar.js
         arguments:
@@ -42,9 +42,9 @@ test:
       txDuration:
         - 30
       rateControl:
-        - type: fixed-backlog
+        - type: fixed-load
           opts:
-            transaction_load: 5
+            transactionLoad: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/createCar.js
 monitor:

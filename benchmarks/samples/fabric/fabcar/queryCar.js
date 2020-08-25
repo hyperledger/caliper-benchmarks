@@ -57,8 +57,8 @@ class QueryCarWorkload extends WorkloadModuleBase {
         let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
 
         let args = {
-            chaincodeFunction: 'queryCar',
-            chaincodeArguments: [carNumber]
+            contractFunction: 'queryCar',
+            contractArguments: [carNumber]
         };
 
         if (this.txIndex === this.limitIndex) {

@@ -57,8 +57,8 @@ class ChangeCarOwnerWorkload extends WorkloadModuleBase {
         let newCarOwner = owners[Math.floor(Math.random() * owners.length)];
 
         let args = {
-            chaincodeFunction: 'changeCarOwner',
-            chaincodeArguments: [carNumber, newCarOwner]
+            contractFunction: 'changeCarOwner',
+            contractArguments: [carNumber, newCarOwner]
         };
 
         if (this.txIndex === this.roundArguments.assets) {

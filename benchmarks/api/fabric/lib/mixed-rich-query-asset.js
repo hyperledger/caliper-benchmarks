@@ -4,28 +4,7 @@
 
 'use strict';
 
-
-// Investigate a paginated rich query that may or may not result in ledger appeding via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. Pagesize and the number of existing test assets are also cofigurable. The argument
-// "nosetup" and "consensus" are optional items that are default false. Resulting mago query is that whch targets assets created by the same client
-// - label: mixed-rich-query-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       create_sizes: [100, 500]
-//       pagesize: 100
-//       assets: 5000
-//       nosetup: true
-//     callback: benchmark/network-model/lib/mixed-rich-query-asset.js
-
 const helper = require('./helper');
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -38,7 +17,7 @@ class MixedRichQueryAssetWorkload extends WorkloadModuleBase {
     constructor() {
         super();
         this.chaincodeID = '';
-        this.bytesize = 0;
+        this.byteSize = 0;
         this.pagesize = '';
         this.mangoQuery = {};
         this.consensus = false;
@@ -59,11 +38,11 @@ class MixedRichQueryAssetWorkload extends WorkloadModuleBase {
 
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-        this.bytesize = args.create_sizes.length[Math.floor(Math.random() * Math.floor(args.create_sizes.length))];
+        this.byteSize = args.create_sizes.length[Math.floor(Math.random() * Math.floor(args.create_sizes.length))];
         this.pagesize = args.pagesize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true) : false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
         console.log('   -> Rich query test configured with consensus flag set to ', this.consensus.toString());
 
         // Create a mango query that returns assets created by this client only
@@ -71,11 +50,11 @@ class MixedRichQueryAssetWorkload extends WorkloadModuleBase {
             'selector': {
                 'docType': this.chaincodeID,
                 'creator': 'client' + this.workerIndex,
-                'bytesize': this.bytesize
+                'byteSize': this.byteSize
             }
         };
 
-        if (nosetup) {
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -89,18 +68,19 @@ class MixedRichQueryAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
-        const myArgs = {
-            chaincodeFunction: 'paginatedRichQuery',
-            chaincodeArguments: [JSON.stringify(this.mangoQuery), this.pagesize, '']
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'paginatedRichQuery',
+            contractArguments: [JSON.stringify(this.mangoQuery), this.pagesize, '']
         };
 
-        // consensus or non-con query
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

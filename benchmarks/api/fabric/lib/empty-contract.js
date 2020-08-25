@@ -5,21 +5,6 @@
 'use strict';
 
 
-// Investigate submitTransaction() or evaluateTransaction() by calling a nullRepsonse chaincode function. Passed argument
-// "consensus" is an optional (default false) argument to conditionally use the ordering service.
-// - label: null-response-ordered
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       consensus: true
-//     callback: benchmark/network-model/lib/null-response.js
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -59,17 +44,19 @@ class EmptyContractWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
-        const myArgs = {
-            chaincodeFunction: 'emptyContract',
-            chaincodeArguments: []
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'emptyContract',
+            contractArguments: []
         };
-
+        
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

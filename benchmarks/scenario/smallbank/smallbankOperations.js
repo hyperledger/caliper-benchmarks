@@ -199,9 +199,9 @@ class QueryWorkload extends WorkloadModuleBase {
         if (this.sutAdapter.getType() === 'fabric') {
             args = args.map(arg => {
                 return {
-                    chaincodeFunction: arg.transaction_type,
+                    contractFunction: arg.transaction_type,
                     // need to remove the key for the TX type
-                    chaincodeArguments: Object.keys(arg).filter(k => k !== 'transaction_type').map(k => arg[k].toString()),
+                    contractArguments: Object.keys(arg).filter(k => k !== 'transaction_type').map(k => arg[k].toString()),
                 };
             });
         }

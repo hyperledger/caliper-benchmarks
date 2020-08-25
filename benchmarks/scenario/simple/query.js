@@ -54,8 +54,8 @@ class QueryWorkload extends WorkloadModuleBase {
 
         if (this.sutAdapter.getType() === 'fabric') {
             let args = {
-                chaincodeFunction: 'query',
-                chaincodeArguments: [acc],
+                contractFunction: 'query',
+                contractArguments: [acc],
             };
 
             return this.sutAdapter.querySmartContract('simple', 'v0', args, 10);

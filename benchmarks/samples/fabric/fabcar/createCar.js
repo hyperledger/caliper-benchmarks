@@ -46,8 +46,8 @@ class CreateCarWorkload extends WorkloadModuleBase {
         let carOwner = owners[Math.floor(Math.random() * owners.length)];
 
         let args = {
-            chaincodeFunction: 'createCar',
-            chaincodeArguments: [carNumber, carMake, carModel, carColor, carOwner]
+            contractFunction: 'createCar',
+            contractArguments: [carNumber, carMake, carModel, carColor, carOwner]
         };
 
         return this.sutAdapter.invokeSmartContract('fabcar', 'v1', args, 30);

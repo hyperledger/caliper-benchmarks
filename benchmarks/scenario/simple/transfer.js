@@ -64,8 +64,8 @@ class Workload extends WorkloadModuleBase {
 
         if (this.sutAdapter.getType() === 'fabric') {
             args = {
-                chaincodeFunction: 'transfer',
-                chaincodeArguments: [account1, account2, this.initmoney.toString()],
+                contractFunction: 'transfer',
+                contractArguments: [account1, account2, this.initmoney.toString()],
             };
         } else if (this.sutAdapter.getType() === 'ethereum') {
             args = {

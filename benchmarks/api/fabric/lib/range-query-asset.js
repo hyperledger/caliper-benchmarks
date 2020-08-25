@@ -5,29 +5,6 @@
 'use strict';
 
 const helper = require('./helper');
-
-// Investigate a paginated range query that may or may not result in ledger appeding via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. Pagesize and the number of existing test assets, as well as the range and offset, are also cofigurable. The arguments
-// "nosetup" and "consensus" are optional items that are default false.
-// - label: query-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 100
-//       pagesize: 10
-//       range: 10
-//       offset: 100
-//       assets: 5000
-//       nosetup: false
-//       consensus: false
-//     callback: benchmark/network-model/lib/range-query-asset.js
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -44,7 +21,7 @@ class RangeQueryAssetWorkload extends WorkloadModuleBase {
         this.offset = 0;
         this.range = 0;
         this.consensus = false;
-        this.bytesize = 0;
+        this.byteSize = 0;
         this.nomatch = false;
         this.startKey = '';
         this.endKey = '';
@@ -68,17 +45,17 @@ class RangeQueryAssetWorkload extends WorkloadModuleBase {
         this.offset = parseInt(args.offset);
         this.range = parseInt(args.range);
         this.pagesize = args.pagesize;
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
 
         this.nomatch = args.nomatch ?  (args.nomatch === 'true' || args.nomatch === true): false;
-        this.startKey = this.nomatch ? 'client_nomatch_' + this.offset : 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.offset;
+        this.startKey = this.nomatch ? 'client_nomatch_' + this.offset : 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.offset;
         this.endKey = this.nomatch ? 'client_nomatch_' + (this.offset + this.range) : 'client' + this.workerIndex
-            + '_' + this.bytesize + '_' + (this.offset + this.range);
+            + '_' + this.byteSize + '_' + (this.offset + this.range);
 
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
 
-        if (nosetup) {
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -92,18 +69,19 @@ class RangeQueryAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
-        const myArgs = {
-            chaincodeFunction: 'paginatedRangeQuery',
-            chaincodeArguments: [this.startKey, this.endKey, this.pagesize]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'paginatedRangeQuery',
+            contractArguments: [this.startKey, this.endKey, this.pagesize]
         };
 
-        // consensus or non-con query
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

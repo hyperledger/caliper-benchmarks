@@ -55,8 +55,8 @@ class QueryAllCarsWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let args = {
-            chaincodeFunction: 'queryAllCars',
-            chaincodeArguments: [this.startingKey, this.endingKey]
+            contractFunction: 'queryAllCars',
+            contractArguments: [this.startingKey, this.endingKey]
         };
 
         return this.sutAdapter.querySmartContract('fabcar', 'v1', args, 60)
