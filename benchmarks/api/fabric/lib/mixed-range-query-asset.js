@@ -5,29 +5,6 @@
 'use strict';
 
 const helper = require('./helper');
-
-// Investigate a paginated range query that may or may not result in ledger appeding via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. Pagesize and the number of existing test assets, as well as the range and offset, are also cofigurable. The arguments
-// "nosetup" and "consensus" are optional items that are default false.
-// - label: mixed-range-query-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesizes: [100, 200, 500, 1000]
-//       pagesize: 10
-//       range: 10
-//       offset: 100
-//       assets: 5000
-//       nosetup: false
-//       consensus: false
-//     callback: benchmark/network-model/lib/mixed-range-query-asset.js
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -72,8 +49,8 @@ class MixedRangeQueryAssetWorkload extends WorkloadModuleBase {
         this.endKey = 'client' + this.workerIndex + '_' + (this.offset + this.range);
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -87,18 +64,19 @@ class MixedRangeQueryAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
-        const myArgs = {
-            chaincodeFunction: 'paginatedRangeQuery',
-            chaincodeArguments: [this.startKey, this.endKey, this.pagesize, '']
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'paginatedRangeQuery',
+            contractArguments: [this.startKey, this.endKey, this.pagesize, '']
         };
 
-        // consensus or non-con query
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

@@ -41,8 +41,8 @@ class QueryWorkload extends WorkloadModuleBase {
 
         if (this.sutAdapter.getType() === 'fabric') {
             args = {
-                chaincodeFunction: 'queryMarblesByOwner',
-                chaincodeArguments: [marbleOwner]
+                contractFunction: 'queryMarblesByOwner',
+                contractArguments: [marbleOwner]
             };
         } else {
             args = {

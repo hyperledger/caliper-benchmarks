@@ -15,7 +15,7 @@
 //         tps: 50
 //     arguments:
 //       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 100
+//       byteSize: 100
 //     callback: benchmark/network-model/lib/create-asset.js
 
 const bytes = (s) => {
@@ -36,7 +36,7 @@ class CreateAssetWorkload extends WorkloadModuleBase {
         this.txIndex = 0;
         this.chaincodeID = '';
         this.asset = {};
-        this.bytesize = 0;
+        this.byteSize = 0;
     }
 
     /**
@@ -54,18 +54,18 @@ class CreateAssetWorkload extends WorkloadModuleBase {
 
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
 
         this.asset = {
-            docType: chaincodeID,
+            docType: this.chaincodeID,
             content: '',
             creator: 'client' + this.workerIndex,
-            bytesize: this.bytesize
+            byteSize: this.byteSize
         };
 
         const rand = 'random';
         let idx = 0;
-        while (bytes(JSON.stringify(this.asset)) < this.bytesize) {
+        while (bytes(JSON.stringify(this.asset)) < this.byteSize) {
             const letter = rand.charAt(idx);
             idx = idx >= rand.length ? 0 : idx+1;
             this.asset.content = this.asset.content + letter;
@@ -77,14 +77,17 @@ class CreateAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const uuid = 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.txIndex;
+        const uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
         this.asset.uuid = uuid;
         this.txIndex++;
-        const myArgs = {
-            chaincodeFunction: 'createAsset',
-            chaincodeArguments: [uuid, JSON.stringify(this.asset)]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'createAsset',
+            contractArguments: [JSON.stringify(this.asset)],
+            readOnly: false
         };
-        return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+    
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

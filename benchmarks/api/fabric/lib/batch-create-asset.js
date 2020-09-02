@@ -4,21 +4,6 @@
 
 'use strict';
 
-// Investigate submitTransaction() using network model to create a batch of assets of specific size in the registry
-// - label: batch-create-asset-1000
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 1000
-//       batchsize: 100
-//     callback: benchmark/network-model/lib/batch-create-asset.js
-
 const bytes = (s) => {
     return ~-encodeURI(s).split(/%..|./).length;
 };
@@ -37,8 +22,8 @@ class BatchCreateAssetWorkload extends WorkloadModuleBase {
         this.txIndex = 0;
         this.chaincodeID = '';
         this.asset = {};
-        this.bytesize = 0;
-        this.batchsize = 0;
+        this.byteSize = 0;
+        this.batchSize = 0;
     }
 
     /**
@@ -56,19 +41,19 @@ class BatchCreateAssetWorkload extends WorkloadModuleBase {
 
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-        this.bytesize = args.bytesize ? parseInt(args.bytesize) : 100;
-        this.batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
+        this.byteSize = args.byteSize ? parseInt(args.byteSize) : 100;
+        this.batchSize = args.batchSize ? parseInt(args.batchSize) : 1;
 
         this.asset = {
             docType: this.chaincodeID,
             content: '',
             creator: 'client' + this.workerIndex,
-            bytesize: this.bytesize
+            byteSize: this.byteSize
         };
 
         const rand = 'random';
         let idx = 0;
-        while (bytes(JSON.stringify(this.asset)) < this.bytesize) {
+        while (bytes(JSON.stringify(this.asset)) < this.byteSize) {
             const letter = rand.charAt(idx);
             idx = idx >= rand.length ? 0 : idx+1;
             this.asset.content = this.asset.content + letter;
@@ -81,18 +66,21 @@ class BatchCreateAssetWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         const batch = [];
-        for (let i = 0; i < this.batchsize; i++) {
-            this.asset.uuid = 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.txIndex;
+        for (let i = 0; i < this.batchSize; i++) {
+            this.asset.uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
             const batchAsset = JSON.parse(JSON.stringify(this.asset));
             batch.push(batchAsset);
             this.txIndex++;
         }
 
-        const myArgs = {
-            chaincodeFunction: 'createAssetsFromBatch',
-            chaincodeArguments: [JSON.stringify(batch)]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'createAssetsFromBatch',
+            contractArguments: [JSON.stringify(batch)],
+            readOnly: false
         };
-        return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+    
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

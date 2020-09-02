@@ -45,8 +45,8 @@ class InitWorkload extends WorkloadModuleBase {
         let args;
         if (this.sutAdapter.getType() === 'fabric') {
             args = {
-                chaincodeFunction: 'initMarble',
-                chaincodeArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
+                contractFunction: 'initMarble',
+                contractArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
             };
         } else {
             args = {

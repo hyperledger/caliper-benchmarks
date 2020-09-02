@@ -4,25 +4,7 @@
 
 'use strict';
 
-
-// Investigate a batch 'delete' that may or may not result in ledger appending via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
-// Must be run in a txNumber operation mode, as assets must exist for the benchmark to be valid.
-// - label: batch-delete-asset-100
-//      chaincodeID: fixed-asset
-//      txNumber: 1000
-//      rateControl: { type: fixed-backlog,  opts: { transaction_load: 20, startingTps: 10} }
-//      arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//          create_sizes: [8000]
-//          assets: 50000
-//          bytesize: 8000
-//          batchsize: 50
-//          consensus: true
-//      callback: benchmarks/api/fabric/lib/batch-delete-asset.js
-
 const helper = require('./helper');
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -36,8 +18,8 @@ class BatchDeleteAssetWorkload extends WorkloadModuleBase {
         super();
         this.chaincodeID = '';
         this.assets = [];
-        this.bytesize = 0;
-        this.batchsize = 0;
+        this.byteSize = 0;
+        this.batchSize = 0;
         this.consensus = false;
     }
 
@@ -59,12 +41,12 @@ class BatchDeleteAssetWorkload extends WorkloadModuleBase {
         let assetNumber = args.assets ? parseInt(args.assets) : 0;
         this.assets = helper.retrieveRandomAssetIds(assetNumber);
 
-        this.batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
-        this.bytesize = args.bytesize;
+        this.batchSize = args.batchSize ? parseInt(args.batchSize) : 1;
+        this.byteSize = args.byteSize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -80,26 +62,24 @@ class BatchDeleteAssetWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         // Create argument array [consensus(boolean), functionName(String), otherArgs(String)]
         const uuids = [];
-        for (let i = 0; i < this.batchsize; i++) {
+        for (let i = 0; i < this.batchSize; i++) {
             // pick one of the randomized items and remove it from future consideration
             const uuid = this.assets.shift();
-            const key = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
+            const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
             uuids.push(key);
         }
 
         const batch = {};
         batch.uuids = uuids;
 
-        const myArgs = {
-            chaincodeFunction: 'deleteAssetsFromBatch',
-            chaincodeArguments: [JSON.stringify(batch)]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'deleteAssetsFromBatch',
+            contractArguments: [JSON.stringify(batch)],
+            readOnly: false
         };
 
-        if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
-        } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
-        }
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

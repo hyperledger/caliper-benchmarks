@@ -4,28 +4,7 @@
 
 'use strict';
 
-
-// Investigate a batch 'get' that may or may not result in ledger appeding via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
-// - label: batch-get-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 100
-//       assets: 5000
-//       nosetup: false
-//       consensus: false
-//       batchsize: 100
-//     callback: benchmark/network-model/lib/get-asset.js
-
 const helper = require('./helper');
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -39,8 +18,8 @@ class BatchGetAssetWorkload extends WorkloadModuleBase {
         super();
         this.chaincodeID = '';
         this.assets = 0;
-        this.bytesize = 0;
-        this.batchsize = 0;
+        this.byteSize = 0;
+        this.batchSize = 0;
         this.consensus = false;
     }
 
@@ -60,12 +39,12 @@ class BatchGetAssetWorkload extends WorkloadModuleBase {
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
         this.assets = args.assets ? parseInt(args.assets) : 0;
-        this.batchsize = args.batchsize ? parseInt(args.batchsize) : 1;
-        this.bytesize = args.bytesize;
+        this.batchSize = args.batchSize ? parseInt(args.batchSize) : 1;
+        this.byteSize = args.byteSize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -81,23 +60,27 @@ class BatchGetAssetWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         // Create argument array [consensus(boolean), functionName(String), otherArgs(String)]
         const uuids = [];
-        for (let i = 0; i < this.batchsize; i++) {
+        for (let i = 0; i < this.batchSize; i++) {
             // take a uuid in the range of known asset numbers
             const uuid = Math.floor(Math.random() * Math.floor(this.assets));
-            const key = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
+            const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
             uuids.push(key);
         }
 
-        const myArgs = {
-            chaincodeFunction: 'getAssetsFromBatch',
-            chaincodeArguments: [JSON.stringify(uuids)]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'getAssetsFromBatch',
+            contractArguments: [JSON.stringify(uuids)]
         };
 
+        
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

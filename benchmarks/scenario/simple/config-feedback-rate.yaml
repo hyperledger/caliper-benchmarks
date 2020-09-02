@@ -13,7 +13,7 @@ test:
         opts:
           tps: 100
           sleep_time: 1000
-          transaction_load: 10
+          transactionLoad: 10
       workload:
         module: benchmarks/scenario/simple/open.js
         arguments:

@@ -53,8 +53,8 @@ class QueryWorkload extends WorkloadModuleBase {
         let acc_num  = this.accounts[Math.floor(Math.random()*(this.accounts.length))];
         if (this.sutAdapter.getType() === 'fabric') {
             let args = {
-                chaincodeFunction: 'query',
-                chaincodeArguments: [acc_num.toString()],
+                contractFunction: 'query',
+                contractArguments: [acc_num.toString()],
             };
             return this.sutAdapter.querySmartContract('smallbank', '1.0', args, 3);
         } else {

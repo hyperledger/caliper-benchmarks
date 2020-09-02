@@ -5,26 +5,7 @@
 'use strict';
 
 
-// Investigate a 'get' that may or may not result in ledger appeding via orderer. Assets are created in the init phase
-// with a byte size that is specified as in input argument. The arguments "nosetup" and "consensus" are optional items that are default false.
-// - label: get-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       bytesize: 100
-//       assets: 5000
-//       nosetup: false
-//       consensus: false
-//     callback: benchmark/network-model/lib/get-asset.js
-
 const helper = require('./helper');
-
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
@@ -38,7 +19,7 @@ class GetAssetWorkload extends WorkloadModuleBase {
         super();
         this.chaincodeID = 'fixed-asset';
         this.assets = [];
-        this.bytesize = 0;
+        this.byteSize = 0;
         this.consensus = false;
     }
 
@@ -58,11 +39,11 @@ class GetAssetWorkload extends WorkloadModuleBase {
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
         this.assets = args.assets ? parseInt(args.assets) : 0;
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -76,21 +57,21 @@ class GetAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
         const uuid = Math.floor(Math.random() * Math.floor(this.assets));
-        const itemKey = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
-
-        const myArgs = {
-            chaincodeFunction: 'getAsset',
-            chaincodeArguments: [itemKey]
+        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'getAsset',
+            contractArguments: [itemKey]
         };
-
-        // consensus or non-con query
+        
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

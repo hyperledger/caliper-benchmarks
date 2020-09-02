@@ -1,0 +1,9 @@
+{
+    "name": "caliper-sample-tests",
+    "version": "0.0.1",
+    "author": "Hyperledger Caliper",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@hyperledger/caliper-core": "unstable"
+    }
+}

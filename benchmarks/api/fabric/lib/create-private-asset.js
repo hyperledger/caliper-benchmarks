@@ -22,7 +22,7 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         this.txIndex = 0;
         this.chaincodeID = 'fixed-asset';
         this.asset = {};
-        this.bytesize = 0;
+        this.byteSize = 0;
     }
 
     /**
@@ -39,18 +39,18 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         const args = this.roundArguments;
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
 
         this.asset = {
             docType: this.chaincodeID,
             content: '',
             creator: 'client' + this.workerIndex,
-            bytesize: this.bytesize
+            byteSize: this.byteSize
         }
 
         const rand = 'random';
         let idx = 0;
-        while (bytes(JSON.stringify(this.asset)) < this.bytesize) {
+        while (bytes(JSON.stringify(this.asset)) < this.byteSize) {
             const letter = rand.charAt(idx);
             idx = idx >= rand.length ? 0 : idx+1;
             this.asset.content = this.asset.content + letter;
@@ -62,17 +62,19 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const uuid = 'client' + this.workerIndex + '_' + this.bytesize + '_' + this.txIndex;
+        const uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
         this.asset.uuid = uuid;
         this.txIndex++;
 
-        const myArgs = {
-            chaincodeFunction: 'createPrivateAsset',
-            chaincodeArguments: [uuid],
-            transientMap: {content: JSON.stringify(this.asset)}
-        }
-
-        return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'createPrivateAsset',
+            contractArguments: [JSON.stringify(batch)],
+            transientMap: {content: JSON.stringify(this.asset)},
+            readOnly: false
+        };
+    
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

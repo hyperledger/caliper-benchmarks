@@ -20,7 +20,7 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         this.txIndex = 0;
         this.chaincodeID = 'fixed-asset';
         this.assets = [];
-        this.bytesize = 0;
+        this.byteSize = 0;
         this.consensus = false;
     }
 
@@ -40,11 +40,11 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         const args = this.roundArguments;
         this.assets = args.assets ? parseInt(args.assets) : 0;
 
-        this.bytesize = args.bytesize;
+        this.byteSize = args.byteSize;
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        const nosetup = args.nosetup ? (args.nosetup === 'true' || args.nosetup === true) : false;
-        if (nosetup) {
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
             console.log('   -> Skipping asset creation stage');
         } else {
             console.log('   -> Entering asset creation stage');
@@ -60,19 +60,21 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         // Create argument array [functionName(String), otherArgs(String)]
         const uuid = Math.floor(Math.random() * Math.floor(this.assets));
-        const itemKey = 'client' + this.workerIndex + '_' + this.bytesize + '_' + uuid;
+        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
 
-        const myArgs = {
-            chaincodeFunction: 'getPrivateAsset',
-            chaincodeArguments: [itemKey]
+        const args = {
+            contractId: this.chaincodeID,
+            contractFunction: 'getPrivateAsset',
+            contractArguments: [itemKey]
         };
 
-        // consensus or non-con query
         if (this.consensus) {
-            return this.sutAdapter.invokeSmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = false;
         } else {
-            return this.sutAdapter.querySmartContract(this.chaincodeID, undefined, myArgs);
+            args.readOnly = true;
         }
+
+        await this.sutAdapter.sendRequests(args);
     }
 }
 
