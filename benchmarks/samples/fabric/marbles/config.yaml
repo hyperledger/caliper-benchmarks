@@ -19,10 +19,3 @@ test:
           tps: 5
       workload:
         module: benchmarks/samples/fabric/marbles/query.js
-monitor:
-  type:
-    - docker
-  docker:
-    names:
-      - all
-  interval: 1

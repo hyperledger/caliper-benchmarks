@@ -40,10 +40,9 @@ test:
         module: benchmarks/scenario/simple/transfer.js
         arguments:
           money: 100
-monitor:
-  type:
-    - docker
-  docker:
-    name:
-      - all
-  interval: 1
+monitors:
+    resource:
+    - module: docker
+      options:
+        interval: 5
+        containers: ['all']

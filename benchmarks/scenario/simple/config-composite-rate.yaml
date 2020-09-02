@@ -34,10 +34,3 @@ test:
         module: benchmarks/scenario/simple/open.js
         arguments:
           money: 10000
-monitor:
-  type:
-    - docker
-  docker:
-    name:
-      - all
-  interval: 1

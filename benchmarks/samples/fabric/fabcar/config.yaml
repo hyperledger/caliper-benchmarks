@@ -47,15 +47,3 @@ test:
             transactionLoad: 5
       workload:
         module: benchmarks/samples/fabric/fabcar/createCar.js
-monitor:
-  type:
-    - docker
-    - process
-  docker:
-    name:
-      - all
-  process:
-    - command: node
-      arguments: fabricClientWorker.js
-      multiOutput: avg
-  interval: 1

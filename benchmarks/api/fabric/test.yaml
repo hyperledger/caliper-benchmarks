@@ -150,3 +150,14 @@ monitors:
       options:
         interval: 4
         containers: ['peer0.org1.example.com', 'peer0.org2.example.com', 'orderer0.example.com', 'orderer1.example.com']
+    - module: prometheus
+      options:
+        include: [dev-.*, couch, peer, orderer]
+        queries:
+        - name: Max Memory (MB)
+          query: sum(container_memory_rss{name=~".+"}) by (name)
+          step: 10
+          label: name
+          statistic: max
+          multiplier: 0.000001
+        

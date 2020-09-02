@@ -29,10 +29,3 @@ test:
           tps: 100
       workload:
         module: benchmarks/scenario/simple/query.js
-monitor:
-  type:
-    - docker
-  docker:
-    name:
-      - all
-  interval: 1
