@@ -1,0 +1,40 @@
+language: node_js
+node_js:
+- 10
+
+services:
+- docker
+
+dist: xenial
+
+before_install: |
+    set -ev
+    set -o pipefail
+
+install:
+    - npm install --only=prod @hyperledger/caliper-cli@unstable
+    - caliper bind --caliper-bind-sut fabric:1.4
+
+# NOTE: the unit test and integration test jobs are only run "for the PR". In this case the encrypted env vars are not present (are blank).
+# The NPM and Docker Hub publish jobs are only run when the PR is merged. In this case the encrypted env vars are present, since the repo slug is hyperledger/caliper.
+# So the presence of encrypted vars are used as conditions for the jobs.
+jobs:
+    include:
+    # parallel integration tests for supported platforms
+    - stage: samples integration tests
+      name: API samples integration test
+      if: type = pull_request OR repo != hyperledger/caliper-benchmarks
+      script: ./.travis/api-integration-test.sh
+
+cache:
+  directories:
+    - node_modules
+  npm: false
+
+notifications:
+  webhooks:
+    on_success: always # default: always
+    on_failure: always # default: always
+    on_start: always   # default: never
+    on_cancel: always # default: always
+    on_error: always # default: always

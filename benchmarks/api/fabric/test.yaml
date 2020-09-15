@@ -4,117 +4,117 @@ test:
     This is a test yaml for the existing fixed-asset benchmarks
   workers:
     type: local
-    number: 1
+    number: 2
   rounds:
     - label: empty-contract-evaluate
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: false
     - label: empty-contract-submit
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: true
     - label: create-asset-1000
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/create-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           byteSize: 1000
     - label: get-asset-evaluate-1000
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 1000
           assets: 500
           consensus: false
     - label: get-asset-submit-1000
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 1000
           assets: 500
           consensus: true
     - label: rich-query-evaluate
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           byteSize: 1000
           pagesize: '2'
           noSetup: true
           nomatch: true
           consensus: false
     - label: rich-query-submit
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           byteSize: 1000
           pagesize: '5'
           noSetup: true
           nomatch: true
           consensus: true
     - label: range-query-evaluate
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/range-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           byteSize: 1000
           range: 200
           offset: 100
@@ -123,16 +123,16 @@ test:
           nomatch: true
           consensus: false
     - label: range-query-submit
-      chaincodeID: fixed-asset-base
-      txNumber: 100
+      chaincodeID: fixed-asset
+      txDuration: 20
       rateControl:
-        type: fixed-load
+        type: fixed-rate
         opts:
-          transactionLoad: 1
+          tps: 2
       workload:
         module: benchmarks/api/fabric/lib/range-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           byteSize: 1000
           range: 200
           offset: 100
@@ -142,22 +142,19 @@ test:
           consensus: true
 monitors:
     resource:
-    - module: process
-      options:
-        interval: 3
-        processes: [{ command: 'node', arguments: 'caliper.js', multiOutput: 'avg' }]
     - module: docker
       options:
         interval: 4
         containers: ['peer0.org1.example.com', 'peer0.org2.example.com', 'orderer0.example.com', 'orderer1.example.com']
     - module: prometheus
       options:
-        include: [dev-.*, couch, peer, orderer]
-        queries:
-        - name: Max Memory (MB)
-          query: sum(container_memory_rss{name=~".+"}) by (name)
-          step: 10
-          label: name
-          statistic: max
-          multiplier: 0.000001
-        
+        url: "http://localhost:9090"
+        metrics:
+          include: [dev-.*, couch, peer, orderer]
+          queries:
+          - name: Max Memory (MB)
+            query: sum(container_memory_rss{name=~".+"}) by (name)
+            step: 10
+            label: name
+            statistic: max
+            multiplier: 0.000001

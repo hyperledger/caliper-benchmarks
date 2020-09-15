@@ -69,7 +69,7 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         const args = {
             contractId: this.chaincodeID,
             contractFunction: 'createPrivateAsset',
-            contractArguments: [JSON.stringify(batch)],
+            contractArguments: [uuid],
             transientMap: {content: JSON.stringify(this.asset)},
             readOnly: false
         };
