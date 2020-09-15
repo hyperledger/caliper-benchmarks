@@ -24,9 +24,9 @@ test:
           tps: 50
       workload:
         module: benchmarks/scenario/smallbank/query.js
-monitor:
-  type: docker
-  docker:
-    name:
-      - all
-  interval: 1
+monitors:
+    resource:
+    - module: docker
+      options:
+        interval: 5
+        containers: ['all']

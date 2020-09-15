@@ -38,10 +38,3 @@ test:
           tps: 1
       workload:
         module: benchmarks/samples/burrow/query.js
-monitor:
-  type:
-    - docker
-  docker:
-    name:
-      - all
-  interval: 1

@@ -283,19 +283,9 @@ test:
           noSetup: true
           pagesize: '10'
           consensus: true
-monitor:
-  interval: 5
-  type:
-    - process
-    - docker
-  process:
-    processes:
-      - command: node
-        arguments: fabricClientWorker.js
-        multiOutput: avg
-  docker:
-    containers:
-      - all
-observer:
-  type: local
-  interval: 30
+monitors:
+    resource:
+    - module: docker
+      options:
+        interval: 4
+        containers: ['all']
