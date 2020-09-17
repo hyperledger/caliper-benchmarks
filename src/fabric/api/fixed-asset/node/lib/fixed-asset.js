@@ -290,7 +290,7 @@ class Asset extends Contract {
      * @param {String} bookmark - the bookmark from which to start the return
      * @returns {JSON} the results of the paginated query and responseMetadata in a JSON object
      */
-    async paginatedRichQuery(ctx, queryString, pagesize, bookmark) {
+    async paginatedRichQuery(ctx, queryString, pagesize,  bookmark = '') {
         if (isVerbose) {
             console.log(`Entering paginated rich query with pagesize [${pagesize}] and query string: ${queryString}`);
         }
@@ -358,7 +358,7 @@ class Asset extends Contract {
      * @param {String} bookmark - the bookmark from which to start the return
      * @returns {JSON} the results of the paginated query and responseMetadata in a JSON object
      */
-    async paginatedRangeQuery(ctx, startKey, endKey, pagesize, bookmark) {
+    async paginatedRangeQuery(ctx, startKey, endKey, pagesize, bookmark = '') {
         if (isVerbose) {
             console.log(`Entering paginatedRangeQuery with pagesize [${pagesize}] and limit keys: [${startKey},${endKey}]`);
         }

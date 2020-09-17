@@ -83,7 +83,7 @@ class CreateAssetWorkload extends WorkloadModuleBase {
         const args = {
             contractId: this.chaincodeID,
             contractFunction: 'createAsset',
-            contractArguments: [JSON.stringify(this.asset)],
+            contractArguments: [uuid, JSON.stringify(this.asset)],
             readOnly: false
         };
     

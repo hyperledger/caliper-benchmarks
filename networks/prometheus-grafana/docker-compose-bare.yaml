@@ -19,12 +19,6 @@ services:
     ports:
       - "9090:9090"
 
-  pushGateway:
-    image: prom/pushgateway
-    container_name: pushGateway
-    ports:
-      - "9091:9091"
-
   grafana:
     image: grafana/grafana
     container_name: grafana
