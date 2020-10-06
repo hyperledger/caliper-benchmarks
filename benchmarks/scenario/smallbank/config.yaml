@@ -1,32 +1,40 @@
+smallbankArgs: &smallbank-args
+  accounts: 100
+  txnPerBatch: 1
+
+rateControl: &rate
+  type: fixed-rate
+  opts:
+    tps: 20
+
 test:
   name: smallbank
-  description: This is smallbank benchmark for caliper
+  description: Smallbank benchmark for evaluating create, modify, and query operations.
   workers:
     type: local
     number: 5
   rounds:
-    - label: smallOperations
+    - label: create
       txNumber: 500
-      rateControl:
-        type: fixed-rate
-        opts:
-          tps: 20
+      rateControl: *rate
       workload:
-        module: benchmarks/scenario/smallbank/smallbankOperations.js
-        arguments:
-          accounts: 400
-          txnPerBatch: 1
+        module: benchmarks/scenario/smallbank/create.js
+        arguments: *smallbank-args
+    - label: modify
+      txNumber: 500
+      rateControl: *rate
+      workload:
+        module: benchmarks/scenario/smallbank/modify.js
+        arguments: *smallbank-args
     - label: query
       txNumber: 500
-      rateControl:
-        type: fixed-rate
-        opts:
-          tps: 50
+      rateControl: *rate
       workload:
         module: benchmarks/scenario/smallbank/query.js
+        arguments: *smallbank-args
 monitors:
     resource:
     - module: docker
       options:
-        interval: 5
+        interval: 1
         containers: ['all']

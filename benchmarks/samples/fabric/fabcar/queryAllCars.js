@@ -55,11 +55,15 @@ class QueryAllCarsWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         let args = {
+            contractId: 'fabcar',
+            contractVersion: 'v1',
             contractFunction: 'queryAllCars',
-            contractArguments: [this.startingKey, this.endingKey]
+            contractArguments: [this.startingKey, this.endingKey],
+            timeout: 60,
+            readOnly: true
         };
 
-        return this.sutAdapter.querySmartContract('fabcar', 'v1', args, 60)
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

@@ -14,25 +14,37 @@
 
 'use strict';
 
-const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const OperationBase = require('./utils/operation-base');
+const Smallbank = require('./utils/smallbank');
 
 /**
  * Workload module for the benchmark round.
  */
-class GetWorkload extends WorkloadModuleBase {
+class Create extends OperationBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+    }
+
+    /**
+     * Create a Smallbank instance with no accounts.
+     * @return {Smallbank} The instance.
+     * @protected
+     */
+    createSmallbank() {
+        return new Smallbank();
+    }
+
     /**
      * Assemble TXs for the round.
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const args = {
-            contractId: 'helloworld',
-            args: {
-                transaction_type: 'get()'
-            },
-            readOnly: true
-        };
-        await this.sutAdapter.sendRequests(args);
+        const createArgs = this.smallbank.getOpenAccountArguments();
+        const request = this.createConnectorRequest('create_account', createArgs);
+        await this.sutAdapter.sendRequests(request);
     }
 }
 
@@ -41,7 +53,7 @@ class GetWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new GetWorkload();
+    return new Create();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

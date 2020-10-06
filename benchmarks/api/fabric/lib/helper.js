@@ -97,7 +97,10 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, 
                     }
                 }
 
-                await bcObj.invokeSmartContract('fixed-asset', undefined, myArgs, undefined, false);
+                myArgs.contractId = 'fixed-asset';
+                myArgs.readOnly = false;
+
+                await bcObj.sendRequests(myArgs);
             } catch (err) {
                 console.error('Error: ', err);
                 throw err;
@@ -176,10 +179,11 @@ module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, a
         const batch = batches[index];
         try {
             const myArgs = {
+                contractId: 'fixed-asset',
                 contractFunction: 'createAssetsFromBatch',
                 contractArguments: [JSON.stringify(batch)]
             };
-            await bcObj.invokeSmartContract('fixed-asset', undefined, myArgs, undefined, false);
+            await bcObj.sendRequests(myArgs);
         } catch (err) {
             console.error('Error: ', err);
             throw err;

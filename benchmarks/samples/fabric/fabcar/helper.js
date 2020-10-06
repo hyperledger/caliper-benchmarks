@@ -33,11 +33,14 @@ module.exports.createCar = async function (bc, contx, args, color, make, model, 
         owner = owners[Math.floor(Math.random() * owners.length)];
 
         let myArgs = {
+            contractId: 'fabcar',
+            contractVersion: 'v1',
             contractFunction: 'createCar',
-            contractArguments: [carNumber, make, model, color, owner]
+            contractArguments: [carNumber, make, model, color, owner],
+            timeout: 30
         };
 
-        await bc.invokeSmartContract('fabcar', 'v1', myArgs, 30);
+        await bc.sendRequests(myArgs);
     }
 
 };

@@ -18,9 +18,9 @@ const OperationBase = require('./utils/operation-base');
 const Smallbank = require('./utils/smallbank');
 
 /**
- * Workload module for Smallbank queries.
+ * Workload module for the benchmark round.
  */
-class Query extends OperationBase {
+class Modify extends OperationBase {
     /**
      * Initializes the workload module instance.
      */
@@ -42,9 +42,24 @@ class Query extends OperationBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const queryArgs = this.smallbank.getQueryArguments();
-        const request = this.createConnectorRequest('query', queryArgs);
-        await this.sutAdapter.sendRequests(request);
+        const requests = this._generateRequestBatch();
+        await this.sutAdapter.sendRequests(requests);
+    }
+
+    /**
+     * Generates Smallbank workload for the current batch.
+     * @returns {object[]} Array of requests settings, one for each operation.
+     **/
+    _generateRequestBatch() {
+        let requestBatch = [];
+
+        for(let i = 0; i < this.txnPerBatch; i++) {
+            const operation = Smallbank.getRandomOperationName();
+            const operationArgs = this.smallbank.getRandomOperationArguments(operation);
+            requestBatch.push(this.createConnectorRequest(operation, operationArgs));
+        }
+
+        return requestBatch;
     }
 }
 
@@ -53,7 +68,7 @@ class Query extends OperationBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new Query();
+    return new Modify();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;
