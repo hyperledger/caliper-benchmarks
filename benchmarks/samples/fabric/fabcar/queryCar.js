@@ -57,15 +57,19 @@ class QueryCarWorkload extends WorkloadModuleBase {
         let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
 
         let args = {
+            contractId: 'fabcar',
+            contractVersion: 'v1',
             contractFunction: 'queryCar',
-            contractArguments: [carNumber]
+            contractArguments: [carNumber],
+            timeout: 30,
+            readOnly: true
         };
 
         if (this.txIndex === this.limitIndex) {
             this.txIndex = 0;
         }
 
-        return this.sutAdapter.querySmartContract('fabcar', 'v1', args, 30);
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

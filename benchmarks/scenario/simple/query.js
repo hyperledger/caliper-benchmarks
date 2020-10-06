@@ -14,55 +14,36 @@
 
 'use strict';
 
-const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const OperationBase = require('./utils/operation-base');
+const SimpleState = require('./utils/simple-state');
 
 /**
- * Workload module for the benchmark round.
+ * Workload module for querying various accounts.
  */
-class QueryWorkload extends WorkloadModuleBase {
+class Query extends OperationBase {
+
     /**
-     * Initializes the workload module instance.
+     * Initializes the parameters of the workload.
      */
     constructor() {
         super();
-        this.account_array = [];
     }
 
     /**
-     * Initialize the workload module with the given parameters.
-     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
-     * @param {number} totalWorkers The total number of workers participating in the round.
-     * @param {number} roundIndex The 0-based index of the currently executing round.
-     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
-     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
-     * @param {Object} sutContext The custom context object provided by the SUT adapter.
-     * @async
+     * Create a pre-configured state representation.
+     * @return {SimpleState} The state instance.
      */
-    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
-        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
-
-        const open = require('./open.js');
-        this.account_array = open.account_array;
+    createSimpleState() {
+        const accountsPerWorker = this.numberOfAccounts / this.totalWorkers;
+        return new SimpleState(this.workerIndex, this.initialMoney, this.moneyToTransfer, accountsPerWorker);
     }
 
     /**
-     * Assemble TXs for the round.
-     * @return {Promise<TxStatus[]>}
+     * Assemble TXs for querying accounts.
      */
     async submitTransaction() {
-        const acc  = this.account_array[Math.floor(Math.random()*(this.account_array.length))];
-
-        if (this.sutAdapter.getType() === 'fabric') {
-            let args = {
-                contractFunction: 'query',
-                contractArguments: [acc],
-            };
-
-            return this.sutAdapter.querySmartContract('simple', 'v0', args, 10);
-        } else {
-            // NOTE: the query API is not consistent with the invoke API
-            return this.sutAdapter.queryState('simple', 'v0', acc);
-        }
+        const queryArgs = this.simpleState.getQueryArguments();
+        await this.sutAdapter.sendRequests(this.createConnectorRequest('query', queryArgs));
     }
 }
 
@@ -71,7 +52,7 @@ class QueryWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new QueryWorkload();
+    return new Query();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

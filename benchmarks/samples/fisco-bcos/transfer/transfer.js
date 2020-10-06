@@ -41,10 +41,13 @@ class TransferWorkload extends WorkloadModuleBase {
             let toIndex = (this.index + Math.floor(this.accountList.length / 2)) % this.accountList.length;
             let value = Math.floor(Math.random() * 100);
             let args = {
-                'transaction_type': 'userTransfer(string,string,uint256)',
-                'from': this.accountList[fromIndex].accountID,
-                'to': this.accountList[toIndex].accountID,
-                'num': value
+                contractId: 'parallelok',
+                args: {
+                    transaction_type: 'transfer(string,string,uint256)',
+                    from: this.accountList[fromIndex].accountID,
+                    to: this.accountList[toIndex].accountID,
+                    num: value
+                }
             };
             workload.push(args);
 
@@ -61,7 +64,7 @@ class TransferWorkload extends WorkloadModuleBase {
      * @param {number} totalWorkers The total number of workers participating in the round.
      * @param {number} roundIndex The 0-based index of the currently executing round.
      * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
-     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {ConnectorBase} sutAdapter The adapter of the underlying SUT.
      * @param {Object} sutContext The custom context object provided by the SUT adapter.
      * @async
      */
@@ -79,8 +82,8 @@ class TransferWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        let workload = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract('dagtransfer', 'v0', workload, null);
+        const workload = this._generateWorkload();
+        await this.sutAdapter.sendRequests(workload);
     }
 
     async cleanupWorkloadModule() {
@@ -90,7 +93,15 @@ class TransferWorkload extends WorkloadModuleBase {
             let account = this.accountList[i];
             let accountID = account.accountID;
             let balance = account.balance;
-            let state = await this.sutAdapter.queryState(this.sutContext, 'dagtransfer', 'v0', accountID, 'userBalance(string)');
+            const queryArgs = {
+                contractId: 'parallelok',
+                args: {
+                    transaction_type: 'balanceOf(string)',
+                    name: accountID
+                },
+                readOnly: true
+            };
+            let state = await this.sutAdapter.sendRequests(queryArgs);
             let remoteBalance = state.status.result.result.output;
             remoteBalance = parseInt(remoteBalance, 16);
             if (remoteBalance !== balance) {

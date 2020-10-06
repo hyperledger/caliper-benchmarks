@@ -15,73 +15,36 @@
 
 'use strict';
 
-const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const OperationBase = require('./utils/operation-base');
+const SimpleState = require('./utils/simple-state');
 
 /**
- * Workload module for the benchmark round.
+ * Workload module for transferring money between accounts.
  */
-class Workload extends WorkloadModuleBase {
+class Transfer extends OperationBase {
+
     /**
-     * Initializes the workload module instance.
+     * Initializes the instance.
      */
     constructor() {
         super();
-        this.account_array = [];
-        this.initmoney = 0;
     }
 
     /**
-     * Initialize the workload module with the given parameters.
-     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
-     * @param {number} totalWorkers The total number of workers participating in the round.
-     * @param {number} roundIndex The 0-based index of the currently executing round.
-     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
-     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
-     * @param {Object} sutContext The custom context object provided by the SUT adapter.
-     * @async
+     * Create a pre-configured state representation.
+     * @return {SimpleState} The state instance.
      */
-    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
-        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
-
-        if (!this.roundArguments.hasOwnProperty('money')) {
-            throw new Error('account.transfer - \'money\' is missed in the arguments');
-        }
-
-        this.initmoney = this.roundArguments.money;
-
-        const open = require('./open.js');
-        this.account_array = open.account_array;
+    createSimpleState() {
+        const accountsPerWorker = this.numberOfAccounts / this.totalWorkers;
+        return new SimpleState(this.workerIndex, this.initialMoney, this.moneyToTransfer, accountsPerWorker);
     }
 
     /**
-     * Assemble TXs for the round.
-     * @return {Promise<TxStatus[]>}
+     * Assemble TXs for transferring money.
      */
     async submitTransaction() {
-        const account1 = this.account_array[Math.floor(Math.random() * (this.account_array.length))];
-        const account2 = this.account_array[Math.floor(Math.random() * (this.account_array.length))];
-        let args;
-
-        if (this.sutAdapter.getType() === 'fabric') {
-            args = {
-                contractFunction: 'transfer',
-                contractArguments: [account1, account2, this.initmoney.toString()],
-            };
-        } else if (this.sutAdapter.getType() === 'ethereum') {
-            args = {
-                verb: 'transfer',
-                args: [account1, account2, this.initmoney]
-            };
-        } else {
-            args = {
-                'verb': 'transfer',
-                'account1': account1,
-                'account2': account2,
-                'money': this.initmoney.toString()
-            };
-        }
-
-        return this.sutAdapter.invokeSmartContract('simple', 'v0', args, 10);
+        const transferArgs = this.simpleState.getTransferArguments();
+        await this.sutAdapter.sendRequests(this.createConnectorRequest('transfer', transferArgs));
     }
 }
 
@@ -90,7 +53,7 @@ class Workload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new Workload();
+    return new Transfer();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

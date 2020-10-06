@@ -14,42 +14,54 @@
 
 'use strict';
 
-const path = require('path');
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+
+let accountList = [];
+const initMoney = 100000000;
 
 /**
  * Workload module for the benchmark round.
  */
-class GenerateWorkload extends WorkloadModuleBase {
+class AddUserWorkload extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
     constructor() {
         super();
-        this.index = 0;
-        this.file = '';
-        this.accountList = [];
+        this.prefix = '';
+    }
+
+    /**
+     * Generate unique account key for the transaction
+     * @param {Number} index account index
+     * @returns {String} account key
+     */
+    _generateAccount(index) {
+        return this.prefix + index.toString();
     }
 
     /**
      * Generates simple workload
-     * @return {Object} array of json objects
+     * @returns {Object} array of json objects
      */
     _generateWorkload() {
-        let fromIndex = this.index % this.accountList.length;
-        let toIndex = (this.index + Math.floor(this.accountList.length / 2)) % this.accountList.length;
-        let value = Math.floor(Math.random() * 100);
-        let args = {
-            'transaction_type': 'userTransfer(string,string,uint256)',
-            'from': this.accountList[fromIndex].accountID,
-            'to': this.accountList[toIndex].accountID,
-            'num': value
-        };
+        let workload = [];
+        let index = accountList.length;
+        let accountID = this._generateAccount(index);
+        accountList.push({
+            'accountID': accountID,
+            'balance': initMoney
+        });
 
-        this.index++;
-        this.accountList[fromIndex].balance -= value;
-        this.accountList[toIndex].balance += value;
-        return args;
+        workload.push({
+            contractId: 'parallelok',
+            args: {
+                transaction_type: 'set(string,uint256)',
+                name: accountID,
+                num: initMoney
+            }
+        });
+        return workload;
     }
 
     /**
@@ -58,16 +70,24 @@ class GenerateWorkload extends WorkloadModuleBase {
      * @param {number} totalWorkers The total number of workers participating in the round.
      * @param {number} roundIndex The 0-based index of the currently executing round.
      * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
-     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
+     * @param {ConnectorBase} sutAdapter The adapter of the underlying SUT.
      * @param {Object} sutContext The custom context object provided by the SUT adapter.
      * @async
      */
     async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-        const addUser = require('./addUser');
-        this.accountList = addUser.accountList;
-        this.file = path.join(__dirname, `.${this.workerIndex}.transactions`);
+        this.prefix = this.workerIndex.toString();
+
+        const args = {
+            contractId: 'parallelok',
+            args: {
+                transaction_type: 'enableParallel()'
+            }
+        };
+
+        // Enable parallel transaction executor first, this transaction should *NOT* be recorded by context
+        await this.sutAdapter.sendRequests(args);
     }
 
     /**
@@ -75,8 +95,8 @@ class GenerateWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        let workload = this._generateWorkload();
-        return this.sutAdapter.bcObj.generateRawTransaction('dagtransfer', workload, this.file);
+        const args = this._generateWorkload();
+        await this.sutAdapter.sendRequests(args);
     }
 }
 
@@ -85,7 +105,8 @@ class GenerateWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new GenerateWorkload();
+    return new AddUserWorkload();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;
+module.exports.accountList = accountList;

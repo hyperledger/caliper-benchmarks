@@ -37,21 +37,16 @@ class QueryWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         this.txIndex++;
         let marbleOwner = owners[this.txIndex % owners.length];
-        let args;
+        const args = {
+            contractId: 'marbles',
+            contractVersion: 'v1',
+            contractFunction: 'queryMarblesByOwner',
+            contractArguments: [marbleOwner],
+            timeout: 120,
+            readOnly: true
+        };
 
-        if (this.sutAdapter.getType() === 'fabric') {
-            args = {
-                contractFunction: 'queryMarblesByOwner',
-                contractArguments: [marbleOwner]
-            };
-        } else {
-            args = {
-                verb: 'queryMarblesByOwner',
-                owner: marbleOwner
-            };
-        }
-
-        return this.sutAdapter.querySmartContract('marbles', 'v1', args, 120);
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

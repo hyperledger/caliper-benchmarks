@@ -57,15 +57,18 @@ class ChangeCarOwnerWorkload extends WorkloadModuleBase {
         let newCarOwner = owners[Math.floor(Math.random() * owners.length)];
 
         let args = {
+            contractId: 'fabcar',
+            contractVersion: 'v1',
             contractFunction: 'changeCarOwner',
-            contractArguments: [carNumber, newCarOwner]
+            contractArguments: [carNumber, newCarOwner],
+            timeout: 60
         };
 
         if (this.txIndex === this.roundArguments.assets) {
             this.txIndex = 0;
         }
 
-        return this.sutAdapter.invokeSmartContract('fabcar', 'v1', args, 60);
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

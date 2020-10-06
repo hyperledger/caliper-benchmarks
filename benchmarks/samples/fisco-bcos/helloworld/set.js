@@ -25,23 +25,6 @@ class SetWorkload extends WorkloadModuleBase {
      */
     constructor() {
         super();
-        this.txnPerBatch = 1;
-    }
-
-    /**
-     * Generates simple workload
-     * @return {Object} array of json objects
-     */
-    _generateWorkload() {
-        let workload = [];
-        for (let i = 0; i < this.txnPerBatch; i++) {
-            let w = {
-                'transaction_type': 'set(string)',
-                'name': 'hello! - from ' + this.workerIndex.toString(),
-            };
-            workload.push(w);
-        }
-        return workload;
     }
 
     /**
@@ -49,8 +32,15 @@ class SetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        let args = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract('helloworld', 'v0', args, null);
+        const args = {
+            contractId: 'helloworld',
+            args: {
+                transaction_type: 'set(string)',
+                name: 'hello! - from ' + this.workerIndex.toString()
+            },
+            readOnly: false
+        };
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

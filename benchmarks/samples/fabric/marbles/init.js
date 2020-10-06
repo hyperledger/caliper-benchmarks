@@ -42,23 +42,15 @@ class InitWorkload extends WorkloadModuleBase {
         let marbleSize = (((this.txIndex % 10) + 1) * 10).toString(); // [10, 100]
         let marbleOwner = owners[this.txIndex % owners.length];
 
-        let args;
-        if (this.sutAdapter.getType() === 'fabric') {
-            args = {
-                contractFunction: 'initMarble',
-                contractArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
-            };
-        } else {
-            args = {
-                verb: 'initMarble',
-                name: marbleName,
-                color: marbleColor,
-                size: marbleSize,
-                owner: marbleOwner
-            };
-        }
+        const args = {
+            contractId: 'marbles',
+            contractVersion: 'v1',
+            contractFunction: 'initMarble',
+            contractArguments: [marbleName, marbleColor, marbleSize, marbleOwner],
+            timeout: 30
+        };
 
-        return this.sutAdapter.invokeSmartContract('marbles', 'v1', args, 30);
+        await this.sutAdapter.sendRequests(args);
     }
 }
 

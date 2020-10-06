@@ -14,107 +14,35 @@
 
 'use strict';
 
-const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
-
-const dic = 'abcdefghijklmnopqrstuvwxyz';
-let account_array = [];
+const OperationBase = require('./utils/operation-base');
+const SimpleState = require('./utils/simple-state');
 
 /**
- * Workload module for the benchmark round.
+ * Workload module for initializing the SUT with various accounts.
  */
-class Workload extends WorkloadModuleBase {
+class Open extends OperationBase {
+
     /**
-     * Initializes the workload module instance.
+     * Initializes the parameters of the workload.
      */
     constructor() {
         super();
-        this.txnPerBatch = 1;
-        this.initMoney = 0;
-        this.prefix = '';
     }
 
     /**
-     * Initialize the workload module with the given parameters.
-     * @param {number} workerIndex The 0-based index of the worker instantiating the workload module.
-     * @param {number} totalWorkers The total number of workers participating in the round.
-     * @param {number} roundIndex The 0-based index of the currently executing round.
-     * @param {Object} roundArguments The user-provided arguments for the round from the benchmark configuration file.
-     * @param {BlockchainInterface} sutAdapter The adapter of the underlying SUT.
-     * @param {Object} sutContext The custom context object provided by the SUT adapter.
-     * @async
+     * Create an empty state representation.
+     * @return {SimpleState} The state instance.
      */
-    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
-        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
-
-        if(!this.roundArguments.hasOwnProperty('money')) {
-            throw new Error('simple.open - \'money\' is missed in the arguments');
-        }
-
-        this.initMoney = this.roundArguments.money;
-        this.txnPerBatch = this.roundArguments.txnPerBatch || 1;
-        this.prefix = this.workerIndex.toString();
+    createSimpleState() {
+        return new SimpleState(this.workerIndex, this.initialMoney, this.moneyToTransfer);
     }
 
     /**
-     * Generate string by picking characters from dic variable
-     * @param {*} number character to select
-     * @returns {String} string generated based on @param number
-     */
-    _get26Num(number){
-        let result = '';
-        while(number > 0) {
-            result += dic.charAt(number % 26);
-            number = Math.floor(number/26);
-        }
-        return result;
-    }
-
-    /**
-     * Generate unique account key for the transaction
-     * @returns {String} account key
-     */
-    _generateAccount() {
-        return this.prefix + this._get26Num(account_array.length+1);
-    }
-
-    /**
-     * Generates simple workload
-     * @returns {Object} array of json objects
-     */
-    _generateWorkload() {
-        let workload = [];
-        for(let i= 0; i < this.txnPerBatch; i++) {
-            let acc_id = this._generateAccount();
-            account_array.push(acc_id);
-
-            if (this.sutAdapter.getType() === 'fabric') {
-                workload.push({
-                    contractFunction: 'open',
-                    contractArguments: [acc_id, this.initMoney.toString()],
-                });
-            } else if (this.sutAdapter.getType() === 'ethereum') {
-                workload.push({
-                    verb: 'open',
-                    args: [acc_id, this.initMoney]
-                });
-            } else {
-                workload.push({
-                    'verb': 'open',
-                    'account': acc_id,
-                    'money': this.initMoney
-                });
-            }
-        }
-        return workload;
-    }
-
-    /**
-     * Assemble TXs for the round.
-     * @return {Promise<TxStatus[]>}
+     * Assemble TXs for opening new accounts.
      */
     async submitTransaction() {
-        let args = this._generateWorkload();
-        return this.sutAdapter.invokeSmartContract('simple', 'v0', args, 100);
+        let createArgs = this.simpleState.getOpenAccountArguments();
+        await this.sutAdapter.sendRequests(this.createConnectorRequest('open', createArgs));
     }
 }
 
@@ -123,8 +51,7 @@ class Workload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new Workload();
+    return new Open();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;
-module.exports.account_array = account_array;
