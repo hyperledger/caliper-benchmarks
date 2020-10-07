@@ -42,7 +42,7 @@ class Create extends OperationBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const createArgs = this.smallbank.getOpenAccountArguments();
+        const createArgs = this.smallbank.getCreateAccountArguments();
         const request = this.createConnectorRequest('create_account', createArgs);
         await this.sutAdapter.sendRequests(request);
     }

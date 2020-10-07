@@ -14,6 +14,7 @@ launch.json
 
 # Limited npm runtime artifacts
 node_modules/*
+package.json
 package-lock.json
 
 src/fabric/samples/fabcar/java

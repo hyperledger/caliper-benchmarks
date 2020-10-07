@@ -1,7 +1,7 @@
 simpleArgs: &simple-args
   initialMoney: 10000
   moneyToTransfer: 100
-  numberOfAccounts: &number-of-accounts 100
+  numberOfAccounts: &number-of-accounts 1000
 
 test:
   name: simple

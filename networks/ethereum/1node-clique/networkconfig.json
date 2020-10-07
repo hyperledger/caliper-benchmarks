@@ -2,12 +2,12 @@
     "caliper": {
         "blockchain": "ethereum",
         "command" : {
-            "start": "docker-compose -f networks/ethereum/1node/docker-compose.yml up -d && sleep 3",
-            "end" : "docker-compose -f networks/ethereum/1node/docker-compose.yml down"
+            "start": "docker-compose -f ./networks/ethereum/1node-clique/docker-compose.yml up -d && sleep 60s",
+            "end" : "docker-compose -f ./networks/ethereum/1node-clique/docker-compose.yml down"
           }
     },
     "ethereum": {
-        "url": "http://localhost:8545",
+        "url": "ws://localhost:8546",
         "contractDeployerAddress": "0xc0A8e4D217eB85b812aeb1226fAb6F588943C2C2",
         "contractDeployerAddressPassword": "password",
         "fromAddress": "0xc0A8e4D217eB85b812aeb1226fAb6F588943C2C2",
@@ -15,7 +15,12 @@
         "transactionConfirmationBlocks": 2,
         "contracts": {
             "simple": {
-                "path": "src/ethereum/simple/simple.json"
+                "path": "./src/ethereum/simple/simple.json",
+                "estimateGas": true,
+                "gas": {
+                    "query": 100000,
+                    "transfer": 70000
+                }
             }
         }
     }

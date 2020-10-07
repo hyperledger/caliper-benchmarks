@@ -12,14 +12,8 @@
 # limitations under the License.
 #
 
-version: "3"
-services:
-  node:
-    build: .
-    image: caliper-ethereum
-    container_name: ethereum
-    volumes:
-      - ./keys:/root/.ethereum/keystore
-    ports:
-      - 8545:8545
-    command: --unlock 0xc0A8e4D217eB85b812aeb1226fAb6F588943C2C2 --password /root/.ethereum/keystore/password --mine --minerthreads 2 --etherbase 0xc0A8e4D217eB85b812aeb1226fAb6F588943C2C2 --rpc --rpcaddr 0.0.0.0 --rpcvhosts=* --rpcapi admin,eth,miner,personal,web3 --allow-insecure-unlock --nodiscover --gasprice 1
+FROM ethereum/client-go:stable
+COPY ./data/ /root/
+VOLUME [ "/root/.ethereum/keystore/" ]
+RUN geth --nousb init /root/genesis.json && geth --nousb import /root/bc.dat
+ENTRYPOINT [ "geth" ]
