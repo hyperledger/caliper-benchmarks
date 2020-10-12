@@ -129,9 +129,13 @@ func (t *SimpleChaincode) Transfer(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	moneyBytes1, err1 := stub.GetState(args[0])
+	if err1 != nil {
+		s := fmt.Sprintf(ERROR_SYSTEM, err1.Error())
+		return shim.Error(s)
+	}
 	moneyBytes2, err2 := stub.GetState(args[1])
-	if err1 != nil || err2 != nil {
-		s := fmt.Sprintf(ERROR_SYSTEM, err.Error())
+	if err2 != nil {
+		s := fmt.Sprintf(ERROR_SYSTEM, err2.Error())
 		return shim.Error(s)
 	}
 	if moneyBytes1 == nil || moneyBytes2 == nil {
