@@ -18,7 +18,7 @@ public class FixedAsset {
     private String creator;
 
     @Property()
-    private int bytesize;
+    private int byteSize;
 
     @Property()
     private String content;
@@ -35,12 +35,12 @@ public class FixedAsset {
     public static FixedAsset fromJSONString(String json) {
         String uuid = new JSONObject(json).getString("uuid");
         String creator = new JSONObject(json).getString("creator");
-        int bytesize = new JSONObject(json).getInt("bytesize");
+        int byteSize = new JSONObject(json).getInt("byteSize");
         String content = new JSONObject(json).getString("content");
         FixedAsset asset = new FixedAsset();
         asset.setUuid(uuid);
         asset.setCreator(creator);
-        asset.setBytesize(bytesize);
+        asset.setBytesize(byteSize);
         asset.setContent(content);
 
         return asset;
@@ -63,11 +63,11 @@ public class FixedAsset {
     }
 
     public int getBytesize() {
-        return bytesize;
+        return byteSize;
     }
 
-    public void setBytesize(int bytesize) {
-        this.bytesize = bytesize;
+    public void setBytesize(int byteSize) {
+        this.byteSize = byteSize;
     }
 
     public String getContent() {

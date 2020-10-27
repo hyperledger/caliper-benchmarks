@@ -3,7 +3,7 @@
 		"fields": [
 			"docType",
 			"creator",
-			"bytesize"
+			"byteSize"
 		]
 	},
 	"ddoc": "assetCreatorDoc",

@@ -5,6 +5,6 @@ type FixedAsset struct {
 	Doctype  string `json:"docType"`
 	UUID     string `json:"uuid"`
 	Creator  string `json:"creator"`
-	Bytesize int    `json:"bytesize"`
+	Bytesize int    `json:"byteSize"`
 	Content  string `json:"content"`
 }
