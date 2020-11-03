@@ -4,19 +4,6 @@
 
 'use strict';
 
-// Investigate submitTransaction() using network model to create an asset of specific size in the registry
-// - label: create-asset-100
-//     chaincodeID: fixed-asset
-//     txNumber:
-//     - 1000
-//     rateControl:
-//     - type: fixed-rate
-//       opts:
-//         tps: 50
-//     arguments:
-//       chaincodeID: fixed-asset | fixed-asset-base
-//       byteSize: 100
-//     callback: benchmark/network-model/lib/create-asset.js
 
 const bytes = (s) => {
     return ~-encodeURI(s).split(/%..|./).length;

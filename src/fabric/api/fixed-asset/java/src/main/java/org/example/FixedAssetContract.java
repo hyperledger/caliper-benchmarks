@@ -66,7 +66,7 @@ public class FixedAssetContract implements ContractInterface {
      * {
      *   uuid: unique identifier
      *   creator: the creator
-     *   bytesize: target bytesize of asset
+     *   byteSize: target byteSize of asset
      *   content: variable content
      * }
      * Directly writes the string content against the passed uuid
@@ -85,7 +85,7 @@ public class FixedAssetContract implements ContractInterface {
      * {
      *   uuid: unique identifier
      *   creator: the creator
-     *   bytesize: target bytesize of asset
+     *   byteSize: target byteSize of asset
      *   content: variable content
      * }
      * The body is parsed to include a step where the body is an object
@@ -104,7 +104,7 @@ public class FixedAssetContract implements ContractInterface {
      * [{
      *   uuid: unique identifier
      *   creator: the creator
-     *   bytesize: target bytesize of asset
+     *   byteSize: target byteSize of asset
      *   content: variable content
      * }, ...]
      * @param ctx the context
@@ -126,7 +126,7 @@ public class FixedAssetContract implements ContractInterface {
      * [{
      *   uuid: unique identifier
      *   creator: the creator
-     *   bytesize: target bytesize of asset
+     *   byteSize: target byteSize of asset
      *   content: variable content
      * }, ...]
      * - Relies on chaincode to form the object for us
