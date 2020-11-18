@@ -44,7 +44,7 @@ class ChangeCarOwnerWorkload extends WorkloadModuleBase {
     async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-        await helper.createCar(this.sutAdapter, this.sutContext, this.roundArguments);
+        await helper.createCar(this.sutAdapter, this.workerIndex, this.roundArguments);
     }
 
     /**
