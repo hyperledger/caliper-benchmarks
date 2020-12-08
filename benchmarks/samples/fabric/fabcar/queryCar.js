@@ -45,7 +45,7 @@ class QueryCarWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         this.limitIndex = this.roundArguments.assets;
-        await helper.createCar(this.sutAdapter, this.sutContext, this.roundArguments);
+        await helper.createCar(this.sutAdapter, this.workerIndex, this.roundArguments);
     }
 
     /**

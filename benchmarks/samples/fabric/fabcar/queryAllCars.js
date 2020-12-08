@@ -43,7 +43,7 @@ class QueryAllCarsWorkload extends WorkloadModuleBase {
     async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
-        await helper.createCar(this.sutAdapter, this.sutContext, this.roundArguments);
+        await helper.createCar(this.sutAdapter, this.workerIndex, this.roundArguments);
 
         this.startingKey = 'Client' + this.workerIndex + '_CAR' + this.roundArguments.startKey;
         this.endingKey = 'Client' + this.workerIndex + '_CAR' + this.roundArguments.endKey;
