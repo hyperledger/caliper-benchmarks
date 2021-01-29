@@ -102,7 +102,7 @@ services:
         - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/tls/server.key
         - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
         - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
-        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peercouchdb_solo_raft_default
+        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peercouchdbsoloraft_default
         - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
         - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org1.example.com:5984
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -148,7 +148,7 @@ services:
         - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/tls/server.key
         - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
         - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
-        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peercouchdb_solo_raft_default
+        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=2org1peercouchdbsoloraft_default
         - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
         - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org2.example.com:5984
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric
