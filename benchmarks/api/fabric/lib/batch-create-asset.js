@@ -51,13 +51,8 @@ class BatchCreateAssetWorkload extends WorkloadModuleBase {
             byteSize: this.byteSize
         };
 
-        const rand = 'random';
-        let idx = 0;
-        while (bytes(JSON.stringify(this.asset)) < this.byteSize) {
-            const letter = rand.charAt(idx);
-            idx = idx >= rand.length ? 0 : idx+1;
-            this.asset.content = this.asset.content + letter;
-        }
+        const paddingSize = this.byteSize - bytes(JSON.stringify(this.asset));
+        this.asset.content = 'B'.repeat(paddingSize);
     }
 
     /**
