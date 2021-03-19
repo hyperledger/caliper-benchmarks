@@ -20,6 +20,10 @@ let models = ['Prius', 'Mustang', 'Tucson', 'Passat', 'S', '205', 'S22L', 'Punto
 let owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
 
 let carNumber;
+let color;
+let make;
+let model;
+let owner;
 let txIndex = 0;
 
 module.exports.createCar = async function (bc, workerIndex, args) {
