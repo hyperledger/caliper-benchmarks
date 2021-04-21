@@ -10,7 +10,7 @@ fi
 
 rm -rf ./crypto-config/
 rm -f ./orgs.genesis.block
-rm -f ./mychannel.tx
+rm -rf ./mychannel.tx
 
 # The below assumes you have the relevant code available to generate the cryto-material
 ./bin/cryptogen generate --config=./crypto-config.yaml

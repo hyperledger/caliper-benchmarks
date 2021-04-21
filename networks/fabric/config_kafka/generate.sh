@@ -10,7 +10,7 @@ fi
 
 rm -rf ./crypto-config/
 rm -f ./genesis.block
-rm -f ./mychannel.tx
+rm -rf ./mychannel.tx
 
 ./bin/cryptogen generate --config=./crypto-config.yaml
 ./bin/configtxgen -profile OrdererGenesis -outputBlock genesis.block -channelID syschannel
