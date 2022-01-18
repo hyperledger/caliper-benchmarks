@@ -65,7 +65,7 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, 
 
         // -Break into batches of (max) 50
         const batches = [];
-        idx = 0;
+        let idx = 0;
         while(assets.length) {
             batches[idx]=assets.splice(0,50);
             idx++;
