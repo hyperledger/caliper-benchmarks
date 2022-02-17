@@ -42,7 +42,7 @@ test:
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
-    - label: get-asset-evaluate-1000
+    - label: get-asset-evaluate-100
       chaincodeID: fixed-asset
       txDuration: 20
       rateControl:
@@ -53,11 +53,12 @@ test:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          noSetup: true
-          byteSize: 1000
-          assets: 500
+          create_sizes:
+            - 100
+          byteSize: 100
+          assets: 20
           consensus: false
-    - label: get-asset-submit-1000
+    - label: get-asset-submit-200
       chaincodeID: fixed-asset
       txDuration: 20
       rateControl:
@@ -68,9 +69,10 @@ test:
         module: benchmarks/api/fabric/lib/get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          noSetup: true
-          byteSize: 1000
-          assets: 500
+          create_sizes:
+            - 200
+          byteSize: 200
+          assets: 20
           consensus: true
     - label: rich-query-evaluate
       chaincodeID: fixed-asset
