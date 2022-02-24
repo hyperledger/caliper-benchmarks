@@ -3,6 +3,16 @@ test:
     type: local
     number: 5
   rounds:
+    - label: Create a car.
+      # 5000 transactions should create around 1000 cars per worker but not guaranteed
+      # so need to set asset limits to less than 1000 for the other tests
+      txNumber: 5000
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmarks/samples/fabric/fabcar/createCar.js
     - label: Change car owner.
       txDuration: 30
       rateControl:
@@ -12,7 +22,7 @@ test:
       workload:
         module: benchmarks/samples/fabric/fabcar/changeCarOwner.js
         arguments:
-          assets: 1000
+          assets: 500
     - label: Query all cars.
       txDuration: 30
       rateControl:
@@ -22,7 +32,7 @@ test:
       workload:
         module: benchmarks/samples/fabric/fabcar/queryAllCars.js
         arguments:
-          assets: 1000
+          assets: 500
           startKey: '1'
           endKey: '50'
     - label: Query a car.
@@ -34,12 +44,4 @@ test:
       workload:
         module: benchmarks/samples/fabric/fabcar/queryCar.js
         arguments:
-          assets: 1000
-    - label: Create a car.
-      txDuration: 30
-      rateControl:
-          type: fixed-load
-          opts:
-            transactionLoad: 5
-      workload:
-        module: benchmarks/samples/fabric/fabcar/createCar.js
+          assets: 500
