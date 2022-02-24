@@ -24,20 +24,20 @@ cd caliper-benchmarks
 ```
 
 - install the latest version of caliper
-  
+
 ```bash
 npm install --only=prod @hyperledger/caliper-cli
 ```
 
 - bind to the fabric 2.2 SUT
-  
+
 ```bash
 npx caliper bind --caliper-bind-sut fabric:2.2
 ```
-  
+
 - change to the fabric-samples/test-network directory `cd ../fabric-samples/test-network directory`
 - bring up test network with a channel called `mychannel`
-  
+
 ```bash
 ./network.sh up createChannel -s couchdb
 ```
@@ -78,7 +78,7 @@ To deploy the Java version
 To deploy the Javascript version
 
 ```bash
-./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/javascript -ccl javascript
+./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/node -ccl javascript
 ```
 
 #### Benchmark execution

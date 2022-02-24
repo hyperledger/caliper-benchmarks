@@ -16,8 +16,6 @@
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-const helper = require('./helper');
-
 /**
  * Workload module for the benchmark round.
  */
@@ -45,7 +43,6 @@ class QueryCarWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         this.limitIndex = this.roundArguments.assets;
-        await helper.createCar(this.sutAdapter, this.workerIndex, this.roundArguments);
     }
 
     /**
