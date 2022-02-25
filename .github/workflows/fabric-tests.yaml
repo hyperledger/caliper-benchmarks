@@ -10,10 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cc-env: [go, java, node]
+        cc-env: [go,java,node]
     steps:
     - uses: actions/checkout@v2
+# TODO: add explicit go version rather than rely on implicit go version
     - uses: actions/setup-node@v2
       with:
         node-version: 14
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+      if: ${{ matrix.cc-env == 'java' }}
     - run: .github/scripts/run-fabric-tests.sh ${{ matrix.cc-env }}
