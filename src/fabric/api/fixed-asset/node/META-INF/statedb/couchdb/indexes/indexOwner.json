@@ -1,0 +1,13 @@
+{
+	"index": {
+		"fields": [
+			"docType",
+			"creator",
+			"byteSize"
+		]
+	},
+	"ddoc": "assetCreatorDoc",
+	"name": "assetCreator",
+	"type": "json"
+}
+
