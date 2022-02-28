@@ -203,7 +203,7 @@ func getAllResults(iterator shim.StateQueryIteratorInterface) (*[]*assets.FixedA
 
 		if err != nil {
 			fmt.Println("Error performing json.Unmarshal: " + err.Error())
-			fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
+			fmt.Println("Error performing json.Unmarshal on content: " + string(content[:]))
 			return nil, err
 		}
 
