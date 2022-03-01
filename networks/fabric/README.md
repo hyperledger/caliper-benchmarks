@@ -62,20 +62,19 @@ Fabcar has chaincode for Go, Java, Javascript. It doesn't make use of rich queri
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-To deploy the Go version
+##### To deploy the Go version
 
 ```bash
 ./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/go -ccl go
 ```
 
-**THE JAVA VERSION CURRENTLY DOES NOT DEPLOY**
-To deploy the Java version
+##### To deploy the Java version
 
 ```bash
 ./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/java -ccl java
 ```
 
-To deploy the Javascript version
+##### To deploy the Javascript version
 
 ```bash
 ./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/node -ccl javascript
@@ -98,25 +97,25 @@ Marbles comes in both rich query and no rich query flavours and has has chaincod
 Ensure you are in the `fabric-samples/test-network` directory
 
 **THE GO VERSIONS CURRENTLY DOES NOT DEPLOY**
-To deploy the Go with rich queries version
+##### To deploy the Go with rich queries version
 
 ```bash
 ./network.sh deployCC -ccn marbles -ccp ../../caliper-benchmarks/src/fabric/samples/marbles/go -ccl go
 ```
 
-To deploy the Go without rich queries version
+##### To deploy the Go without rich queries version
 
 ```bash
 ./network.sh deployCC -ccn marbles -ccp ../../caliper-benchmarks/src/fabric/samples/marbles-norichquery/go -ccl go
 ```
 
-To deploy the Javascript with rich queries version
+##### To deploy the Javascript with rich queries version
 
 ```bash
 ./network.sh deployCC -ccn marbles -ccp ../../caliper-benchmarks/src/fabric/samples/marbles/node -ccl javascript
 ```
 
-To deploy the Javascript without rich queries version
+##### To deploy the Javascript without rich queries version
 
 ```bash
 ./network.sh deployCC -ccn marbles -ccp ../../caliper-benchmarks/src/fabric/samples/marbles-norichquery/node -ccl javascript
@@ -138,14 +137,16 @@ Simple has chaincode for Go, Javascript. It doesn't make use of rich queries so 
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-To deploy the Go version
 **THE GO VERSION CURRENTLY DOES NOT DEPLOY**
+##### To deploy the Go version
+
+
 
 ```bash
 ./network.sh deployCC -ccn simple -ccp ../../caliper-benchmarks/src/fabric/scenario/simple/go -ccl go
 ```
 
-To deploy the Javascript version
+##### To deploy the Javascript version
 
 ```bash
 ./network.sh deployCC -ccn simple -ccp ../../caliper-benchmarks/src/fabric/scenario/simple/node -ccl javascript
@@ -167,8 +168,9 @@ Smallbank has chaincode for Go only. It doesn't make use of rich queries so can 
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-To deploy the Go version
 **THE GO VERSION CURRENTLY DOES NOT DEPLOY**
+##### To deploy the Go version
+
 
 ```bash
 ./network.sh deployCC -ccn smallbank -ccp ../../caliper-benchmarks/src/fabric/scenario/smallbank/go -ccl go
@@ -200,21 +202,19 @@ There are several benchmarks available within the `benchmarks/api/fabric/contrac
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-To deploy the Go version
-**THE GO VERSION CURRENTLY DOES NOT DEPLOY**
+##### To deploy the Go version
 
 ```bash
 ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/go -ccl go
 ```
 
-**THE JAVA VERSION CURRENTLY DOES NOT DEPLOY**
-To deploy the Java version
+##### To deploy the Java version
 
 ```bash
 ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/java -ccl java
 ```
 
-To deploy the Javascript version
+##### To deploy the Javascript version
 
 ```bash
 ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/node -ccl javascript
@@ -235,13 +235,13 @@ fixed-asset-base is equivalent to fixed-asset but instead it doesn't make use of
 
 Ensure you are in the `fabric-samples/test-network` directory. Note here that we deploy with a chaincode ID of `fixed-asset` not `fixed-asset-base`.
 
-To deploy the Go version
+##### To deploy the Go version
 
 ```bash
 ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/go -ccl go
 ```
 
-To deploy the Javascript version
+##### To deploy the Javascript version
 
 ```bash
 ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/node -ccl javascript

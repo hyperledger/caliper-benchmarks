@@ -2,8 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 plugins {
-    id 'com.github.johnrengelman.shadow' version '2.0.3'
-    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'application'
 }
 
 version '0.0.1'
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.1.0'
+    compile group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.2.3'
     compile group: 'org.json', name: 'json', version: '20180813'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.assertj:assertj-core:3.11.1'
@@ -51,3 +51,5 @@ test {
 tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-parameters"
 }
+
+installDist.dependsOn test

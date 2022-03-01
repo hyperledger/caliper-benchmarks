@@ -56,12 +56,8 @@ cd ..
 #
 # fabcar
 #
-# go and javascript currently work, java doesn't
-# TODO: update once java works
-if [ "$CC_SRC_LANGUAGE" != "java" ]; then
-  echo "---- Deploying fabcar $CC_SRC_PATH chaincode"
-  ./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/$CC_SRC_PATH -ccl $CC_SRC_LANGUAGE
-fi
+echo "---- Deploying fabcar $CC_SRC_PATH chaincode"
+./network.sh deployCC -ccn fabcar -ccp ../../caliper-benchmarks/src/fabric/samples/fabcar/$CC_SRC_PATH -ccl $CC_SRC_LANGUAGE
 
 #
 # marbles
@@ -106,12 +102,8 @@ fi
 #
 # fixed-asset
 #
-# only javascript works, go and java don't.
-# TODO: Update once go and java work
-if [ "$CC_SRC_LANGUAGE" = "javascript" ]; then
-  echo "---- Deploying fixed-asset $CC_SRC_PATH chaincode"
-  ./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/$CC_SRC_PATH -ccl $CC_SRC_LANGUAGE
-fi
+echo "---- Deploying fixed-asset $CC_SRC_PATH chaincode"
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/$CC_SRC_PATH -ccl $CC_SRC_LANGUAGE
 
 #
 # fixed-asset-base
@@ -132,12 +124,8 @@ popd
 
 # benchmark chaincodes whose ccn is: fabcar, marbles, simple, fixed-asset
 
-# go and javascript currently work, java doesn't
-# TODO: update once java works
-if [ "$CC_SRC_LANGUAGE" != "java" ]; then
-  echo "---- Running fabcar benchmarks"
-  npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/samples/fabric/fabcar/config.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
-fi
+echo "---- Running fabcar benchmarks"
+npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/samples/fabric/fabcar/config.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
 
 # only javascript works, go doesn't and java not available.
 # TODO: Update once go works
@@ -159,11 +147,7 @@ fi
 #   npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/scenario/smallbank/config.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
 # fi
 
-# only javascript works, go and java don't.
-# TODO: Update once go and java work
-if [ "$CC_SRC_LANGUAGE" = "javascript" ]; then
-  echo "---- Running fixed-asset benchmarks"
-  npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/test.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
-fi
+echo "---- Running fixed-asset benchmarks"
+npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/test.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
 
 echo "---- Test for $CC_SRC_PATH chaincodes and benchmarks completed successfully"
