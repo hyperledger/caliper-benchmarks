@@ -10,6 +10,8 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
+const collection = "CollectionOne"
+
 // SmartContract implementation
 type SmartContract struct {
 	contractapi.Contract
@@ -60,6 +62,43 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 	return nil
 }
 
+// CreatePrivateAsset - create a new FixedAsset in the world state
+func (s *SmartContract) CreatePrivateAsset(ctx contractapi.TransactionContextInterface, uuid string) error {
+	fmt.Println("Entering createPrivateAsset")
+	fmt.Println("Inserting asset")
+
+	// Get new asset from transient map
+	transientMap, err := ctx.GetStub().GetTransient()
+
+	if err != nil {
+		return fmt.Errorf("error getting transient: %v", err)
+	}
+
+	transientAssetJSONBytes, ok := transientMap["content"]
+
+	if !ok {
+		//log error to stdout
+		return fmt.Errorf("asset not found in the transient map input")
+	}
+
+	var fixedAsset assets.FixedAsset
+	err = json.Unmarshal(transientAssetJSONBytes, &fixedAsset)
+
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON: %v", err)
+	}
+
+	err = ctx.GetStub().PutPrivateData(collection, uuid, transientAssetJSONBytes)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Exiting createPrivateAsset")
+
+	return nil
+}
+
 // CreateAssetsFromBatch - produce assets from an array of content
 func (s *SmartContract) CreateAssetsFromBatch(ctx contractapi.TransactionContextInterface, batchArray []assets.FixedAsset) error {
 	fmt.Println("Entering createAssetsFromBatch")
@@ -101,6 +140,38 @@ func (s *SmartContract) GetAsset(ctx contractapi.TransactionContextInterface, uu
 	}
 
 	return fixedAsset, nil
+}
+
+// GetPrivateAsset - get an asset by its uuid
+func (s *SmartContract) GetPrivateAsset(ctx contractapi.TransactionContextInterface, uuid string) (*assets.FixedAsset, error) {
+	fmt.Println("Performing getPrivateData for asset with uuid: " + uuid)
+
+	bytes, err := ctx.GetStub().GetPrivateData(collection, uuid)
+
+	if err != nil {
+		fmt.Println("Error performing ctx.GetStub.GetPrivateData(): " + err.Error())
+		return nil, err
+	}
+
+	fixedAsset := new(assets.FixedAsset)
+
+	err = json.Unmarshal(bytes, fixedAsset)
+	if err == nil {
+		return fixedAsset, nil
+	}
+
+	// Workaround until a) fix node chaincode and/or go cc can create private assets in batch
+	nodeCreatedFixedAsset := new(assets.PrivateAssetContent)
+
+	err = json.Unmarshal(bytes, nodeCreatedFixedAsset)
+	if err == nil {
+		return &nodeCreatedFixedAsset.Content, nil
+	}
+
+	fmt.Println("Error performing json.Unmarshal: " + err.Error())
+	fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
+	return nil, err
+
 }
 
 // GetAssetsFromBatch - get a group of assets

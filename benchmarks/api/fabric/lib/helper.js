@@ -136,7 +136,7 @@ module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, a
 
     // -Generate all assets
     const assets = [];
-    let idx =0;
+    let idx = 0;
     for (let i=0; i<testAssetNum; i++) {
         // loop over baseAssets defined above
         const asset = {};

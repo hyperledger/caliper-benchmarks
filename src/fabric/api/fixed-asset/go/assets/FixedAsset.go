@@ -8,3 +8,7 @@ type FixedAsset struct {
 	Bytesize int    `json:"byteSize"`
 	Content  string `json:"content"`
 }
+
+type PrivateAssetContent struct {
+	Content FixedAsset `json:"content"`
+}
