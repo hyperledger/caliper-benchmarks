@@ -205,19 +205,19 @@ Ensure you are in the `fabric-samples/test-network` directory
 ##### To deploy the Go version
 
 ```bash
-./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/go -ccl go
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/go -ccl go -cccg ../../caliper-benchmarks/src/fabric/api/fixed-asset/collections-config.json
 ```
 
 ##### To deploy the Java version
 
 ```bash
-./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/java -ccl java
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/java -ccl java -cccg ../../caliper-benchmarks/src/fabric/api/fixed-asset/collections-config.json
 ```
 
 ##### To deploy the Javascript version
 
 ```bash
-./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/node -ccl javascript
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset/node -ccl javascript -cccg ../../caliper-benchmarks/src/fabric/api/fixed-asset/collections-config.json
 ```
 
 #### Benchmark execution
@@ -238,13 +238,13 @@ Ensure you are in the `fabric-samples/test-network` directory. Note here that we
 ##### To deploy the Go version
 
 ```bash
-./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/go -ccl go
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/go -ccl go -cccg ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/collections-config.json
 ```
 
 ##### To deploy the Javascript version
 
 ```bash
-./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/node -ccl javascript
+./network.sh deployCC -ccn fixed-asset -ccp ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/node -ccl javascript -cccg ../../caliper-benchmarks/src/fabric/api/fixed-asset-base/collections-config.json
 ```
 
 #### Benchmark execution
