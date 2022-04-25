@@ -33,7 +33,7 @@ const FixedAssetBase = class {
 
         let method = this[ret.fcn];
         if (!method) {
-            console.error('no function of name:' + ret.fcn + ' found');
+            console.log('no function of name:' + ret.fcn + ' found');
             throw new Error('Received unknown function ' + ret.fcn + ' invocation');
         }
         try {
@@ -276,7 +276,7 @@ const FixedAssetBase = class {
                 try {
                     jsonRes = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
-                    console.err(err);
+                    console.log(err);
                     jsonRes = res.value.value.toString('utf8');
                 }
                 allResults.push(jsonRes);

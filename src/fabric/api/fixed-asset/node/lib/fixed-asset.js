@@ -370,7 +370,7 @@ class Asset extends Contract {
                 try {
                     jsonRes = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
-                    console.err(err);
+                    console.log(err);
                     jsonRes = res.value.value.toString('utf8');
                 }
                 allResults.push(jsonRes);
