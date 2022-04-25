@@ -214,5 +214,5 @@ try {
     shim.start(new SimpleChaincode());
 } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(err);
+    console.log(err);
 }
