@@ -17,7 +17,7 @@ test:
         immediately returns a null response. This represents the fastest
         possible round trip time for an evaluateTransaction() method that does
         not touch the world state or perform any action.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -25,9 +25,9 @@ test:
           transactionLoad: 100
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: false
     - label: empty-contract-submit
       description: >-
@@ -36,7 +36,7 @@ test:
         immediately returns a null response. This represents the fastest
         possible round trip time for a submitTransaction() method that does not
         touch the world state or perform any action.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -44,9 +44,9 @@ test:
           transactionLoad: 100
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: true
     - label: empty-contract-evaluate-fixed-tps
       description: >-
@@ -55,16 +55,16 @@ test:
         immediately returns a null response. This represents the fastest
         possible round trip time for an evaluateTransaction() method that does
         not touch the world state or perform any action.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-rate
         opts:
           tps: 750
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: false
     - label: empty-contract-submit-fixed-tps
       description: >-
@@ -73,16 +73,16 @@ test:
         immediately returns a null response. This represents the fastest
         possible round trip time for a submitTransaction() method that does not
         touch the world state or perform any action.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-rate
         opts:
           tps: 350
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           consensus: true
 monitors:
     resource:

@@ -23,7 +23,7 @@ test:
         opts:
           tps: 15
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 8000
@@ -40,7 +40,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 100
@@ -57,7 +57,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
@@ -74,7 +74,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 4000
@@ -91,7 +91,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 8000
@@ -108,7 +108,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 16000
@@ -125,7 +125,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 24000
@@ -142,7 +142,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 32000
@@ -159,7 +159,7 @@ test:
           transactionLoad: 10
           startingTps: 1
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 64000

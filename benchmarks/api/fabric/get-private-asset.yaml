@@ -1,162 +1,175 @@
 test:
-  name: get-asset-batch
+  name: get-private-asset
   description: >-
     This is a duration based benchmark targeting a Hyperledger Fabric network
     using the `fixed-asset` NodeJS chaincode
     contract that is interacted with via a Fabric-SDK-Node Gateway. Each test
-    round invokes the `getAssetsFromBatch` API method. Successive rounds create
+    round invokes the 'getPrivateAsset()' API method. Successive rounds create
     and retrieve assets of larger byteSize.
   workers:
     type: local
     number: 10
   rounds:
-    - label: get-asset-batch-evaluate-1-8000
+    - label: get-private-asset-evaluate-100
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 1 UUID that matches an asset of
-        size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 100 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           create_sizes:
-            - 8000
-          assets: 8000
-          byteSize: 8000
-          batchSize: 1
+            - 100
+            - 200
+            - 500
+            - 1000
+            - 2000
+            - 5000
+            - 10000
+          assets: 1000
+          byteSize: 100
           consensus: false
-    - label: get-asset-batch-evaluate-10-8000
+    - label: get-private-asset-evaluate-200
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 10 UUIDs that each match an
-        asset of size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 200 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
-          byteSize: 8000
-          batchSize: 10
+          assets: 1000
+          byteSize: 200
           consensus: false
-    - label: get-asset-batch-evaluate-20-8000
+    - label: get-private-asset-evaluate-500
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 20 UUIDs that each match an
-        asset of size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 500 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
-          byteSize: 8000
-          batchSize: 20
+          byteSize: 500
+          assets: 1000
           consensus: false
-    - label: get-asset-batch-evaluate-30-8000
+    - label: get-private-asset-evaluate-1000
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 30 UUIDs that each match an
-        asset of size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 1000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
-          byteSize: 8000
-          batchSize: 30
+          byteSize: 1000
+          assets: 1000
           consensus: false
-    - label: get-asset-batch-evaluate-40-8000
+    - label: get-private-asset-evaluate-2000
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 40 UUIDs that each match an
-        asset of size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 2000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
-          byteSize: 8000
-          batchSize: 40
+          byteSize: 2000
+          assets: 1000
           consensus: false
-    - label: get-asset-batch-evaluate-50-8000
+    - label: get-private-asset-evaluate-5000
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 50 UUIDs that each match an
-        asset of size 8000 bytes.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 5000 bytes.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
         opts:
-          transactionLoad: 20
+          transactionLoad: 50
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
-          byteSize: 8000
-          batchSize: 50
+          byteSize: 5000
+          assets: 1000
           consensus: false
-    - label: get-asset-batch-evaluate-20-8000-fixed-tps
+    - label: get-private-asset-evaluate-10000
       description: >-
         Test an evaluateTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
-        method performs a getState on a batch of 20 UUIDs that each match an
-        asset of size 8000 bytes at a fixed TPS.
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 10000
+        bytes.
+      chaincodeID: fixed-asset
+      txDuration: 300
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 50
+      workload:
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
+        arguments:
+          chaincodeID: fixed-asset
+          noSetup: true
+          byteSize: 10000
+          assets: 1000
+          consensus: false
+    - label: get-private-asset-evaluate-8000-fixed-tps
+      description: >-
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getPrivateAsset`. This method
+        performs a getPrivateData on an item that matches an asset of size 8000 bytes
+        at a fixed TPS.
       chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-rate
         opts:
-          tps: 30
+          tps: 350
       workload:
-        module: benchmarks/api/fabric/lib/batch-get-asset.js
+        module: benchmarks/api/fabric/workloads/get-private-asset.js
         arguments:
           chaincodeID: fixed-asset
           noSetup: true
-          assets: 8000
           byteSize: 8000
-          batchSize: 20
+          assets: 1000
           consensus: false
 monitors:
     resource:

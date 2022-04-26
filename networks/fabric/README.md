@@ -196,7 +196,7 @@ The benchmarks require a Prometheus server to be running that is collecting Hype
 
 You can terminate the servers with the command `docker-compose down`.
 
-There are several benchmarks available within the `benchmarks/api/fabric/contract` directory to choose from and each file contains a description of their purpose
+There are several benchmarks available within the `benchmarks/api/fabric` directory to choose from and each file contains a description of their purpose
 
 #### Chaincode deployment
 
@@ -225,7 +225,7 @@ Ensure you are in the `fabric-samples/test-network` directory
 Ensure you are in the `caliper-benchmarks` directory. As there a several benchmarks to choose from the example below just shows the `get-asset.yaml` benchmark invocation
 
 ```bash
-npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/contract/get-asset.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
+npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/get-asset.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
 ```
 ### fixed-asset-base
 
@@ -252,5 +252,5 @@ Ensure you are in the `fabric-samples/test-network` directory. Note here that we
 Ensure you are in the `caliper-benchmarks` directory. As there a several benchmarks to choose from the example below just shows the `get-asset.yaml` benchmark invocation
 
 ```bash
-npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/contract/get-asset.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
+npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/fabric/test-network.yaml --caliper-benchconfig benchmarks/api/fabric/get-asset.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled
 ```

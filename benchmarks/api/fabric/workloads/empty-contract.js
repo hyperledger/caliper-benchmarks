@@ -4,23 +4,20 @@
 
 'use strict';
 
-const helper = require('./helper');
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
  * Workload module for the benchmark round.
  */
-class CreatePrivateAssetWorkload extends WorkloadModuleBase {
+class EmptyContractWorkload extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
     constructor() {
         super();
         this.txIndex = 0;
-        this.chaincodeID = 'fixed-asset';
-        this.assets = [];
-        this.byteSize = 0;
+        this.chaincodeID = '';
         this.consensus = false;
     }
 
@@ -38,19 +35,8 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         const args = this.roundArguments;
-        this.assets = args.assets ? parseInt(args.assets) : 0;
-
-        this.byteSize = args.byteSize;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
         this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
-
-        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
-        if (noSetup) {
-            console.log('   -> Skipping asset creation stage');
-        } else {
-            console.log('   -> Entering asset creation stage');
-            await helper.addBatchAssets(this.sutAdapter, this.sutContext, this.workerIndex, args, true);
-            console.log('   -> Test asset creation complete');
-        }
     }
 
     /**
@@ -58,16 +44,12 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        // Create argument array [functionName(String), otherArgs(String)]
-        const uuid = Math.floor(Math.random() * Math.floor(this.assets));
-        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
-
         const args = {
             contractId: this.chaincodeID,
-            contractFunction: 'getPrivateAsset',
-            contractArguments: [itemKey]
+            contractFunction: 'emptyContract',
+            contractArguments: []
         };
-
+        
         if (this.consensus) {
             args.readOnly = false;
         } else {
@@ -83,7 +65,7 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new CreatePrivateAssetWorkload();
+    return new EmptyContractWorkload();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

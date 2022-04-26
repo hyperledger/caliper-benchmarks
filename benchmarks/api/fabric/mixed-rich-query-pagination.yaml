@@ -17,7 +17,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 10 and
         query string that matches all assets created by the calling client. Each
         returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -25,9 +25,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
@@ -44,7 +44,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 20 and
         query string that matches all assets created by the calling client. Each
         returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -52,9 +52,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
@@ -71,7 +71,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 50 and
         query string that matches all assets created by the calling client. Each
         returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -79,9 +79,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
@@ -98,7 +98,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 100
         and query string that matches all assets created by the calling client.
         Each returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -106,9 +106,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
@@ -125,7 +125,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 200
         and query string that matches all assets created by the calling client.
         Each returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -133,9 +133,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
@@ -152,7 +152,7 @@ test:
         method performs a paginated rich query, with a passed pagesize of 500
         and query string that matches all assets created by the calling client.
         Each returned asset is of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txDuration: 300
       rateControl:
         type: fixed-load
@@ -160,9 +160,9 @@ test:
           transactionLoad: 5
           startingTps: 5
       workload:
-        module: benchmarks/api/fabric/lib/mixed-rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000

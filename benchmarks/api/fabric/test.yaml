@@ -14,7 +14,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: false
@@ -26,7 +26,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: true
@@ -38,7 +38,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/create-asset.js
+        module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
@@ -50,7 +50,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/get-asset.js
+        module: benchmarks/api/fabric/workloads/get-asset.js
         arguments:
           chaincodeID: fixed-asset
           create_sizes:
@@ -66,7 +66,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/get-asset.js
+        module: benchmarks/api/fabric/workloads/get-asset.js
         arguments:
           chaincodeID: fixed-asset
           create_sizes:
@@ -82,7 +82,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/rich-query-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
@@ -98,7 +98,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/rich-query-asset.js
+        module: benchmarks/api/fabric/workloads/rich-query-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
@@ -114,7 +114,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/range-query-asset.js
+        module: benchmarks/api/fabric/workloads/range-query-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
@@ -132,7 +132,7 @@ test:
         opts:
           tps: 2
       workload:
-        module: benchmarks/api/fabric/lib/range-query-asset.js
+        module: benchmarks/api/fabric/workloads/range-query-asset.js
         arguments:
           chaincodeID: fixed-asset
           byteSize: 1000
