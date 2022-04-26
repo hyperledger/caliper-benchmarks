@@ -21,8 +21,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"strings"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-	pb "github.com/hyperledger/fabric/protos/peer"
+	"github.com/hyperledger/fabric-chaincode-go/shim"
+	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
 
 const ERROR_UNKNOWN_FUNC = "Unknown function"
