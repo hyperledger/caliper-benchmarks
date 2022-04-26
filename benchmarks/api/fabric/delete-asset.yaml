@@ -1,5 +1,5 @@
 test:
-  name: delete-asset
+  name: delete-asset-ramp
   description: >-
     This is a duration based benchmark targeting a Hyperledger Fabric network
     using the `fixed-asset` NodeJS chaincode
@@ -16,7 +16,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 100
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -24,16 +24,16 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 100
             - 1000
-            - 2000
             - 4000
             - 8000
             - 16000
+            - 24000
             - 32000
             - 64000
           assets: 4000
@@ -45,7 +45,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 1000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -53,33 +53,12 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           assets: 4000
           byteSize: 1000
-          consensus: true
-    - label: delete-asset-2000
-      description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAsset`. This method
-        performs a deleteState on an item that matches an asset of size 2000
-        bytes.
-      chaincodeID: fixed-asset-base
-      txNumber: 4000
-      rateControl:
-        type: fixed-load
-        opts:
-          transactionLoad: 20
-          startingTps: 10
-      workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
-        arguments:
-          chaincodeID: fixed-asset-base
-          noSetup: true
-          byteSize: 2000
-          assets: 4000
           consensus: true
     - label: delete-asset-4000
       description: >-
@@ -87,7 +66,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 4000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -95,9 +74,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 4000
           assets: 4000
@@ -108,7 +87,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 8000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -116,9 +95,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 8000
           assets: 4000
@@ -129,7 +108,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 16000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -137,11 +116,32 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 16000
+          assets: 4000
+          consensus: true
+    - label: delete-asset-24000
+      description: >-
+        Test a submitTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `deleteAsset`. This method
+        performs a deleteState on an item that matches an asset of size 24000
+        bytes.
+      chaincodeID: fixed-asset
+      txNumber: 4000
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/delete-asset.js
+        arguments:
+          chaincodeID: fixed-asset
+          noSetup: true
+          byteSize: 24000
           assets: 4000
           consensus: true
     - label: delete-asset-32000
@@ -150,7 +150,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 32000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -158,9 +158,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 32000
           assets: 4000
@@ -171,7 +171,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 64000
         bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -179,9 +179,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 64000
           assets: 4000
@@ -192,16 +192,16 @@ test:
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 8000
         bytes at a fixed TPS.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-rate
         opts:
           tps: 350
       workload:
-        module: benchmarks/api/fabric/lib/delete-asset.js
+        module: benchmarks/api/fabric/workloads/delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           noSetup: true
           byteSize: 8000
           assets: 4000

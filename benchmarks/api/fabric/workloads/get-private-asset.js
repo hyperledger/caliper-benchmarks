@@ -4,9 +4,7 @@
 
 'use strict';
 
-const bytes = (s) => {
-    return ~-encodeURI(s).split(/%..|./).length;
-};
+const helper = require('./helper');
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
@@ -20,9 +18,10 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
     constructor() {
         super();
         this.txIndex = 0;
-        this.chaincodeID = 'fixed-asset';
-        this.asset = {};
+        this.chaincodeID = '';
+        this.assets = [];
         this.byteSize = 0;
+        this.consensus = false;
     }
 
     /**
@@ -39,17 +38,20 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         const args = this.roundArguments;
+        this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
+        this.assets = args.assets ? parseInt(args.assets) : 0;
+
         this.byteSize = args.byteSize;
+        this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
 
-        this.asset = {
-            docType: this.chaincodeID,
-            content: '',
-            creator: 'client' + this.workerIndex,
-            byteSize: this.byteSize
+        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
+        if (noSetup) {
+            console.log('   -> Skipping asset creation stage');
+        } else {
+            console.log('   -> Entering asset creation stage');
+            await helper.addBatchAssets(this.sutAdapter, this.sutContext, this.workerIndex, args, true);
+            console.log('   -> Test asset creation complete');
         }
-
-        const paddingSize = this.byteSize - bytes(JSON.stringify(this.asset));
-        this.asset.content = 'B'.repeat(paddingSize);
     }
 
     /**
@@ -57,18 +59,22 @@ class CreatePrivateAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
-        this.asset.uuid = uuid;
-        this.txIndex++;
+        // Create argument array [functionName(String), otherArgs(String)]
+        const uuid = Math.floor(Math.random() * Math.floor(this.assets));
+        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
 
         const args = {
             contractId: this.chaincodeID,
-            contractFunction: 'createPrivateAsset',
-            contractArguments: [uuid],
-            transientMap: {content: JSON.stringify(this.asset)},
-            readOnly: false
+            contractFunction: 'getPrivateAsset',
+            contractArguments: [itemKey]
         };
-    
+
+        if (this.consensus) {
+            args.readOnly = false;
+        } else {
+            args.readOnly = true;
+        }
+
         await this.sutAdapter.sendRequests(args);
     }
 }

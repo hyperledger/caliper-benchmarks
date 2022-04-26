@@ -17,7 +17,7 @@ class GetAssetWorkload extends WorkloadModuleBase {
      */
     constructor() {
         super();
-        this.chaincodeID = 'fixed-asset';
+        this.chaincodeID = '';
         this.assets = [];
         this.byteSize = 0;
         this.consensus = false;

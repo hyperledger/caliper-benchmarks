@@ -24,7 +24,7 @@ test:
         opts:
           transactionLoad: 100
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: false
@@ -42,7 +42,7 @@ test:
         opts:
           transactionLoad: 100
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: true
@@ -60,7 +60,7 @@ test:
         opts:
           tps: 750
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: false
@@ -78,7 +78,7 @@ test:
         opts:
           tps: 350
       workload:
-        module: benchmarks/api/fabric/lib/empty-contract.js
+        module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
           chaincodeID: fixed-asset
           consensus: true

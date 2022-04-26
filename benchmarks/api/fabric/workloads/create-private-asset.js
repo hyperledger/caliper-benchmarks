@@ -4,21 +4,25 @@
 
 'use strict';
 
+const bytes = (s) => {
+    return ~-encodeURI(s).split(/%..|./).length;
+};
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
  * Workload module for the benchmark round.
  */
-class EmptyContractWorkload extends WorkloadModuleBase {
+class CreatePrivateAssetWorkload extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
     constructor() {
         super();
         this.txIndex = 0;
-        this.chaincodeID = 'fixed-asset';
-        this.consensus = false;
+        this.chaincodeID = '';
+        this.asset = {};
+        this.byteSize = 0;
     }
 
     /**
@@ -36,7 +40,17 @@ class EmptyContractWorkload extends WorkloadModuleBase {
 
         const args = this.roundArguments;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-        this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
+        this.byteSize = args.byteSize;
+
+        this.asset = {
+            docType: this.chaincodeID,
+            content: '',
+            creator: 'client' + this.workerIndex,
+            byteSize: this.byteSize
+        }
+
+        const paddingSize = this.byteSize - bytes(JSON.stringify(this.asset));
+        this.asset.content = 'B'.repeat(paddingSize);
     }
 
     /**
@@ -44,18 +58,18 @@ class EmptyContractWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
+        const uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
+        this.asset.uuid = uuid;
+        this.txIndex++;
+
         const args = {
             contractId: this.chaincodeID,
-            contractFunction: 'emptyContract',
-            contractArguments: []
+            contractFunction: 'createPrivateAsset',
+            contractArguments: [uuid],
+            transientMap: {content: JSON.stringify(this.asset)},
+            readOnly: false
         };
-        
-        if (this.consensus) {
-            args.readOnly = false;
-        } else {
-            args.readOnly = true;
-        }
-
+    
         await this.sutAdapter.sendRequests(args);
     }
 }
@@ -65,7 +79,7 @@ class EmptyContractWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new EmptyContractWorkload();
+    return new CreatePrivateAssetWorkload();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

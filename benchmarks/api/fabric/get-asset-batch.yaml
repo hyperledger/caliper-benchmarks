@@ -1,175 +1,163 @@
 test:
-  name: delete-asset-batch
+  name: get-asset-batch
   description: >-
     This is a duration based benchmark targeting a Hyperledger Fabric network
     using the `fixed-asset` NodeJS chaincode
     contract that is interacted with via a Fabric-SDK-Node Gateway. Each test
-    round invokes the `deleteAssetsFromBatch` API method. Successive rounds
-    delete a-priori created assets of larger byte size.
+    round invokes the `getAssetsFromBatch` API method. Successive rounds create
+    and retrieve assets of larger byteSize.
   workers:
     type: local
     number: 10
   rounds:
-    - label: delete-asset-batch-1-8000
+    - label: get-asset-batch-evaluate-1-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 1 UUID that matches an asset
-        of size 8000 bytes.
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 1 UUID that matches an asset of
+        size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 4000
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
           create_sizes:
             - 8000
-          assets: 4000
+          assets: 8000
           byteSize: 8000
           batchSize: 1
-          consensus: true
-    - label: delete-asset-batch-10-8000
+          consensus: false
+    - label: get-asset-batch-evaluate-10-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 10 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 10 UUIDs that each match an
         asset of size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 4000
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 40000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 10
-          consensus: true
-    - label: delete-asset-batch-20-8000
+          consensus: false
+    - label: get-asset-batch-evaluate-20-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 20 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 20 UUIDs that each match an
         asset of size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 4000
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 80000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 20
-          consensus: true
-    - label: delete-asset-batch-30-8000
+          consensus: false
+    - label: get-asset-batch-evaluate-30-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 30 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 30 UUIDs that each match an
         asset of size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 1000
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 30000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 30
-          consensus: true
-    - label: delete-asset-batch-40-8000
+          consensus: false
+    - label: get-asset-batch-evaluate-40-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 40 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 40 UUIDs that each match an
         asset of size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 1000
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 40000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 40
-          consensus: true
-    - label: delete-asset-batch-50-8000
+          consensus: false
+    - label: get-asset-batch-evaluate-50-8000
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 50 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 50 UUIDs that each match an
         asset of size 8000 bytes.
       chaincodeID: fixed-asset
-      txNumber: 500
+      txDuration: 300
       rateControl:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 25000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 50
-          consensus: true
-    - label: delete-asset-batch-20-8000-fixed-tps
+          consensus: false
+    - label: get-asset-batch-evaluate-20-8000-fixed-tps
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
-        `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
-        method performs a deleteState on a batch of 20 UUIDs that each match an
+        Test an evaluateTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `getAssetsFromBatch`. This
+        method performs a getState on a batch of 20 UUIDs that each match an
         asset of size 8000 bytes at a fixed TPS.
       chaincodeID: fixed-asset
-      txNumber: 4000
+      txDuration: 300
       rateControl:
         type: fixed-rate
         opts:
           tps: 30
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-get-asset.js
         arguments:
           chaincodeID: fixed-asset
-          create_sizes:
-            - 8000
-          assets: 80000
+          noSetup: true
+          assets: 8000
           byteSize: 8000
           batchSize: 20
-          consensus: true
+          consensus: false
 monitors:
     resource:
     - module: prometheus

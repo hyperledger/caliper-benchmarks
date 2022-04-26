@@ -16,7 +16,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 1 UUID that matches an asset
         of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -24,9 +24,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 4000
@@ -39,7 +39,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 10 UUIDs that each match an
         asset of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -47,9 +47,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 40000
@@ -62,7 +62,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 20 UUIDs that each match an
         asset of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-load
@@ -70,9 +70,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 80000
@@ -85,7 +85,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 30 UUIDs that each match an
         asset of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 1000
       rateControl:
         type: fixed-load
@@ -93,9 +93,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 30000
@@ -108,7 +108,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 40 UUIDs that each match an
         asset of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 1000
       rateControl:
         type: fixed-load
@@ -116,9 +116,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 40000
@@ -131,7 +131,7 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 50 UUIDs that each match an
         asset of size 8000 bytes.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 500
       rateControl:
         type: fixed-load
@@ -139,9 +139,9 @@ test:
           transactionLoad: 20
           startingTps: 10
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 25000
@@ -154,16 +154,16 @@ test:
         `fixed-asset` Smart Contract method named `deleteAssetsFromBatch`. This
         method performs a deleteState on a batch of 20 UUIDs that each match an
         asset of size 8000 bytes at a fixed TPS.
-      chaincodeID: fixed-asset-base
+      chaincodeID: fixed-asset
       txNumber: 4000
       rateControl:
         type: fixed-rate
         opts:
           tps: 30
       workload:
-        module: benchmarks/api/fabric/lib/batch-delete-asset.js
+        module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:
-          chaincodeID: fixed-asset-base
+          chaincodeID: fixed-asset
           create_sizes:
             - 8000
           assets: 80000
