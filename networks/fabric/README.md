@@ -96,7 +96,6 @@ Marbles comes in both rich query and no rich query flavours and has has chaincod
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-**THE GO VERSIONS CURRENTLY DOES NOT DEPLOY**
 ##### To deploy the Go with rich queries version
 
 ```bash
@@ -137,10 +136,7 @@ Simple has chaincode for Go, Javascript. It doesn't make use of rich queries so 
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-**THE GO VERSION CURRENTLY DOES NOT DEPLOY**
 ##### To deploy the Go version
-
-
 
 ```bash
 ./network.sh deployCC -ccn simple -ccp ../../caliper-benchmarks/src/fabric/scenario/simple/go -ccl go
@@ -168,9 +164,7 @@ Smallbank has chaincode for Go only. It doesn't make use of rich queries so can 
 
 Ensure you are in the `fabric-samples/test-network` directory
 
-**THE GO VERSION CURRENTLY DOES NOT DEPLOY**
 ##### To deploy the Go version
-
 
 ```bash
 ./network.sh deployCC -ccn smallbank -ccp ../../caliper-benchmarks/src/fabric/scenario/smallbank/go -ccl go
