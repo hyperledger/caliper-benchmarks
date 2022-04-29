@@ -41,7 +41,7 @@ class OperationBase extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         this.assertConnectorType();
-        this.assertSetting('accounts');
+        this.assertSetting('accountsGenerated');
         this.assertSetting('txnPerBatch');
 
         if(this.roundArguments.accountsGenerated <= 3) {
