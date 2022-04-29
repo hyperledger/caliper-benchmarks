@@ -1,5 +1,5 @@
 smallbankArgs: &smallbank-args
-  accounts: 100
+  accountsGenerated: 100
   txnPerBatch: 1
 
 rateControl: &rate
