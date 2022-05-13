@@ -37,7 +37,7 @@ npx caliper --version
 # Install latest fabric test network
 pushd ..
 echo "---- Installing fabric samples"
-curl -sSL https://bit.ly/2ysbOFE | bash -s
+curl -sSL -k https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/bootstrap.sh | bash -s
 
 # Start test-network
 echo "---- Starting test-network, prometheus and grafana"

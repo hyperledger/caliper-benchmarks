@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cc-env: [go,java,node]
+        cc-env: [go, node]
     steps:
     - uses: actions/checkout@v2
 # TODO: add explicit go version rather than rely on implicit go version
