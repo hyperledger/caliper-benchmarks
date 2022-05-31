@@ -25,7 +25,7 @@ func (contract *FixedAssetContract) EmptyContract(ctx utils.Context) string {
 }
 
 // CreateAsset - create a new FixedAsset in the world state
-func (contract *FixedAssetContract) CreateAsset(ctx utils.Context, content string) error {
+func (contract *FixedAssetContract) CreateAsset(ctx utils.Context, uuid string, content string) error {
 	fmt.Println("Entering createAsset")
 	fmt.Println("Inserting asset")
 
@@ -39,7 +39,7 @@ func (contract *FixedAssetContract) CreateAsset(ctx utils.Context, content strin
 
 	bytes, _ := json.Marshal(fixedAsset)
 
-	err = ctx.GetStub().PutState(fixedAsset.UUID, bytes)
+	err = ctx.GetStub().PutState(uuid, bytes)
 
 	if err != nil {
 		return err

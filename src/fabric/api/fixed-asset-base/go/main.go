@@ -36,10 +36,10 @@ func (t *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	case "emptycontract":
 		return shim.Success([]byte(fac.EmptyContract(ctx)))
 	case "createasset":
-		err := fac.CreateAsset(ctx, args[0])
+		err := fac.CreateAsset(ctx, args[0], args[1])
 
 		if err != nil {
-			shim.Error(err.Error())
+			return shim.Error(err.Error())
 		}
 
 		return shim.Success(nil)
