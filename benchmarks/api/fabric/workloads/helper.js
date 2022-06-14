@@ -24,6 +24,21 @@ module.exports.retrieveRandomAssetIds = function(assetNumber) {
 }
 
 /**
+ * Retrieve an array containing randomized UUIDs from range
+ * @param {number} assetNumber number of random asset uuids required to be in a return array
+ * @param {number} startRange beginning of range from which get the number of random numbers
+ * @param {number} finishRange end of range from which get the number of random numbers
+ */
+ module.exports.retrieveRandomAssetIdsFromRange = function(assetNumber, startRange, finishRange){
+    const difference = finishRange - startRange;
+    const uuids = [];
+    for (let i = 0; i < assetNumber; i++) {
+        uuids[i] = startRange + Math.floor(Math.random() * difference);
+    }
+    return uuids;
+ }
+
+/**
  * Insert asset batches
  * @param {Object} bcObj the BC object
  * @param {Object} context the BC context

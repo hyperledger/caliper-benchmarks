@@ -1,0 +1,116 @@
+test:
+  name: composite-transaction
+  description: >-
+    This is a duration based benchmark targeting a Hyperledger Fabric network
+    using the `fixed-asset` NodeJS chaincode
+    contract that is interacted with via a Fabric-SDK-Node Gateway. Each test
+    round reads x number of existing keys snd writes y number to existing keys for a specific size. Successive  a-priori created assets of larger byte size.
+  workers:
+    type: local
+    number: 10
+  rounds:
+    - label: create-keys-100
+      description: >-
+        Test a submitTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which
+        inserts 8000 keys in batches of 50 assets of size 100k bytes into the World State
+      chaincodeID: fixed-asset
+      txNumber: 1
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/compositeTx/preload.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          batchSize: 50
+    - label: composite-tx-100
+      description: >-
+        Test a submitTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `deleteAsset`. This method
+        performs a deleteState on an item that matches an asset of size 100
+        bytes.
+      chaincodeID: fixed-asset
+      txNumber: 2000
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/compositeTx/read-write-asset.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          read: 2
+          write:
+            number: 2
+            previouslyRead: read
+    - label: delete-keys-100
+      description: >-
+        Test a submitTransaction() Gateway method against the NodeJS
+        `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which
+        inserts 8000 keys in batches of 50 assets of size 100k bytes into the World State
+      chaincodeID: fixed-asset
+      txNumber: 1
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/compositeTx/clean.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          batchSize: 50
+monitors:
+    resource:
+    - module: prometheus
+      options:
+        url: "http://localhost:9090"
+        metrics:
+          include: [dev-.*, couch, peer, orderer]
+          queries:
+          - name: Avg Memory (MB)
+            query: 'sum(container_memory_rss{name=~".+"}) by (name)'
+            step: 10
+            label: name
+            statistic: avg
+            multiplier: 0.000001
+          - name:   CPU (%)
+            query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: avg
+            multiplier: 100
+          - name: Network In (MB)
+            query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Network Out (MB)
+            query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Disc Write (MB)
+            query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Disc Read (MB)
+            query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001

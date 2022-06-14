@@ -4,23 +4,26 @@
 
 'use strict';
 
+const bytes = (s) => {
+    return ~-encodeURI(s).split(/%..|./).length;
+};
 
-const helper = require('./helper');
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 /**
  * Workload module for the benchmark round.
  */
-class GetAssetWorkload extends WorkloadModuleBase {
+class Clean extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
     constructor() {
         super();
+        this.txIndex = 0;
         this.chaincodeID = '';
-        this.assets = [];
+        this.assetsPerWorker = [];
+        this.asset = {};
         this.byteSize = 0;
-        this.consensus = false;
     }
 
     /**
@@ -37,20 +40,17 @@ class GetAssetWorkload extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         const args = this.roundArguments;
+        this.keys = args.assets ? parseInt(args.assets) : 0;
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
-        this.assets = args.assets ? parseInt(args.assets) : 0;
+        this.byteSize = args.byteSize ? args.byteSize : 100;
         this.batchSize = args.batchSize ? parseInt(args.batchSize) : 1;
-        this.byteSize = args.byteSize;
-        this.consensus = args.consensus ? (args.consensus === 'true' || args.consensus === true): false;
-
-        const noSetup = args.noSetup ? (args.noSetup === 'true' || args.noSetup === true) : false;
-        if (noSetup) {
-            console.log('   -> Skipping asset creation stage');
-        } else {
-            console.log('   -> Entering asset creation stage');
-            await helper.addBatchAssets(this.sutAdapter, this.sutContext, this.workerIndex, args);
-            console.log('   -> Test asset creation complete');
+        const assetNumber = args.assets ? parseInt(args.assets) : 2
+        this.assetsPerWorker = Math.floor(assetNumber / totalWorkers);
+        if (this.workerIndex == 0){
+            const reminder = assetNumber % totalWorkers;
+            this.assetsPerWorker += reminder;
         }
+        this.batchesNum = Math.ceil(this.assetsPerWorker/this.batchSize);
     }
 
     /**
@@ -58,30 +58,34 @@ class GetAssetWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        const uuid = Math.floor(Math.random() * Math.floor(this.assets));
-        const itemKey = 'client' + this.workerIndex + '_' + this.byteSize + '_' + uuid;
-        const args = {
-            contractId: this.chaincodeID,
-            contractFunction: 'getAsset',
-            contractArguments: [itemKey]
-        };
-        
-        if (this.consensus) {
-            args.readOnly = false;
-        } else {
-            args.readOnly = true;
-        }
+        for(let i = 0; (i < this.batchesNum) && (this.txIndex < this.assetsPerWorker); i++){
+            const uuids = [];
+            for (let i = 0; i < this.batchSize; i++) {
+                const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
+                uuids.push(key);
+                this.txIndex++;
+            }
 
-        await this.sutAdapter.sendRequests(args);
+            const batch = {};
+            batch.uuids = uuids;
+
+            const args = {
+                contractId: this.chaincodeID,
+                contractFunction: 'deleteAssetsFromBatch',
+                contractArguments: [JSON.stringify(batch)],
+                readOnly: false
+            };
+
+            await this.sutAdapter.sendRequests(args);
+        }
     }
 }
-
 /**
  * Create a new instance of the workload module.
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new GetAssetWorkload();
+    return new Clean();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

@@ -7,6 +7,8 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
+const { randomBytes } = require('crypto');
+const buf = randomBytes(32)
 
 const logLevel = process.env.CORE_CHAINCODE_LOGGING_LEVEL;
 const isVerbose = (logLevel && (logLevel.toUpperCase() === 'INFO' || logLevel.toUpperCase() === 'DEBUG' ));
@@ -193,6 +195,48 @@ class Asset extends Contract {
             }            
             return assetAsBytes;
         }
+    }
+
+    /**
+     * Do y read and x write
+     * - directly returns the string
+     * @param {Context} ctx the context
+     * @param {String} readUuids the uuid to query
+     * @param {String} writeBatch the content to persist within an array
+     * @returns the result of the query
+     */
+    async readWriteAssets(ctx, readUuids, writeUiids) {
+        if (isVerbose) {
+            console.log('Entering compositeTx()');
+        }
+
+        const items = [];
+        const rUuids = JSON.parse(readUuids);
+        for (const uuid of rUuids) {
+            const assetAsBytes = await ctx.stub.getState(uuid);
+            if (!assetAsBytes || assetAsBytes.length === 0) {
+                throw new Error(`Asset with uuid ${uuid} was not successfully retrieved`);
+            } else {
+                items.push(assetAsBytes);
+            }
+        }
+
+        const assetTemplate = JSON.parse(items[0].toString());
+        const byteSize = assetTemplate.byteSize;
+        assetTemplate.content = '';
+        const wUiids = JSON.parse(writeUiids);
+        for (let uuid in wUiids) {
+            assetTemplate.uuid = '';
+            const paddingSize = byteSize - ~-encodeURI(assetTemplate).split(/%..|./).length;
+            assetTemplate.content = Math.random().toString(36).substring(2, paddingSize+2);
+            await ctx.stub.putState(uuid, Buffer.from(JSON.stringify(assetTemplate)));
+        }
+
+        if (isVerbose) {
+            console.log(`Exiting compositeTx(), returning result set of size: ${items.length}`);
+        }
+
+        return items;
     }
 
     /**
