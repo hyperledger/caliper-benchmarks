@@ -5,6 +5,8 @@ import (
 	"fabric/api/fixed-asset/go/assets"
 	"fabric/api/fixed-asset/go/utils"
 	"fmt"
+	"strings"
+	"unsafe"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
@@ -257,6 +259,48 @@ func (s *SmartContract) PaginatedRangeQuery(ctx contractapi.TransactionContextIn
 		Results:          results,
 		ResponseMetadata: respMetadata,
 	}, nil
+}
+
+//Do y read and x write - directly returns the string
+func (s *SmartContract) ReadWriteAssets(ctx contractapi.TransactionContextInterface, readUuids []string, writeUiids []string, letter string) error {
+	fmt.Println("Entering ReadWriteAssets()")
+
+	var fixedAsset *assets.FixedAsset
+	for _, uuid := range readUuids {
+		bytes, err := ctx.GetStub().GetState(uuid)
+
+		if err != nil {
+			fmt.Println("Error performing GetState: " + err.Error())
+			return err
+		}
+
+		fixedAsset = new(assets.FixedAsset)
+
+		err = json.Unmarshal(bytes, fixedAsset)
+
+		if err != nil {
+			fmt.Println("Error performing json.Unmarshal: " + err.Error())
+			fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
+			return err
+		}
+	}
+
+	byteSize := fixedAsset.Bytesize
+	for _, uuid := range writeUiids {
+		fixedAsset.UUID = uuid
+		paddingSize := byteSize - int(unsafe.Sizeof(fixedAsset))
+		fixedAsset.Content = strings.Repeat(letter, paddingSize)
+		bytes, _ := json.Marshal(fixedAsset)
+		err := ctx.GetStub().PutState(uuid, bytes)
+		if err != nil {
+			fmt.Println("Error performing PutState: " + err.Error())
+			return err
+		}
+	}
+
+	fmt.Println("Exiting ReadWriteAssets()")
+
+	return nil
 }
 
 func getAllResults(iterator shim.StateQueryIteratorInterface) (*[]*assets.FixedAsset, error) {

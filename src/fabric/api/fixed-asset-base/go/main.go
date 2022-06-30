@@ -123,6 +123,19 @@ func (t *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		}
 
 		return shim.Success(bytes)
+	case "readwriteassets":
+		ruuids := []string{}
+		err := json.Unmarshal([]byte(args[0]), &ruuids)
+		wuuids := []string{}
+		err = json.Unmarshal([]byte(args[1]), &wuuids)
+
+		err = fac.ReadWriteAssets(ctx, ruuids, wuuids, args[2])
+
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		return shim.Success(nil)
 	default:
 		return shim.Error("No such function " + funcName)
 	}
