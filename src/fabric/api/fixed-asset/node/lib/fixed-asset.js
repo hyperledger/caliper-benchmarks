@@ -258,17 +258,16 @@ class Asset extends Contract {
     }
 
     /**
-     * Get all Assets from the registry using a passed array of UUIDs
+     * Delete a batch of assets from the registry
      * @param {Context} ctx the context
      * @param {String} batch the array containing all UUIDs to query
-     * @returns the result of the query
      */
     async deleteAssetsFromBatch(ctx, batch) {
         if (isVerbose) {
             console.log('Entering deleteAssetsFromBatch()');
         }
-        const items = [];
-        const uuids = JSON.parse(batch).uuids;
+
+        const uuids = JSON.parse(batch);
         for (let i in uuids) {
             const uuid = uuids[i];
             console.log(`deleting UUID ${uuid}`);

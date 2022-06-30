@@ -69,8 +69,7 @@ class BatchDeleteAssetWorkload extends WorkloadModuleBase {
             uuids.push(key);
         }
 
-        const batch = {};
-        batch.uuids = uuids;
+        const batch = uuids;
 
         const args = {
             contractId: this.chaincodeID,

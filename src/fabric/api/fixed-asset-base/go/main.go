@@ -123,6 +123,23 @@ func (t *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		}
 
 		return shim.Success(bytes)
+	case "deleteasset":
+		err := fac.DeleteAsset(ctx, args[0])
+
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		return shim.Success(nil)
+	case "deleteassetsfrombatch":
+		uuids := []string{}
+		err := json.Unmarshal([]byte(args[0]), &uuids)
+		err = fac.DeleteAssetsFromBatch(ctx, uuids)
+
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		return shim.Success(nil)
 	case "readwriteassets":
 		ruuids := []string{}
 		err := json.Unmarshal([]byte(args[0]), &ruuids)
