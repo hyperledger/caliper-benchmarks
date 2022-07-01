@@ -7,7 +7,6 @@ test:
     round invokes the 'deleteAsset' method. Successive rounds delete a-priori
     created assets of larger byteSize.
   workers:
-    type: local
     number: 5
   rounds:
     - label: delete-asset-100

@@ -7,7 +7,6 @@ test:
     round invokes the `createAsset` method, with successive rounds increasing
     the byteSize of the asset added into the world state database.
   workers:
-    type: local
     number: 5
   rounds:
     - label: create-asset-8000-fixed-tps

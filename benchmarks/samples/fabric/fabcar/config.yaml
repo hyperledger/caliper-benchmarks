@@ -1,6 +1,5 @@
 test:
   workers:
-    type: local
     number: 5
   rounds:
     - label: Create a car.

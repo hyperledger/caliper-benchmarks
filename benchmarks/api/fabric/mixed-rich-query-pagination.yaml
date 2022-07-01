@@ -7,7 +7,6 @@ test:
     round invokes the 'pageinatedRichQuery' chaincode method.  Successive rounds
     increase the pagesize of retrieved assets.
   workers:
-    type: local
     number: 4
   rounds:
     - label: mixed-rich-query-evaluate-10

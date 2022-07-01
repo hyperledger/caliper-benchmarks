@@ -7,7 +7,6 @@ test:
     round flexes the `emptyContract` method. Rounds run for evaluate and submit
     Gateway routes.
   workers:
-    type: local
     number: 10
   rounds:
     - label: empty-contract-evaluate

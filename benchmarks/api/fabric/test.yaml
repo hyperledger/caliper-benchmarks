@@ -3,7 +3,6 @@ test:
   description: >-
     This is a test yaml for the existing fixed-asset benchmarks
   workers:
-    type: local
     number: 2
   rounds:
     - label: empty-contract-evaluate

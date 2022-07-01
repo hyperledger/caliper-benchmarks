@@ -8,7 +8,6 @@ test:
     increasing the byteSize of the asset added into the Private Data 
     Collection of the authorized organization.
   workers:
-    type: local
     number: 5
   rounds:
     - label: create-private-asset-8000-fixed-tps

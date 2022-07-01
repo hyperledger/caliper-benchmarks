@@ -7,7 +7,6 @@ test:
     round invokes the `deleteAssetsFromBatch` API method. Successive rounds
     delete a-priori created assets of larger byte size.
   workers:
-    type: local
     number: 10
   rounds:
     - label: delete-asset-batch-1-8000

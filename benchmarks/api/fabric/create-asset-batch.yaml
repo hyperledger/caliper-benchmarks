@@ -8,7 +8,6 @@ test:
     increasing the batch size of the assets being added into the world state
     database.
   workers:
-    type: local
     number: 4
   rounds:
     - label: create-asset-batch-20-8000-fixed-tps

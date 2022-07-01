@@ -7,7 +7,6 @@ test:
     round flexes a single chaincode method, and includes a null-operation to act
     as a performance cost baseline.
   workers:
-    type: local
     number: 5
   rounds:
     - label: empty-contract-evaluate

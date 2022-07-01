@@ -2,7 +2,6 @@ test:
   name: Hello World
   description: This is a helloworld benchmark of FISCO BCOS for caliper
   workers:
-    type: local
     number: 1
   rounds:
     - label: get
