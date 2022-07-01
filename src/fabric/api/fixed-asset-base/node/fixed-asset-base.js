@@ -203,16 +203,15 @@ const FixedAssetBase = class {
     }
 
     /**
-     * Get all Assets from the registry using a passed array of UUIDs
+     * Delete a batch of assets from the registry
      * @param {*} stub 
-     * @param {*} args 
-     * @returns the result of the query
+     * @param {*} args
      */
     async deleteAssetsFromBatch(stub, args) {
         if (isVerbose) {
             console.log('Entering deleteAssetsFromBatch()');
         }
-        const uuids = JSON.parse(args[0]).uuids;
+        const uuids = JSON.parse(args[0]);
         for (let i in uuids) {
             const uuid = uuids[i];
             console.log(`deleting UUID ${uuid}`);

@@ -206,6 +206,40 @@ func (s *SmartContract) GetAssetsFromBatch(ctx contractapi.TransactionContextInt
 	return retArr, nil
 }
 
+//Delete an Asset from the registry that was created by createAsset
+func (s *SmartContract) DeleteAsset(ctx contractapi.TransactionContextInterface, uuid string) error {
+	fmt.Println("Entering deleteAsset")
+	fmt.Println(`Returning result for deleteAsset with uuid: ${uuid}`)
+
+	err := ctx.GetStub().DelState(uuid)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Exiting deleteAsset")
+
+	return nil
+}
+
+//Delete batch of assets from the registry that was created by createAsset
+func (s *SmartContract) DeleteAssetsFromBatch(ctx contractapi.TransactionContextInterface, batch []string) error {
+	fmt.Println("Entering deleteAssetsFromBatch")
+
+	for _, uuid := range batch {
+		fmt.Println(`deleting UUID ${uuid}`)
+		err := ctx.GetStub().DelState(uuid)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	fmt.Println("Exiting deleteAssetsFromBatch")
+
+	return nil
+}
+
 // PaginatedRichQuery - run a paginated rich query
 func (s *SmartContract) PaginatedRichQuery(ctx contractapi.TransactionContextInterface, queryString string, pagesize int32, passedBookmark string) (*utils.QueryResponse, error) {
 	fmt.Printf("Entering paginated rich query with pagesize [%d] and query string: %s", pagesize, queryString)

@@ -125,6 +125,40 @@ func (contract *FixedAssetContract) GetAssetsFromBatch(ctx utils.Context, batch 
 	return &retArr, nil
 }
 
+//Delete an Asset from the registry that was created by createAsset
+func (s *FixedAssetContract) DeleteAsset(ctx utils.Context, uuid string) error {
+	fmt.Println("Entering deleteAsset")
+	fmt.Println(`Returning result for deleteAsset with uuid: ${uuid}`)
+
+	err := ctx.GetStub().DelState(uuid)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Exiting deleteAsset")
+
+	return nil
+}
+
+//Delete batch of assets from the registry that was created by createAsset
+func (s *FixedAssetContract) DeleteAssetsFromBatch(ctx utils.Context, batch []string) error {
+	fmt.Println("Entering deleteAssetsFromBatch")
+
+	for _, uuid := range batch {
+		fmt.Println(`deleting UUID ${uuid}`)
+		err := ctx.GetStub().DelState(uuid)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	fmt.Println("Exiting deleteAssetsFromBatch")
+
+	return nil
+}
+
 // PaginatedRichQuery - run a paginated rich query
 func (contract *FixedAssetContract) PaginatedRichQuery(ctx utils.Context, queryString string, pagesize int32, passedBookmark string) (*utils.QueryResponse, error) {
 	fmt.Printf("Entering paginated rich query with pagesize [%d] and query string: %s", pagesize, queryString)
