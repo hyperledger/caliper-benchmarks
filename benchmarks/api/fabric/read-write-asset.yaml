@@ -1,0 +1,162 @@
+test:
+  name: read-write-asset
+  description: >-
+    This is a transaction number based benchmark targeting a Hyperledger Fabric network
+    using the `fixed-asset` chaincode.
+    It will preload a fixed number of keys in the first round, 
+    then perform a set of read + write transactions on a given number of keys before finally
+    deleting all the preloaded keys in the final round
+  workers:
+    number: 10
+  rounds:
+    - label: create-keys-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which
+        inserts 8000 keys in batches of 50 assets of size 100 bytes into the World State
+      chaincodeID: fixed-asset
+      txNumber: 10
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/preload-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          batchSize: 50
+    - label: read-write-assets-previously-read-100
+      description: >-
+        Test a submitTransaction() Gateway method against
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads a specified number of keys for assets of size 100
+        bytes and write to the assets that have been read.
+      chaincodeID: fixed-asset
+      txNumber: 2000
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            writeMode: allread
+    - label: read-write-assets-not-previously-read-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads and writes a specified number of keys for assets of size 100
+        bytes. The write keys set will never be any of the read keys.
+      chaincodeID: fixed-asset
+      txNumber: 2000
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            writeMode: notread
+    - label: read-write-assets-random-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads and writes a specified number of keys for assets of size 100
+        bytes. The write keys set will be random (could be both previously read or not)
+      chaincodeID: fixed-asset
+      txNumber: 2000
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            previouslyRead: random
+    - label: delete-keys-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `createAssetsFromBatch`, which
+        deletes the preloaded 8000 keys in batches of 50 assets of size 100 bytes from the World State
+      chaincodeID: fixed-asset
+      txNumber: 10
+      rateControl:
+        type: fixed-load
+        opts:
+          transactionLoad: 20
+          startingTps: 10
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/delete-preloaded-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 8000
+          byteSize: 100
+          batchSize: 50
+monitors:
+    resource:
+    - module: prometheus
+      options:
+        url: "http://localhost:9090"
+        metrics:
+          include: [dev-.*, couch, peer, orderer]
+          queries:
+          - name: Avg Memory (MB)
+            query: 'sum(container_memory_rss{name=~".+"}) by (name)'
+            step: 10
+            label: name
+            statistic: avg
+            multiplier: 0.000001
+          - name:   CPU (%)
+            query: sum(rate(container_cpu_usage_seconds_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: avg
+            multiplier: 100
+          - name: Network In (MB)
+            query: sum(rate(container_network_receive_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Network Out (MB)
+            query: sum(rate(container_network_transmit_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Disc Write (MB)
+            query: sum(rate(container_fs_writes_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001
+          - name: Disc Read (MB)
+            query: sum(rate(container_fs_reads_bytes_total{name=~".+"}[1m])) by (name)
+            step: 10
+            label: name
+            statistic: sum
+            multiplier: 0.000001

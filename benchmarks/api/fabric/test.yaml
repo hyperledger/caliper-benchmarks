@@ -141,9 +141,76 @@ test:
           pagesize: '5'
           nomatch: true
           consensus: true
+    - label: read-write-assets-previously-read-100
+      description: >-
+        Test a submitTransaction() Gateway method against
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads a specified number of keys for assets of size 100
+        bytes and write to the assets that have been read.
+      chaincodeID: fixed-asset
+      txNumber: 2
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 20
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            writeMode: allread
+    - label: read-write-assets-not-previously-read-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads and writes a specified number of keys for assets of size 100
+        bytes. The write keys set will never be any of the read keys. 
+        The contract will never write to the keys that were read.
+      chaincodeID: fixed-asset
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 20
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            writeMode: notread
+    - label: read-write-assets-random-100
+      description: >-
+        Test a submitTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
+        reads and writes a specified number of keys for assets of size 100
+        bytes. The write keys set will be random so may or may not have been previously read
+      chaincodeID: fixed-asset
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
+        arguments:
+          chaincodeID: fixed-asset
+          assets: 20
+          byteSize: 100
+          readCount: 2
+          write:
+            count: 2
+            previouslyRead: random
     - label: delete-asset-100
       description: >-
-        Test a submitTransaction() Gateway method against the NodeJS
+        Test a submitTransaction() Gateway method against the
         `fixed-asset` Smart Contract method named `deleteAsset`. This method
         performs a deleteState on an item that matches an asset of size 100
         bytes.
