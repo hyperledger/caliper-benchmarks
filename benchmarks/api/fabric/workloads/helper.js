@@ -4,7 +4,7 @@
 
 'use strict';
 
-const bytes = (s) => {
+module.exports.bytes = function(s) {
     return ~-encodeURI(s).split(/%..|./).length;
 };
 
@@ -22,6 +22,24 @@ module.exports.retrieveRandomAssetIds = function(assetNumber) {
     }
     return uuids;
 }
+
+/**
+ * Retrieve an array containing randomized UUIDs from range
+ * @param {number} assetNumber number of random asset uuids required to be in a return array
+ * @param {number} startRange beginning of range from which get the number of random numbers
+ * @param {number} finishRange end of range from which get the number of random numbers
+ */
+ module.exports.retrieveRandomAssetIdsFromRange = function(assetNumber, startRange, finishRange){
+    const difference = finishRange - startRange;
+    const ids = [];
+    while (ids.length < assetNumber) {
+       const id = startRange + Math.floor(Math.random() * difference); 
+       if (!ids.includes(id)) {
+          ids.push(id)
+       }
+    }
+    return ids;
+ }
 
 /**
  * Insert asset batches
@@ -174,3 +192,19 @@ module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, a
         }
     }
 };
+
+/**
+ * get total asset to create per worker
+ * @param {string} assets total number of assets to create
+ * @param {number} workerIndex index of worker
+ * @param {number} totalWorkers total number of workers
+ */
+ module.exports.getAssetsPerWorker = function(assets, workerIndex, totalWorkers) {
+    const assetNumber = assets ? parseInt(assets) : 2;
+    let assetsPerWorker = Math.floor(assetNumber / totalWorkers);
+    if (workerIndex == 0) {
+        const reminder = assetNumber % totalWorkers;
+        assetsPerWorker += reminder;
+    }
+    return assetsPerWorker;
+ }

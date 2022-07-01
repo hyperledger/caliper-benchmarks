@@ -225,7 +225,7 @@ class Asset extends Contract {
      */
     async getAssetsFromBatch(ctx, batch) {
         if (isVerbose) {
-            console.log('Entering getAssetsFromBatch()');
+            console.log('Entering getAssetsFromBatch');
         }
         const items = [];
         const uuids = JSON.parse(batch);
@@ -264,7 +264,7 @@ class Asset extends Contract {
      */
     async deleteAssetsFromBatch(ctx, batch) {
         if (isVerbose) {
-            console.log('Entering deleteAssetsFromBatch()');
+            console.log('Entering deleteAssetsFromBatch');
         }
 
         const uuids = JSON.parse(batch);
@@ -275,6 +275,44 @@ class Asset extends Contract {
         }
         if (isVerbose) {
             console.log(`Exiting deleteAssetsFromBatch()`);
+        }
+    }
+
+    /**
+     * Do y read and x write
+     * @param {Context} ctx the context
+     * @param {String} readIds the uuid to query
+     * @param {String} writeUiids the uuid to write to
+     * @param {String} letter letter to use as base to produce content of assetsto write
+     */
+     async readWriteAssets(ctx, readIds, writeUiids, letter) {
+        if (isVerbose) {
+            console.log('Entering ReadWriteAssets');
+        }
+
+        var fixedAsset;
+        const readIDs = JSON.parse(readIds);
+        for (const id of readIDs) {
+            const assetAsBytes = await ctx.stub.getState(id);
+            if (!assetAsBytes || assetAsBytes.length === 0) {
+                throw new Error(`Asset with id ${id} was not successfully retrieved`);
+            } else {
+                fixedAsset = assetAsBytes;
+            }
+        }
+
+        const byteSize = fixedAsset.byteSize;
+        fixedAsset.content = '';
+        const writeIDs = JSON.parse(writeUiids);
+        for (const id of writeIDs) {
+            fixedAsset.uuid = id;
+            const paddingSize = byteSize - ~-encodeURI(JSON.stringify(fixedAsset)).split(/%..|./).length;
+            fixedAsset.content = letter.repeat(paddingSize);
+            await ctx.stub.putState(id, Buffer.from(JSON.stringify(fixedAsset)));
+        }
+
+        if (isVerbose) {
+            console.log('Exiting ReadWriteAssets');
         }
     }
 
