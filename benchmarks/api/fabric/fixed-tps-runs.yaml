@@ -2,7 +2,6 @@ test:
   name: fixed-tps-runs
   description: Benchmark run to enable resource comparison for benchmarks
   workers:
-    type: local
     number: 10
   rounds:
     - label: create-asset-8000

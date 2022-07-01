@@ -7,7 +7,6 @@ test:
     round invokes the `getAssetsFromBatch` API method. Successive rounds create
     and retrieve assets of larger byteSize.
   workers:
-    type: local
     number: 10
   rounds:
     - label: get-asset-batch-evaluate-1-8000
