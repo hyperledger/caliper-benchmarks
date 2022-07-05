@@ -29,11 +29,19 @@ cd caliper-benchmarks
 npm install --only=prod @hyperledger/caliper-cli
 ```
 
-- bind to the fabric 2.2 SUT
+- bind to the fabric
 
+To bind with fabric 2.2 (which uses the legacy node-sdk 2.2) which can be used with a Fabric 2.2 or higher SUT run:
 ```bash
 npx caliper bind --caliper-bind-sut fabric:2.2
 ```
+
+To bind with fabric 2.4 and utilise the new peer-gateway service introduced in fabric 2.4 run:
+```bash
+npx caliper bind --caliper-bind-sut fabric:2.4
+```
+
+If you wish to change the version of binding make sure to unbind your current binding (for example if you bound to fabric:2.2 unbind first with `caliper unbind --caliper-bind-sut fabric:2.2`) before binding to the new one.
 
 - change to the fabric-samples/test-network directory `cd ../fabric-samples/test-network directory`
 - bring up test network with a channel called `mychannel`
