@@ -29,11 +29,19 @@ cd caliper-benchmarks
 npm install --only=prod @hyperledger/caliper-cli
 ```
 
-- bind to the fabric 2.2 SUT
+- bind to the fabric
 
+To use the old node sdk, bind to fabric:2.2 or previous
 ```bash
 npx caliper bind --caliper-bind-sut fabric:2.2
 ```
+
+To use the new fabric-gateway node sdk, bind to fabric:2.4
+```bash
+npx caliper bind --caliper-bind-sut fabric:2.2
+```
+
+The version selected does not refer in any way to the version of the fabric deployment you are running but refers instead to the caliper connector version that you will be using to drive transactions.
 
 - change to the fabric-samples/test-network directory `cd ../fabric-samples/test-network directory`
 - bring up test network with a channel called `mychannel`
