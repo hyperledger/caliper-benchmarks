@@ -173,7 +173,7 @@ const FixedAssetBase = class {
      */
     async getAssetsFromBatch(stub, args) {
         if (isVerbose) {
-            console.log('Entering getAssetsFromBatch()');
+            console.log('Entering getAssetsFromBatch');
         }
         const items = [];
         const uuids = JSON.parse(args[0]);
@@ -209,7 +209,7 @@ const FixedAssetBase = class {
      */
     async deleteAssetsFromBatch(stub, args) {
         if (isVerbose) {
-            console.log('Entering deleteAssetsFromBatch()');
+            console.log('Entering deleteAssetsFromBatch');
         }
         const uuids = JSON.parse(args[0]);
         for (let i in uuids) {
@@ -288,6 +288,42 @@ const FixedAssetBase = class {
         }
         await iterator.close();
         return allResults;
+    }
+
+    /**
+     * Reads and writes to the supplied ids provided in the arguments
+     * @param {*} stub
+     * @param {*} args
+     */
+    async readWriteAssets(stub, args) {
+        if (isVerbose) {
+            console.log('Entering ReadWriteAssets');
+        }
+
+        var fixedAsset;
+        const readIDs = JSON.parse(args[0]);
+        for (const uuid of readIDs) {
+            const assetAsBytes = await stub.getState(uuid);
+            if (!assetAsBytes || assetAsBytes.length === 0) {
+                throw new Error(`Asset with id ${uuid} was not successfully retrieved`);
+            } else {
+                fixedAsset = assetAsBytes;
+            }
+        }
+
+        const byteSize = fixedAsset.byteSize;
+        fixedAsset.content = '';
+        const writeIDs = JSON.parse(args[1]);
+        for (const id of writeIDs) {
+            fixedAsset.uuid = id;
+            const paddingSize = byteSize - ~-encodeURI(JSON.stringify(fixedAsset)).split(/%..|./).length;
+            fixedAsset.content = args[2].repeat(paddingSize);
+            await stub.putState(id, Buffer.from(JSON.stringify(fixedAsset)));
+        }
+
+        if (isVerbose) {
+            console.log('Exiting ReadWriteAssets');
+        }
     }
 
     /**
