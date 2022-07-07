@@ -49,10 +49,10 @@ class DeletePreloadedAssetsWorkload extends WorkloadModuleBase {
      * Assemble TXs for the round.
      * @return {Promise<TxStatus[]>}
      */
-    async submitTransaction() {
-        for (let i = 0; (i < this.batchesNum) && (this.txIndex < this.assetsPerWorker); i++) {
-            const keys = [];
-            for (let i = 0; i < this.batchSize; i++) {
+     async submitTransaction() {
+        for (let i = 0; i < this.batchesNum; i++) {
+            const keys = []
+            for (let i = 0; (i < this.batchSize) && (this.txIndex < this.assetsPerWorker); i++) {
                 const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
                 keys.push(key);
                 this.txIndex++;

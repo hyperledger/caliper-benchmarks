@@ -6,7 +6,6 @@ import (
 	"fabric/api/fixed-asset-base/go/utils"
 	"fmt"
 	"strings"
-	"unsafe"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 )
@@ -126,11 +125,11 @@ func (contract *FixedAssetContract) GetAssetsFromBatch(ctx utils.Context, batch 
 }
 
 //Delete an Asset from the registry that was created by createAsset
-func (s *FixedAssetContract) DeleteAsset(ctx utils.Context, uuid string) error {
+func (s *FixedAssetContract) DeleteAsset(ctx utils.Context, key string) error {
 	fmt.Println("Entering deleteAsset")
-	fmt.Println(`Returning result for deleteAsset with uuid: ${uuid}`)
+	fmt.Println("Returning result for deleteAsset with key: " + key)
 
-	err := ctx.GetStub().DelState(uuid)
+	err := ctx.GetStub().DelState(key)
 
 	if err != nil {
 		return err
@@ -145,9 +144,8 @@ func (s *FixedAssetContract) DeleteAsset(ctx utils.Context, uuid string) error {
 func (s *FixedAssetContract) DeleteAssetsFromBatch(ctx utils.Context, batch []string) error {
 	fmt.Println("Entering deleteAssetsFromBatch")
 
-	for _, uuid := range batch {
-		fmt.Println(`deleting UUID ${uuid}`)
-		err := ctx.GetStub().DelState(uuid)
+	for _, key := range batch {
+		err := ctx.GetStub().DelState(key)
 
 		if err != nil {
 			return err
@@ -212,45 +210,45 @@ func (contract *FixedAssetContract) PaginatedRangeQuery(ctx utils.Context, start
 	}, nil
 }
 
-//Do y read and x write - directly returns the string
-func (contract *FixedAssetContract) ReadWriteAssets(ctx utils.Context, readUuids []string, writeUiids []string, letter string) error {
-	fmt.Println("Entering ReadWriteAssets()")
+// read and write to selected assets
+func (contract *FixedAssetContract) ReadWriteAssets(ctx utils.Context, readIds []string, writeIds []string, letter string) error {
+	fmt.Println("Entering ReadWriteAssets")
 
-	var fixedAsset *assets.FixedAsset
+	fixedAsset := assets.FixedAsset{}
+	var bytes []byte
 
-	for _, uuid := range readUuids {
-		bytes, err := ctx.GetStub().GetState(uuid)
+	for _, id := range readIds {
+		var err error
+		bytes, err = ctx.GetStub().GetState(id)
 
 		if err != nil {
 			fmt.Println("Error performing GetState: " + err.Error())
 			return err
 		}
-
-		fixedAsset = new(assets.FixedAsset)
-
-		err = json.Unmarshal(bytes, fixedAsset)
-
-		if err != nil {
-			fmt.Println("Error performing json.Unmarshal: " + err.Error())
-			fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
-			return err
-		}
 	}
 
-	byteSize := fixedAsset.Bytesize
-	for _, uuid := range writeUiids {
-		fixedAsset.UUID = uuid
-		paddingSize := byteSize - int(unsafe.Sizeof(fixedAsset))
-		fixedAsset.Content = strings.Repeat(letter, paddingSize)
+	err := json.Unmarshal(bytes, &fixedAsset)
+
+	if err != nil {
+		fmt.Println("Error performing json.Unmarshal: " + err.Error())
+		fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
+		return err
+	}
+
+	maxPaddingSize := len(fixedAsset.Content) + len(fixedAsset.UUID)
+
+	for _, id := range writeIds {
+		fixedAsset.UUID = id
+		fixedAsset.Content = strings.Repeat(letter, maxPaddingSize-len(id))
 		bytes, _ := json.Marshal(fixedAsset)
-		err := ctx.GetStub().PutState(uuid, bytes)
+		err := ctx.GetStub().PutState(id, bytes)
 		if err != nil {
 			fmt.Println("Error performing PutState: " + err.Error())
 			return err
 		}
 	}
 
-	fmt.Println("Exiting ReadWriteAssets()")
+	fmt.Println("Exiting ReadWriteAssets")
 
 	return nil
 }
