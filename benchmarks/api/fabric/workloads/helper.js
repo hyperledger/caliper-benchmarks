@@ -66,7 +66,7 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, 
 
         // Create assets in batches, because it is faster!!
         // -Complete the asset definition
-        const paddingSize = size - bytes(JSON.stringify(baseAsset));
+        const paddingSize = size - this.bytes(JSON.stringify(baseAsset));
         baseAsset.content = 'B'.repeat(paddingSize);
 
         // -Generate all assets
@@ -146,7 +146,7 @@ module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, a
 
         // Create assets in batches, because it is faster!!
         // -Complete the asset definition
-        const paddingSize = size - bytes(JSON.stringify(baseAsset));
+        const paddingSize = size - this.bytes(JSON.stringify(baseAsset));
         baseAsset.content = 'B'.repeat(paddingSize);
 
         baseAssets.push(baseAsset);
