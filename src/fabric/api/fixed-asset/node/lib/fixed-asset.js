@@ -266,15 +266,13 @@ class Asset extends Contract {
         if (isVerbose) {
             console.log('Entering deleteAssetsFromBatch');
         }
-
         const uuids = JSON.parse(batch);
         for (let i in uuids) {
             const uuid = uuids[i];
-            console.log(`deleting UUID ${uuid}`);
             await ctx.stub.deleteState(uuid);
         }
         if (isVerbose) {
-            console.log(`Exiting deleteAssetsFromBatch()`);
+            console.log(`Exiting deleteAssetsFromBatch`);
         }
     }
 
@@ -290,24 +288,27 @@ class Asset extends Contract {
             console.log('Entering ReadWriteAssets');
         }
 
-        var fixedAsset;
-        const keysToRead = JSON.parse(readIds);
-        for (const id of keysToRead) {
+        let fixedAssetBytes;
+        const readIDs = JSON.parse(readIds);
+        for (const id of readIDs) {
             const assetAsBytes = await ctx.stub.getState(id);
+
             if (!assetAsBytes || assetAsBytes.length === 0) {
                 throw new Error(`Asset with id ${id} was not successfully retrieved`);
-            } else {
-                fixedAsset = assetAsBytes;
             }
+
+            fixedAssetBytes = assetAsBytes;
         }
 
-        const byteSize = fixedAsset.byteSize;
-        fixedAsset.content = '';
+        const fixedAsset = JSON.parse(fixedAssetBytes);
+        const maxPaddingSize = fixedAsset.content.length + fixedAsset.uuid.length
+
         const keysToWrite = JSON.parse(writeIds);
         for (const id of keysToWrite) {
+	    // changing the id is likely to change the size of the asset
+            // so padding size needs to be adjusted accordingly
+            fixedAsset.content = letter.repeat(maxPaddingSize - id.length);
             fixedAsset.uuid = id;
-            const paddingSize = byteSize - ~-encodeURI(JSON.stringify(fixedAsset)).split(/%..|./).length;
-            fixedAsset.content = letter.repeat(paddingSize);
             await ctx.stub.putState(id, Buffer.from(JSON.stringify(fixedAsset)));
         }
 

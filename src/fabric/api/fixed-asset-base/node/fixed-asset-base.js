@@ -214,11 +214,10 @@ const FixedAssetBase = class {
         const uuids = JSON.parse(args[0]);
         for (let i in uuids) {
             const uuid = uuids[i];
-            console.log(`deleting UUID ${uuid}`);
             await stub.deleteState(uuid);
         }
         if (isVerbose) {
-            console.log(`Exiting deleteAssetsFromBatch()`);
+            console.log(`Exiting deleteAssetsFromBatch`);
         }
     }
 
@@ -300,25 +299,28 @@ const FixedAssetBase = class {
             console.log('Entering ReadWriteAssets');
         }
 
-        var fixedAsset;
+        let fixedAssetBytes;
         const readIDs = JSON.parse(args[0]);
-        for (const uuid of readIDs) {
-            const assetAsBytes = await stub.getState(uuid);
+        for (const id of readIDs) {
+            const assetAsBytes = await stub.getState(id);
+
             if (!assetAsBytes || assetAsBytes.length === 0) {
-                throw new Error(`Asset with id ${uuid} was not successfully retrieved`);
-            } else {
-                fixedAsset = assetAsBytes;
+                throw new Error(`Asset with id ${id} was not successfully retrieved`);
             }
+
+            fixedAssetBytes = assetAsBytes;
         }
 
-        const byteSize = fixedAsset.byteSize;
-        fixedAsset.content = '';
-        const writeIDs = JSON.parse(args[1]);
-        for (const id of writeIDs) {
+        const fixedAsset = JSON.parse(fixedAssetBytes);
+        const maxPaddingSize = fixedAsset.content.length + fixedAsset.uuid.length
+
+        const keysToWrite = JSON.parse(args[1]);
+        for (const id of keysToWrite) {
+	    // changing the id is likely to change the size of the asset
+            // so padding size needs to be adjusted accordingly
+            fixedAsset.content = args[2].repeat(maxPaddingSize - id.length);
             fixedAsset.uuid = id;
-            const paddingSize = byteSize - ~-encodeURI(JSON.stringify(fixedAsset)).split(/%..|./).length;
-            fixedAsset.content = args[2].repeat(paddingSize);
-            await stub.putState(id, Buffer.from(JSON.stringify(fixedAsset)));
+            await ctx.stub.putState(id, Buffer.from(JSON.stringify(fixedAsset)));
         }
 
         if (isVerbose) {

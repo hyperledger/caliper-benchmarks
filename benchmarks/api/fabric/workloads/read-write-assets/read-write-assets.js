@@ -5,10 +5,10 @@
 'use strict';
 
 const writeOptions = {
-    read: 'allread',
-    notRead: 'notread',
+    allread: 'allread',
+    notread: 'notread',
     random: 'random',
-  };
+};
 
 const helper = require('../helper');
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
@@ -46,8 +46,8 @@ class ReadWriteAssetsWorkload extends WorkloadModuleBase {
         this.chaincodeID = args.chaincodeID ? args.chaincodeID : 'fixed-asset';
         this.assetsPerWorker = helper.getAssetsPerWorker(args.assets, this.workerIndex, totalWorkers);
         this.byteSize = args.byteSize;
-        this.readCount = args.readCount ? parseInt(args.readCount) : 1;//TODO throw error or utput the facttha it defaulted to 1
-        this.writeCount = args.write.count ? parseInt(args.write.count) : 1;//TODO throw error or utput the facttha it defaulted to 1
+        this.readCount = args.readCount ? parseInt(args.readCount) : 1;
+        this.writeCount = args.write.count ? parseInt(args.write.count) : 1;
         this.writeMode = args.write.writeMode in writeOptions ? args.write.writeMode : writeOptions.random;
 
         this.asset = {
@@ -83,7 +83,7 @@ class ReadWriteAssetsWorkload extends WorkloadModuleBase {
 
         for(let i = 0; i < this.writeCount; i++) {
             switch (this.writeMode)  {
-                case writeOptions.read: {
+                case writeOptions.allread: {
                     if (i < readKeys.length) {
                         writeKeys.push(readKeys[i]);
                     } else {
@@ -99,17 +99,14 @@ class ReadWriteAssetsWorkload extends WorkloadModuleBase {
                     writeKeys.push(key);
                     break;
                 }
-                case writeOptions.notRead:{
+                case writeOptions.notread:{
                     const id = ids.shift();
                     const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + id;
                     writeKeys.push(key);
                     break;
                 }
-                default: {
-                    const id = Math.floor(Math.random() * this.assetsPerWorker);
-                    const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + id;
-                    writeKeys.push(key);
-                }
+                default:
+                    throw new Error('Unexpected error, most likely a bug in this code. This line should not be executed');
             }
         }
 
@@ -119,7 +116,7 @@ class ReadWriteAssetsWorkload extends WorkloadModuleBase {
         const args = {
             contractId: this.chaincodeID,
             contractFunction: 'readWriteAssets',
-            contractArguments: [JSON.stringify(readKeys), JSON.stringify(writeKeys), JSON.stringify(letter)],
+            contractArguments: [JSON.stringify(readKeys), JSON.stringify(writeKeys), letter],
             readOnly: false
         };
     
