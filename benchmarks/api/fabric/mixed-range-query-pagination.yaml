@@ -35,7 +35,7 @@ test:
             - 16000
             - 32000
             - 64000
-          assets: 8000
+          assets: 2000
           range: 200
           offset: 100
           pagesize: '10'

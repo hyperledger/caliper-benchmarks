@@ -72,7 +72,7 @@ class RangeQueryAssetWorkload extends WorkloadModuleBase {
         const args = {
             contractId: this.chaincodeID,
             contractFunction: 'paginatedRangeQuery',
-            contractArguments: [this.startKey, this.endKey, this.pagesize]
+            contractArguments: [this.startKey, this.endKey, this.pagesize, '']
         };
 
         if (this.consensus) {
