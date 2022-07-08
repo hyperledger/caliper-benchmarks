@@ -1,0 +1,28 @@
+test:
+  name: no-op
+  description: >-
+    This is a duration based benchmark targeting a Hyperledger Fabric network
+    using the `fixed-asset`chaincode and the emptyContract transaction. The
+    emptyContract transaction does nothing it just returns.
+  workers:
+    number: 24
+  rounds:
+    - label: no-op-evaluate
+      description: >-
+        Test an evaluateTransaction() Gateway method against the
+        `fixed-asset` Smart Contract method named `emptyContract`, which
+        immediately returns a null response. This represents the fastest
+        possible round trip time for an evaluateTransaction() method that does
+        not touch the world state or perform any action.
+        This makes it ideal to determine the theoretical maximum TPS
+      chaincodeID: fixed-asset
+      txDuration: 120
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3000
+      workload:
+        module: benchmarks/api/fabric/workloads/empty-contract.js
+        arguments:
+          chaincodeID: fixed-asset
+          consensus: false
