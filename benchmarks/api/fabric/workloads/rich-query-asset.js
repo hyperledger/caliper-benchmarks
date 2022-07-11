@@ -74,7 +74,7 @@ class RangeQueryAssetWorkload extends WorkloadModuleBase {
         const args = {
             contractId: this.chaincodeID,
             contractFunction: 'paginatedRichQuery',
-            contractArguments: [JSON.stringify(this.mangoQuery), this.pagesize]
+            contractArguments: [JSON.stringify(this.mangoQuery), this.pagesize, '']
         };
 
         if (this.consensus) {

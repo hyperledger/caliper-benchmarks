@@ -33,7 +33,7 @@ test:
             - 2000
             - 4000
             - 8000
-          assets: 8000
+          assets: 2000
           pagesize: '10'
           consensus: false
     - label: mixed-rich-query-evaluate-20
