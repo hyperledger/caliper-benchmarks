@@ -15,14 +15,23 @@
 version: "3"
 services:
   node:
-    build:
-      context: .
-      dockerfile: caliper-besu-clique.Dockerfile
-    image: caliper-besu-clique
+    image: hyperledger/besu:21.10.1
     container_name: besu_clique
     volumes:
       - ./keys:/root/.ethereum/keystore
       - ./data:/root
     ports:
       - 8545-8547:8545-8547
-    command: --revert-reason-enabled --rpc-ws-enabled --rpc-ws-host 0.0.0.0 --host-whitelist=* --rpc-ws-apis admin,eth,miner,web3,net --graphql-http-enabled --discovery-enabled=false
+    entrypoint: 
+    - /opt/besu/bin/besu
+    command: 
+    - --genesis-file=/root/genesis.json
+    - --node-private-key-file=/root/.ethereum/keystore/key
+    - --min-gas-price=0 
+    - --revert-reason-enabled 
+    - --rpc-ws-enabled 
+    - --rpc-ws-host=0.0.0.0 
+    - --host-allowlist=* 
+    - --rpc-ws-apis=ADMIN,ETH,MINER,WEB3,NET,PRIV,EEA 
+    - --graphql-http-enabled
+    - --discovery-enabled=false
