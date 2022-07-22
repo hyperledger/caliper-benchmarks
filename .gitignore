@@ -15,5 +15,7 @@ launch.json
 # Limited npm runtime artifacts
 node_modules/*
 package-lock.json
+# until an npm project skeleton is not provided for the repo, we should ignore the user-generated root package.json
+/package.json
 
 **/__pycache__/**
