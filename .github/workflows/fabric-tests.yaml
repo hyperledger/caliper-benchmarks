@@ -32,11 +32,11 @@ jobs:
             - 'src/fabric/samples/marbles-norichquery/**'
             - 'networks/fabric/**'
           simple:
-            - 'benchmarks/scenario/fabric/simple/**'
+            - 'benchmarks/scenario/simple/**'
             - 'src/fabric/scenario/simple/**'
             - 'networks/fabric/**'
           smallbank:
-            - 'benchmarks/scenario/fabric/smallbank/**'
+            - 'benchmarks/scenario/smallbank/**'
             - 'src/fabric/scenario/smallbank/**'
             - 'networks/fabric/**'
           fixed-asset:
