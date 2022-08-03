@@ -44,3 +44,4 @@ test:
         module: benchmarks/samples/fabric/fabcar/queryCar.js
         arguments:
           assets: 500
+
