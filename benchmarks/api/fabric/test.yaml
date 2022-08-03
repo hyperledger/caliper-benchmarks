@@ -270,4 +270,3 @@ monitors:
             label: name
             statistic: max
             multiplier: 0.000001
-
