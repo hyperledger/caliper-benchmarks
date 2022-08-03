@@ -37,4 +37,3 @@ monitors:
       options:
         interval: 1
         containers: ['all']
-
