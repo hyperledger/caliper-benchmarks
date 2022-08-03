@@ -4,22 +4,85 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  FABRIC_VERSION: 2.4.3
+  CALIPER_VERSION: 0.5.0
+  FABRIC_BIND_SUT: 2.2
 
 jobs:
+  populate-cache:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
+        restore-keys: |
+          ${{ matrix.node-version }}-npm-cache-
+    - name: Install Caliper and bind to Fabric
+      if: steps.cache-npm.outputs.cache-hit != 'true'
+      run: |
+        npm install --only=prod @hyperledger/caliper-cli@${{ env.CALIPER_VERSION }}
+        npx caliper bind --caliper-bind-sut fabric:${{ env.FABRIC_BIND_SUT }}
+        npx caliper --version
+    - name: Cache Fabric Samples and Binaries
+      id: cache-fabric
+      uses: actions/cache@v2
+      with:
+        path: fabric-samples
+        key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
+    - name: Download Fabric Samples
+      if: steps.cache-fabric.outputs.cache-hit != 'true'
+      run: curl -sSL -k https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/bootstrap.sh | bash -s -- ${{ env.FABRIC_VERSION }} -d
   build:
+    needs: populate-cache
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cc-env: [go, node]
+        cc-env: [go, node, java]
+        benchmark: [fabcar, marbles, simple, fixed-asset, smallbank]
+        exclude:
+          - cc-env: java
+            benchmark: marbles
+          - cc-env: java
+            benchmark: simple
+          - cc-env: node
+            benchmark: smallbank
+          - cc-env: java
+            benchmark: smallbank
     steps:
-    - uses: actions/checkout@v2
-# TODO: add explicit go version rather than rely on implicit go version
+    - uses: actions/checkout@v3
     - uses: actions/setup-node@v2
       with:
-        node-version: 14
-    - uses: actions/setup-java@v2
+        node-version: 16.x
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v2
       with:
-        distribution: 'temurin'
-        java-version: '8'
-      if: ${{ matrix.cc-env == 'java' }}
-    - run: .github/scripts/run-fabric-tests.sh ${{ matrix.cc-env }}
+        path: node_modules
+        key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
+        restore-keys: |
+          ${{ matrix.node-version }}-npm-cache-
+    - name: Cache Fabric Samples and Binaries
+      id: cache-fabric
+      uses: actions/cache@v2
+      with:
+        path: fabric-samples
+        key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
+    - name: Copy Fabric Samples to correct path
+      run: cp -r fabric-samples ../
+    - name: Pull Fabric images
+      run: curl -sSL -k https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/bootstrap.sh | bash -s -- ${{ env.FABRIC_VERSION }} -s -b
+    - name: Start Fabric Network
+      working-directory: ../fabric-samples/test-network
+      run: ./network.sh up createChannel -s couchdb
+    - name: Start Prometheus and Grafana
+      working-directory: ../fabric-samples/test-network/prometheus-grafana
+      run: docker-compose up -d
+    - name: Deploy Chaincode
+      working-directory: ../fabric-samples/test-network
+      run: ../../caliper-benchmarks/.github/scripts/deploy-chaincode.sh ${{ matrix.cc-env }} ${{ matrix.benchmark }}
+    - name: Run Caliper Benchmark
+      run: .github/scripts/run-benchmark.sh ${{ matrix.benchmark }}
