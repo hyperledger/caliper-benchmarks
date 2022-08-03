@@ -26,25 +26,30 @@ jobs:
             - 'benchmarks/samples/fabric/fabcar/**'
             - 'src/fabric/samples/fabcar/**'
             - 'networks/fabric/**'
+            - '.github/**'
           marbles:
             - 'benchmarks/samples/fabric/marbles/**'
             - 'src/fabric/samples/marbles/**'
             - 'src/fabric/samples/marbles-norichquery/**'
             - 'networks/fabric/**'
+            - '.github/**'
           simple:
             - 'benchmarks/scenario/simple/**'
             - 'src/fabric/scenario/simple/**'
             - 'networks/fabric/**'
+            - '.github/**'
           smallbank:
             - 'benchmarks/scenario/smallbank/**'
             - 'src/fabric/scenario/smallbank/**'
             - 'networks/fabric/**'
+            - '.github/**'
           fixed-asset:
             - 'benchmarks/api/fabric/**'
             - 'src/fabric/api/fixed-asset/**'
             - 'src/fabric/api/fixed-asset-base/**'
             - 'networks/fabric/**'
             - 'networks/prometheus-grafana/**'
+            - '.github/**'
     - uses: dorny/paths-filter@v2
       name: Check for changes in chaincode environments
       id: cc-env-filter
@@ -55,16 +60,19 @@ jobs:
             - 'networks/fabric/**'
             - 'benchmarks/**/fabric/**'
             - 'benchmarks/scenario/**'
+            - '.github/**'
           node:
             - 'src/fabric/**/node/**'
             - 'networks/fabric/**'
             - 'benchmarks/**/fabric/**'
             - 'benchmarks/scenario/**'
+            - '.github/**'
           java:
             - 'src/fabric/**/java/**'
             - 'networks/fabric/**'
             - 'benchmarks/**/fabric/**'
             - 'benchmarks/scenario/**'
+            - '.github/**'
   populate-cache:
     needs: changes
     if: >
