@@ -10,7 +10,76 @@ env:
   FABRIC_BIND_SUT: 2.2
 
 jobs:
+  changes:
+    name: Check for changes
+    runs-on: ubuntu-latest
+    outputs:
+      benchmark: ${{ steps.benchmarks-filter.outputs.changes }}
+      cc-env: ${{ steps.cc-env-filter.outputs.changes }}
+    steps:
+    - uses: dorny/paths-filter@v2
+      name: Check for changes in benchmarks
+      id: benchmarks-filter
+      with:
+        filters: |
+          fabcar:
+            - 'benchmarks/samples/fabric/fabcar/**'
+            - 'src/fabric/samples/fabcar/**'
+            - 'networks/fabric/**'
+            - '.github/**'
+          marbles:
+            - 'benchmarks/samples/fabric/marbles/**'
+            - 'src/fabric/samples/marbles/**'
+            - 'src/fabric/samples/marbles-norichquery/**'
+            - 'networks/fabric/**'
+            - '.github/**'
+          simple:
+            - 'benchmarks/scenario/simple/**'
+            - 'src/fabric/scenario/simple/**'
+            - 'networks/fabric/**'
+            - '.github/**'
+          smallbank:
+            - 'benchmarks/scenario/smallbank/**'
+            - 'src/fabric/scenario/smallbank/**'
+            - 'networks/fabric/**'
+            - '.github/**'
+          fixed-asset:
+            - 'benchmarks/api/fabric/**'
+            - 'src/fabric/api/fixed-asset/**'
+            - 'src/fabric/api/fixed-asset-base/**'
+            - 'networks/fabric/**'
+            - 'networks/prometheus-grafana/**'
+            - '.github/**'
+    - uses: dorny/paths-filter@v2
+      name: Check for changes in chaincode environments
+      id: cc-env-filter
+      with:
+        filters: |
+          go:
+            - 'src/fabric/**/go/**'
+            - 'networks/fabric/**'
+            - 'benchmarks/**/fabric/**'
+            - 'benchmarks/scenario/**'
+            - '.github/**'
+          node:
+            - 'src/fabric/**/node/**'
+            - 'networks/fabric/**'
+            - 'benchmarks/**/fabric/**'
+            - 'benchmarks/scenario/**'
+            - '.github/**'
+          java:
+            - 'src/fabric/**/java/**'
+            - 'networks/fabric/**'
+            - 'benchmarks/**/fabric/**'
+            - 'benchmarks/scenario/**'
+            - '.github/**'
   populate-cache:
+    needs: changes
+    if: >
+      needs.changes.outputs.benchmark != '[]' &&
+      needs.changes.outputs.benchmark != '' &&
+      needs.changes.outputs.cc-env != '[]' &&
+      needs.changes.outputs.cc-env != ''
     runs-on: ubuntu-latest
     steps:
     - name: Cache node modules
@@ -37,12 +106,19 @@ jobs:
       if: steps.cache-fabric.outputs.cache-hit != 'true'
       run: curl -sSL -k https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/bootstrap.sh | bash -s -- ${{ env.FABRIC_VERSION }} -d
   build:
-    needs: populate-cache
+    needs:
+      - populate-cache
+      - changes
+    if: >
+      needs.changes.outputs.benchmark != '[]' &&
+      needs.changes.outputs.benchmark != '' &&
+      needs.changes.outputs.cc-env != '[]' &&
+      needs.changes.outputs.cc-env != ''
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cc-env: [go, node, java]
-        benchmark: [fabcar, marbles, simple, fixed-asset, smallbank]
+        cc-env: ${{ fromJSON(needs.changes.outputs.cc-env) }}
+        benchmark: ${{ fromJSON(needs.changes.outputs.benchmark) }}
         exclude:
           - cc-env: java
             benchmark: marbles
