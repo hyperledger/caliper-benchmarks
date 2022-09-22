@@ -44,11 +44,11 @@ const FixedAssetBase = class {
             return shim.error(err);
         }
     }
-    
+
     /**
      * Return a null response
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      */
     async emptyContract(stub, args) {
         if (isVerbose) {
@@ -66,15 +66,15 @@ const FixedAssetBase = class {
      *   content: variable content
      * }
      * Directly writes the string content against the passed uuid
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      */
     async createAsset(stub, args) {
         const uuid = args[0];
         const content = args[1];
         if (isVerbose) {
             console.log('Entering createAsset');
-        }        
+        }
         await stub.putState(uuid, Buffer.from(content));
         if (isVerbose) {
             console.log('Exiting createAsset');
@@ -90,8 +90,8 @@ const FixedAssetBase = class {
      *   content: variable content
      * }
      * The body is parsed to include a step where the body is an object
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      */
     async createAssetObject(stub, args) {
         if (isVerbose) {
@@ -112,8 +112,8 @@ const FixedAssetBase = class {
      *   byteSize: target byteSize of asset
      *   content: variable content
      * }, ...]
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      */
     async createAssetsFromBatch(stub, args) {
         if (isVerbose) {
@@ -134,8 +134,8 @@ const FixedAssetBase = class {
     /**
      * Get an Asset from the registry that was created by createAsset
      * - directly returns the string
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * @returns the result of the query
      */
     async getAsset(stub, args) {
@@ -149,8 +149,8 @@ const FixedAssetBase = class {
     /**
      * Get an Asset from the registry that was created by createAsset
      * -includes a parse stage to enable cast of the object
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * @returns the result of the query
      */
     async getAssetObject(stub, args) {
@@ -167,8 +167,8 @@ const FixedAssetBase = class {
 
     /**
      * Get all Assets from the registry using a passed array of UUIDs
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * @returns the result of the query
      */
     async getAssetsFromBatch(stub, args) {
@@ -190,8 +190,8 @@ const FixedAssetBase = class {
 
     /**
      * Delete an Asset from the registry that was created by createAsset
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * @returns the result of the delete
      */
     async deleteAsset(stub, args) {
@@ -204,7 +204,7 @@ const FixedAssetBase = class {
 
     /**
      * Delete a batch of assets from the registry
-     * @param {*} stub 
+     * @param {*} stub
      * @param {*} args
      */
     async deleteAssetsFromBatch(stub, args) {
@@ -223,8 +223,8 @@ const FixedAssetBase = class {
 
     /**
      * Run a paginated rich query
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * @returns {JSON} the results of the paginated query and responseMetadata in a JSON object
      */
     async paginatedRichQuery(stub, args) {
@@ -245,7 +245,7 @@ const FixedAssetBase = class {
                 Bookmark: metadata.bookmark,
             };
         } else {
-            
+
             const { iterator, metadata } = await stub.getQueryResultWithPagination(queryString, pageSize);
             response.results = await this.getAllResults(iterator);
             response.responseMetadata = {
@@ -305,7 +305,7 @@ const FixedAssetBase = class {
             const assetAsBytes = await stub.getState(id);
 
             if (!assetAsBytes || assetAsBytes.length === 0) {
-                throw new Error(`Asset with id ${id} was not successfully retrieved`);
+                throw new Error(`Asset with id ${id} does not exist`);
             }
 
             fixedAssetBytes = assetAsBytes;
@@ -330,8 +330,8 @@ const FixedAssetBase = class {
 
     /**
      * Run a paginated range query on the DB contents
-     * @param {*} stub 
-     * @param {*} args 
+     * @param {*} stub
+     * @param {*} args
      * startKey - the first key in the range of interest
      * endKey - the end key in the range of interest
      * pagesize - the pagesize to return

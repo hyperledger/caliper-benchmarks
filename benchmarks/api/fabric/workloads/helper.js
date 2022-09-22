@@ -29,7 +29,7 @@ module.exports.retrieveRandomAssetIds = function(assetNumber) {
  * @param {number} startRange beginning of range from which get the number of random numbers
  * @param {number} finishRange end of range from which get the number of random numbers
  */
- module.exports.retrieveRandomAssetIdsFromRange = function(assetNumber, startRange, finishRange){
+ module.exports.retrieveRandomAssetIdsFromRange = function(assetNumber, startRange, finishRange) {
     const difference = finishRange - startRange;
     const ids = [];
     while (ids.length < assetNumber) {
@@ -90,7 +90,7 @@ module.exports.addBatchAssets = async function(bcObj, context, clientIdx, args, 
         }
 
         // -Insert each batch
-        for (const index in batches){
+        for (const index in batches) {
             const batch = batches[index];
             try {
                 let myArgs;
@@ -177,7 +177,7 @@ module.exports.addMixedBatchAssets = async function(bcObj, context, clientIdx, a
 
     // -Insert each batch
     console.log('   -> Adding ' + batches.length + ' batch(es) to DB');
-    for (const index in batches){
+    for (const index in batches) {
         const batch = batches[index];
         try {
             const myArgs = {

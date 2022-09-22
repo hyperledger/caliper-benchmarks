@@ -21,6 +21,8 @@ class PreloadAssetsWorkload extends WorkloadModuleBase {
         this.assetsPerWorker = [];
         this.asset = {};
         this.byteSize = 0;
+        this.assetPrefix = null;
+        this.transactionHasRun = false;
     }
 
     /**
@@ -52,7 +54,9 @@ class PreloadAssetsWorkload extends WorkloadModuleBase {
         };
 
         const paddingSize = this.byteSize - helper.bytes(JSON.stringify(this.asset));
+        this.assetPrefix = 'client' + this.workerIndex + '_' + this.byteSize + '_';
         this.asset.content = 'B'.repeat(paddingSize);
+        this.transactionHasRun = false;
     }
 
     /**
@@ -60,10 +64,17 @@ class PreloadAssetsWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
     async submitTransaction() {
-        for(let i = 0; i < this.batchesNum; i++){
+        if (this.transactionHasRun) {
+            console.log('A Worker should only ever submit this transaction once, please make sure TxNumber and Workers are the same value');
+            console.log('Transaction NOT submitted');
+            return;
+        }
+
+        this.transactionHasRun = true;
+        for (let i = 0; i < this.batchesNum; i++) {
             let batch = [];
             for (let i = 0; (i < this.batchSize) && (this.txIndex < this.assetsPerWorker); i++) {
-                this.asset.uuid = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
+                this.asset.uuid = this.assetPrefix + this.txIndex;
                 const batchAsset = JSON.parse(JSON.stringify(this.asset));
                 batch.push(batchAsset);
                 this.txIndex++;

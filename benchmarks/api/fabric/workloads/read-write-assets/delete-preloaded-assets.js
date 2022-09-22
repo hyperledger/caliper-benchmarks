@@ -21,6 +21,8 @@ class DeletePreloadedAssetsWorkload extends WorkloadModuleBase {
         this.assetsPerWorker = [];
         this.asset = {};
         this.byteSize = 0;
+        this.assetPrefix = null;
+        this.transactionHasRun = false;
     }
 
     /**
@@ -43,6 +45,8 @@ class DeletePreloadedAssetsWorkload extends WorkloadModuleBase {
         this.batchSize = args.batchSize ? parseInt(args.batchSize) : 1;
         this.assetsPerWorker = helper.getAssetsPerWorker(args.assets, this.workerIndex, totalWorkers);
         this.batchesNum = Math.ceil(this.assetsPerWorker/this.batchSize);
+        this.assetPrefix = 'client' + this.workerIndex + '_' + this.byteSize + '_';
+        this.transactionHasRun = false;
     }
 
     /**
@@ -50,10 +54,18 @@ class DeletePreloadedAssetsWorkload extends WorkloadModuleBase {
      * @return {Promise<TxStatus[]>}
      */
      async submitTransaction() {
+        if (this.transactionHasRun) {
+            console.log('A Worker should only ever submit this transaction once, please make sure TxNumber and Workers are the same value');
+            console.log('Transaction NOT submitted');
+            return;
+        }
+
+        this.transactionHasRun = true;
+
         for (let i = 0; i < this.batchesNum; i++) {
             const keys = []
             for (let i = 0; (i < this.batchSize) && (this.txIndex < this.assetsPerWorker); i++) {
-                const key = 'client' + this.workerIndex + '_' + this.byteSize + '_' + this.txIndex;
+                const key = this.assetPrefix + this.txIndex;
                 keys.push(key);
                 this.txIndex++;
             }

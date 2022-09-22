@@ -216,14 +216,19 @@ func (contract *FixedAssetContract) ReadWriteAssets(ctx utils.Context, readIds [
 
 	fixedAsset := assets.FixedAsset{}
 	var bytes []byte
+	var id string
 
-	for _, id := range readIds {
+	for _, id = range readIds {
 		var err error
 		bytes, err = ctx.GetStub().GetState(id)
 
 		if err != nil {
 			fmt.Println("Error performing GetState: " + err.Error())
-			return err
+			return fmt.Errorf("Error performing GetState on %s: %s", id, err.Error())
+		}
+
+		if bytes == nil {
+			return fmt.Errorf("tried to read asset: %s which doesn't exist", id)
 		}
 	}
 
@@ -232,7 +237,7 @@ func (contract *FixedAssetContract) ReadWriteAssets(ctx utils.Context, readIds [
 	if err != nil {
 		fmt.Println("Error performing json.Unmarshal: " + err.Error())
 		fmt.Println("Error performing json.Unmarshal on bytes: " + string(bytes[:]))
-		return err
+		return fmt.Errorf("tried to read asset: %s. with error: %s. bytes: %s", id, err.Error(), string(bytes[:]))
 	}
 
 	maxPaddingSize := len(fixedAsset.Content) + len(fixedAsset.UUID)
@@ -244,7 +249,7 @@ func (contract *FixedAssetContract) ReadWriteAssets(ctx utils.Context, readIds [
 		err := ctx.GetStub().PutState(id, bytes)
 		if err != nil {
 			fmt.Println("Error performing PutState: " + err.Error())
-			return err
+			return fmt.Errorf("Error performing PutState on %s: %s", id, err.Error())
 		}
 	}
 
