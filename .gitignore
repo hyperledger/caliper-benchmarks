@@ -19,3 +19,7 @@ package-lock.json
 /package.json
 
 **/__pycache__/**
+
+pkg
+bin
+.vscode

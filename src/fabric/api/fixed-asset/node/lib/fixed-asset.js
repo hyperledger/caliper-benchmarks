@@ -34,7 +34,7 @@ class Asset extends Contract {
             console.log('Entering emptyContract');
             console.log('Returning null response');
         }
-        
+
         return {};
     }
 
@@ -54,7 +54,7 @@ class Asset extends Contract {
     async createAsset(ctx, uuid, content) {
         if (isVerbose) {
             console.log('Entering createAsset');
-        }        
+        }
         await ctx.stub.putState(uuid, Buffer.from(content));
         if (isVerbose) {
             console.log('Exiting createAsset');
@@ -69,7 +69,7 @@ class Asset extends Contract {
      *   byteSize: target byteSize of asset
      *   content: variable content
      * }
-     * 
+     *
      * Writes transient data against the passed uuid
      * @param {Context} ctx the context
      * @param {number} uuid the uuid to persist the body under
@@ -161,7 +161,7 @@ class Asset extends Contract {
 
         for (let i=0; i<batch_size; i++) {
             let privateAsset = {};
-            
+
             for (let j in transientData) {
                 privateAsset.content = transientData[j];
                 await ctx.stub.putPrivateData(collection, transientData[j].uuid, JSON.stringify(privateAsset));
@@ -190,7 +190,7 @@ class Asset extends Contract {
         } else {
             if (isVerbose) {
                 console.log(`Returning result for getAsset with uuid: ${uuid}`);
-            }            
+            }
             return assetAsBytes;
         }
     }
@@ -294,7 +294,7 @@ class Asset extends Contract {
             const assetAsBytes = await ctx.stub.getState(id);
 
             if (!assetAsBytes || assetAsBytes.length === 0) {
-                throw new Error(`Asset with id ${id} was not successfully retrieved`);
+                throw new Error(`Asset with id ${id} does not exist`);
             }
 
             fixedAssetBytes = assetAsBytes;
@@ -340,7 +340,7 @@ class Asset extends Contract {
                 Bookmark: metadata.bookmark,
             };
         } else {
-            
+
             const { iterator, metadata } = await ctx.stub.getQueryResultWithPagination(queryString, pageSize);
             response.results = await this._getAllResults(iterator);
             response.responseMetadata = {
