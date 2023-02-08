@@ -1,0 +1,88 @@
+name: Fabric
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+  sutOptions:
+    mutualTls: false
+  command:
+    start: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml up -d;sleep 3s
+    end: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml down;docker rm $(docker ps -aq);docker rmi $(docker images dev* -q)
+
+info:
+  Version: 1.1.0
+  Size: 2 Orgs
+  Orderer: Raft
+  Distribution: Single Host
+  StateDB: GoLevelDB
+
+channels:
+  - channelName: mychannel
+    create:
+      buildTransaction:
+        capabilities: []
+        consortium: 'SampleConsortium'
+        msps: ['Org1MSP', 'Org2MSP']
+        version: 0
+    # Array of contracts to be installed/instantiated on the named channel and available for use by the workload module
+    contracts:
+    - id: marbles
+      contractID: myMarbles
+      install:
+        version: v0
+        language: golang
+        path: marbles/go
+        metadataPath: src/marbles/go/metadata
+      instantiate:
+        initFunction: init
+        initArguments: []
+        endorsementPolicy:
+          identities:
+          - role:
+              name: member
+              mspId: Org1MSP
+          - role:
+              name: member
+              mspId: Org2MSP
+          policy:
+            2-of:
+            - signed-by: 0
+            - signed-by: 1
+
+organizations:
+  - mspid: Org1MSP
+    identities:
+      certificates:
+      - name: 'admin.org1.example.com'
+        admin: true
+        clientPrivateKey:
+          pem: |-
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+        clientSignedCert:
+          pem: |-
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+    connectionProfile:
+      path: './Org1ConnectionProfile.yaml'
+      discover: true
+  - mspid: Org2MSP
+    connectionProfile:
+    identities:
+      certificates:
+      - name: 'admin.org2.example.com'
+        admin: true
+        clientPrivateKey:
+          pem: |-
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+        clientSignedCert:
+          pem: |-
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+      path: './Org2ConnectionProfile.json'
+      discover: true
