@@ -13,6 +13,6 @@ require (
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/spf13/viper v1.4.0 // indirect
 	github.com/sykesm/zap-logfmt v0.0.2 // indirect
-	golang.org/x/crypto v0.0.0-20190621222207-cc06ce4a13d4 // indirect
+	golang.org/x/crypto v0.1.0 // indirect
 	google.golang.org/grpc v1.21.1 // indirect
 )
