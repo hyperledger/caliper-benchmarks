@@ -1,0 +1,34 @@
+simpleArgs: &simple-args
+  tokenId: 1
+
+test:
+  name: erc721
+  description: >-
+    To benchmark minting and transferring tokens of an ERC721 contract.
+  workers:
+    number: 1
+  rounds:
+    - label: 10 mints with 1tps
+      description: >-
+        Mint ERC721 Tokens.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: benchmarks/scenario/ERC-721/mint.js
+        arguments:
+          << : *simple-args
+    - label: 10 transfers with 1tps
+      description: >-
+        Transfer ERC721 Tokens between accounts.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: benchmarks/scenario/ERC-721/transfer.js
+        arguments:
+          << : *simple-args
