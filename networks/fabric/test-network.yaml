@@ -3,6 +3,8 @@ version: "2.0.0"
 
 caliper:
   blockchain: fabric
+  sutOptions:
+    mutualTls: true
 
 channels:
   # channelName of mychannel matches the name of the channel created by test network
@@ -14,6 +16,7 @@ channels:
     - id: marbles
     - id: simple
     - id: smallbank
+    - id: event_transfer_iot
 
 organizations:
   - mspid: Org1MSP
@@ -21,10 +24,13 @@ organizations:
     identities:
       certificates:
       - name: 'User1'
+      # I've added full path to the in "keystore"folder;
+      # File name for the "clientPrivateKey" which I found in the folder "keystore" must be always updated whenever you start new "fabric-test-network"; 
+      # Also, for the "clientSignCerts" part, I've adjusted the name of the file as it is in the folder, and has a name "cert.pem".
         clientPrivateKey:
-          path: '../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/priv_sk'
+          path: '/home/vodenica/go/src/github.com/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/d5d6e134aa6a1515a443278bce6c20e6f0b9f2f1fd70dcd0347b8d135777c2b0_sk'
         clientSignedCert:
-          path: '../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem'
+          path: '../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/cert.pem'
     connectionProfile:
       path: '../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml'
       discover: true

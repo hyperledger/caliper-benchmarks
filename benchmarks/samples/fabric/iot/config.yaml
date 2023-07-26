@@ -1,0 +1,32 @@
+test:
+  name: Event transfer Smart Contract
+  description: A test benchmark for testing the IoT Smart Contract
+  workers:
+    type: local
+    number: 5
+  rounds:
+    - label: Creating IoT events
+      # 5000 transactions should create around 100 cars per worker but not guaranteed
+      # so need to set asset limits to less than 1000 for the other tests
+      description: Create event benchmark 
+      txNumber: 100
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmarks/samples/fabric/iot/createEvent.js
+        arguments:
+          contractId: event_transfer_iot
+    - label: Reading created IoT event
+      description: Read event benchmark
+      txDuration: 60
+      rateControl: 
+          type: "fixed-load" 
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmarks/samples/fabric/iot/readEvent.js
+        arguments:
+          assets: 10
+          contractId: event_transfer_iot
