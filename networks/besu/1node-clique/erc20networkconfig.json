@@ -13,11 +13,11 @@
         "fromAddressSeed": "0x3f841bf589fdf83a521e55d51afddc34fa65351161eead24f064855fc29c9580",
         "transactionConfirmationBlocks": 2,
         "contracts": {
-            "erc20": {
-                "path": "./src/ethereum/ERC-20/ERC-20.json",
+            "ERC20": {
+                "address": "0xd9145CCE52D386f254917e481eB44e9943F39138",
                 "estimateGas": true,
                 "gas": {
-                    "transfer": 80000
+                    "transfer": 100000
                 },
                 "abi": 
                 [

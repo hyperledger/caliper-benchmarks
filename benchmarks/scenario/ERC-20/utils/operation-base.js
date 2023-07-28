@@ -43,13 +43,8 @@ class OperationBase extends WorkloadModuleBase {
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
 
         this.assertConnectorType();
-        // this.assertSetting('initialMoney');
         this.assertSetting('moneyToTransfer');
-        // this.assertSetting('numberOfAccounts');
-
-        // this.initialMoney = this.roundArguments.initialMoney;
         this.moneyToTransfer = this.roundArguments.moneyToTransfer;
-        // this.numberOfAccounts = this.roundArguments.numberOfAccounts;
         this.simpleState = this.createSimpleState();
     }
 
@@ -96,7 +91,6 @@ class OperationBase extends WorkloadModuleBase {
             case 'ethereum':
                 return this._createEthereumConnectorRequest(operation, args);
             default:
-                // this shouldn't happen
                 throw new Error(`Connector type ${this.connectorType} is not supported by the benchmark`);
         }
     }
@@ -111,7 +105,7 @@ class OperationBase extends WorkloadModuleBase {
      */
     _createEthereumConnectorRequest(operation, args) {
         return {
-            contract: 'erc20',
+            contract: 'ERC20',
             verb: operation,
             args: Object.keys(args).map(k => args[k]),
             readOnly: false

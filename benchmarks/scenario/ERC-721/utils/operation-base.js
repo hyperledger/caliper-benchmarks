@@ -46,7 +46,7 @@ class OperationBase extends WorkloadModuleBase {
 
     _createEthereumConnectorRequest(operation, args) {
         return {
-            contract: 'erc721',
+            contract: 'ERC721',
             verb: operation,
             args: Object.keys(args).map(k => args[k]),
             readOnly: false
