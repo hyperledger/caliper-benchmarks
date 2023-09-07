@@ -14,13 +14,18 @@
         "transactionConfirmationBlocks": 2,
         "contracts": {
             "ERC20": {
-                "address": "0xd9145CCE52D386f254917e481eB44e9943F39138",
-                "estimateGas": true,
+                "path": "./src/ethereum/ERC-20/ERC-20.json",
                 "gas": {
                     "transfer": 100000
                 },
                 "abi": 
                 [
+                    {
+                        "inputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
                     {
                         "anonymous": false,
                         "inputs": [

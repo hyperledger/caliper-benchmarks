@@ -37,6 +37,15 @@ contract ERC20 is Context, IERC20 {
 
     uint256 private _totalSupply;
 
+    uint256 private _totalSupply;
+
+    Counters.Counter private _tokenIds;
+
+    constructor() public {
+        _totalSupply = 1000000 * 10 ** 18;
+        _balances[msg.sender] = _totalSupply;
+    }
+
     /**
      * @dev See {IERC20-totalSupply}.
      */

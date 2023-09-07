@@ -10,11 +10,19 @@ on:
       - 'src/ethereum/ERC-20/**'
       - 'src/ethereum/ERC-721/**'
       - 'src/ethereum/simple/**'
+  pull_request:
+    paths:
+      - 'benchmarks/scenario/ERC-20/**'
+      - 'benchmarks/scenario/ERC-721/**'
+      - 'benchmarks/scenario/simple/**'
+      - 'networks/besu/1node-clique/**'
+      - 'src/ethereum/ERC-20/**'
+      - 'src/ethereum/ERC-721/**'
+      - 'src/ethereum/simple/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -34,11 +42,9 @@ jobs:
         npx caliper launch manager \
         --caliper-benchconfig benchmarks/scenario/ERC-20/config.yaml \
         --caliper-networkconfig networks/besu/1node-clique/erc20networkconfig.json \
-        --caliper-flow-skip-install \
         --caliper-workspace .
         npx caliper launch manager \
         --caliper-benchconfig benchmarks/scenario/ERC-721/config.yaml \
         --caliper-networkconfig networks/besu/1node-clique/erc721networkconfig.json \
-        --caliper-flow-skip-install \
         --caliper-workspace .
         npx caliper launch manager --caliper-benchconfig benchmarks/scenario/simple/config.yaml --caliper-networkconfig networks/besu/1node-clique/networkconfig.json --caliper-workspace .

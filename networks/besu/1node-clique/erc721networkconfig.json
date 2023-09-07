@@ -13,11 +13,10 @@
         "fromAddressSeed": "0x3f841bf589fdf83a521e55d51afddc34fa65351161eead24f064855fc29c9580",
         "transactionConfirmationBlocks": 2,
         "contracts": {
-            "ERC721": {
-                "address": "0x836184A4987e08D036086e776632FCB83b9A04ee",
-                "estimateGas": true,
+            "ERC-721": {
+                "path": "./src/ethereum/ERC-721/ERC-721.json",
                 "gas": {
-                    "transfer": 100000,
+                    "transferFrom": 100000,
                     "mint": 100000
                 },
                 "abi": 

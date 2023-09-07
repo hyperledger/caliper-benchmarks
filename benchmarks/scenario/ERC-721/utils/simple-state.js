@@ -3,7 +3,7 @@
 const Dictionary = 'abcdefghijklmnopqrstuvwxyz';
 
 class SimpleState {
-    constructor(workerIndex, tokenId, accounts = 0) {
+    constructor(workerIndex, tokenId = 101, accounts = 0) {
         this.accountsGenerated = accounts;
         this.tokenId = tokenId;
         this.accountPrefix = this._get26Num(workerIndex);
@@ -21,18 +21,22 @@ class SimpleState {
     }
 
     getTransferArguments() {
-        return {
-            from: "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
-            to: "0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef",
-            tokenId: this.tokenId
-        };
-    }
-
-    getMintArguments() {
-        return {
+        const args = {
+            from: "0xD1cf9D73a91DE6630c2bb068Ba5fDdF9F0DEac09",
             to: "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
             tokenId: this.tokenId
         };
+        this.tokenId++;
+        return args;
+    }
+
+    getMintArguments() {
+        const args = {
+            to: "0xD1cf9D73a91DE6630c2bb068Ba5fDdF9F0DEac09",
+            tokenId: this.tokenId
+        };
+        this.tokenId++;
+        return args;
     }
 }
 
