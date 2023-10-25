@@ -1,0 +1,11 @@
+comandos:
+
+npm install para instalar os pacotes
+
+subir a rede:
+
+npx caliper launch manager --caliper-benchconfig /home/marcio/caliper/caliper-benchmarks/benchmarks/scenario/simple/config.yaml --caliper-networkconfig /home/marcio/caliper/caliper-benchmarks/config.json --caliper-bind-sut besu:latest --caliper-flow-skip-install
+
+instalar:
+
+npx caliper bind --caliper-bind-sut besu:latest x caliper launch manager --caliper-benchconfig /home/marcio/caliper/caliper-benchmarks/benchmarks/scenario/simple/config.yaml --caliper-net workconfig /home/marcio/caliper/caliper-benchmarks/benchmarks/config.json --caliper-flow-skip-install
