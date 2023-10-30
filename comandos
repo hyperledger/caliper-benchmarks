@@ -1,6 +1,8 @@
 comandos:
 
-npm install para instalar os pacotes
+Intalar pacotes:
+
+npm install --only=prod @hyperledger/caliper-cli@0.5.0
 
 subir a rede:
 
