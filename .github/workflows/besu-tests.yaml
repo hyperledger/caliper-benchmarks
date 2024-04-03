@@ -1,0 +1,50 @@
+name: Besu Tests
+
+on:
+  push:
+    paths:
+      - 'benchmarks/scenario/ERC-20/**'
+      - 'benchmarks/scenario/ERC-721/**'
+      - 'benchmarks/scenario/simple/**'
+      - 'networks/besu/1node-clique/**'
+      - 'src/ethereum/ERC-20/**'
+      - 'src/ethereum/ERC-721/**'
+      - 'src/ethereum/simple/**'
+  pull_request:
+    paths:
+      - 'benchmarks/scenario/ERC-20/**'
+      - 'benchmarks/scenario/ERC-721/**'
+      - 'benchmarks/scenario/simple/**'
+      - 'networks/besu/1node-clique/**'
+      - 'src/ethereum/ERC-20/**'
+      - 'src/ethereum/ERC-721/**'
+      - 'src/ethereum/simple/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.3.1
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run commands
+      run: |
+        npm install --only=prod @hyperledger/caliper-cli@0.5.0
+        npx caliper bind --caliper-bind-sut besu:latest
+        npx caliper --version
+        npx caliper launch manager \
+        --caliper-benchconfig benchmarks/scenario/ERC-20/config.yaml \
+        --caliper-networkconfig networks/besu/1node-clique/erc20networkconfig.json \
+        --caliper-workspace .
+        npx caliper launch manager \
+        --caliper-benchconfig benchmarks/scenario/ERC-721/config.yaml \
+        --caliper-networkconfig networks/besu/1node-clique/erc721networkconfig.json \
+        --caliper-workspace .
+        npx caliper launch manager --caliper-benchconfig benchmarks/scenario/simple/config.yaml --caliper-networkconfig networks/besu/1node-clique/networkconfig.json --caliper-workspace .

@@ -1,0 +1,23 @@
+simpleArgs: &simple-args
+  initialMoney: 10000
+  moneyToTransfer: 1
+
+test:
+  name: erc20
+  description: >-
+    To benchmark transferring tokens between accounts.
+  workers:
+    number: 1
+  rounds:
+    - label: 50 txns with 1tps
+      description: Test description for transfering money between accounts.
+      txNumber: 50
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: benchmarks/scenario/ERC-20/transfer.js
+        arguments:
+          << : *simple-args
+          money: 1
