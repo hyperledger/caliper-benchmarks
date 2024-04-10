@@ -2,24 +2,23 @@ test:
   name: Hello World
   description: This is a helloworld benchmark of FISCO BCOS for caliper
   workers:
+    type: local
     number: 1
   rounds:
     - label: get
       description: Test performance of getting name
-      txNumber:
-        - 10000
+      txNumber: 10000
       rateControl:
-        - type: fixed-rate
+          type: fixed-rate
           opts:
             tps: 1000
       workload:
         module: benchmarks/samples/fisco-bcos/helloworld/get.js
     - label: set
       description: Test performance of setting name
-      txNumber:
-        - 10000
+      txNumber: 10000
       rateControl:
-        - type: fixed-rate
+          type: fixed-rate
           opts:
             tps: 1000
       workload:
