@@ -5,9 +5,9 @@ on:
     branches: [ main ]
 
 env:
-  FABRIC_VERSION: 2.4.3
-  CALIPER_VERSION: 0.5.0
-  FABRIC_BIND_SUT: 2.2
+  FABRIC_VERSION: 2.5.7
+  CALIPER_VERSION: 0.6.0
+  FABRIC_BIND_SUT: fabric-gateway
 
 jobs:
   changes:
@@ -17,7 +17,7 @@ jobs:
       benchmark: ${{ steps.benchmarks-filter.outputs.changes }}
       cc-env: ${{ steps.cc-env-filter.outputs.changes }}
     steps:
-    - uses: dorny/paths-filter@v2
+    - uses: dorny/paths-filter@v3.0.2
       name: Check for changes in benchmarks
       id: benchmarks-filter
       with:
@@ -50,7 +50,7 @@ jobs:
             - 'networks/fabric/**'
             - 'networks/prometheus-grafana/**'
             - '.github/**'
-    - uses: dorny/paths-filter@v2
+    - uses: dorny/paths-filter@v3.0.2
       name: Check for changes in chaincode environments
       id: cc-env-filter
       with:
@@ -84,7 +84,7 @@ jobs:
     steps:
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@v2
+      uses: actions/cache@v4.0.2
       with:
         path: node_modules
         key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
@@ -98,7 +98,7 @@ jobs:
         npx caliper --version
     - name: Cache Fabric Samples and Binaries
       id: cache-fabric
-      uses: actions/cache@v2
+      uses: actions/cache@v4.0.2
       with:
         path: fabric-samples
         key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
@@ -129,13 +129,13 @@ jobs:
           - cc-env: java
             benchmark: smallbank
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v4.1.4
+    - uses: actions/setup-node@v4.0.2
       with:
-        node-version: 16.x
+        node-version: 20.x
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@v2
+      uses: actions/cache@v4.0.2
       with:
         path: node_modules
         key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
@@ -143,7 +143,7 @@ jobs:
           ${{ matrix.node-version }}-npm-cache-
     - name: Cache Fabric Samples and Binaries
       id: cache-fabric
-      uses: actions/cache@v2
+      uses: actions/cache@v4.0.2
       with:
         path: fabric-samples
         key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
