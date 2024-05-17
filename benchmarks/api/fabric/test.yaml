@@ -168,7 +168,7 @@ test:
         Test a submitTransaction() Gateway method against the
         `fixed-asset` Smart Contract method named `ReadWriteAssets`. This method
         reads and writes a specified number of keys for assets of size 100
-        bytes. The write keys set will never be any of the read keys. 
+        bytes. The write keys set will never be any of the read keys.
         The contract will never write to the keys that were read.
       chaincodeID: fixed-asset
       txNumber: 5
@@ -241,7 +241,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/batch-delete-asset.js
         arguments:

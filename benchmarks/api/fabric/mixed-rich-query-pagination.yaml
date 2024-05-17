@@ -22,7 +22,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
@@ -49,7 +49,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
@@ -76,7 +76,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
@@ -103,7 +103,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
@@ -130,7 +130,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:
@@ -157,7 +157,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 5
-          startingTps: 5
+          startTps: 5
       workload:
         module: benchmarks/api/fabric/workloads/mixed-rich-query-asset.js
         arguments:

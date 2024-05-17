@@ -22,7 +22,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 100
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:
@@ -41,7 +41,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 100
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/empty-contract.js
         arguments:

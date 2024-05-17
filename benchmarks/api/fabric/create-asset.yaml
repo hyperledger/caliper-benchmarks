@@ -37,7 +37,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -54,7 +54,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -71,7 +71,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -88,7 +88,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -105,7 +105,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -122,7 +122,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -139,7 +139,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:
@@ -156,7 +156,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-asset.js
         arguments:

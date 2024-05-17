@@ -3,7 +3,7 @@ test:
   description: >-
     This is a transaction number based benchmark targeting a Hyperledger Fabric network
     using the `fixed-asset` chaincode.
-    It will preload a fixed number of keys in the first round, 
+    It will preload a fixed number of keys in the first round,
     then perform a set of read + write transactions on a given number of keys before finally
     deleting all the preloaded keys in the final round
   workers:
@@ -20,7 +20,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/read-write-assets/preload-assets.js
         arguments:
@@ -40,7 +40,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
         arguments:
@@ -63,7 +63,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
         arguments:
@@ -86,7 +86,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/read-write-assets/read-write-assets.js
         arguments:
@@ -108,7 +108,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 20
-          startingTps: 10
+          startTps: 10
       workload:
         module: benchmarks/api/fabric/workloads/read-write-assets/delete-preloaded-assets.js
         arguments:

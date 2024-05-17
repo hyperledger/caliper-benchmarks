@@ -5,7 +5,7 @@ test:
     using the `fixed-asset` NodeJS chaincode
     contract that is interacted with via a Fabric-SDK-Node Gateway. Each test
     round invokes the `createPrivateAsset` method, with successive rounds
-    increasing the byteSize of the asset added into the Private Data 
+    increasing the byteSize of the asset added into the Private Data
     Collection of the authorized organization.
   workers:
     number: 5
@@ -39,7 +39,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -57,7 +57,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -75,7 +75,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -93,7 +93,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -111,7 +111,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -129,7 +129,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
@@ -139,7 +139,7 @@ test:
       description: >-
         Test a submitTransaction() Gateway method against the NodeJS
         `fixed-asset` Smart Contract method named `createPrivateAsset`, which
-        inserts an asset of size 10000 bytes into the Private Data Collection 
+        inserts an asset of size 10000 bytes into the Private Data Collection
         of the authorized organization.
       chaincodeID: fixed-asset
       txDuration: 300
@@ -147,7 +147,7 @@ test:
         type: fixed-load
         opts:
           transactionLoad: 10
-          startingTps: 1
+          startTps: 1
       workload:
         module: benchmarks/api/fabric/workloads/create-private-asset.js
         arguments:
