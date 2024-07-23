@@ -15,6 +15,7 @@
         "contracts": {
             "ERC-721": {
                 "path": "./src/ethereum/ERC-721/ERC-721.json",
+                "address": "0xd9bB4402537D044709BC80b666F522A6F0ce6435",
                 "gas": {
                     "transferFrom": 100000,
                     "mint": 100000

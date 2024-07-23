@@ -15,6 +15,7 @@
         "contracts": {
             "ERC20": {
                 "path": "./src/ethereum/ERC-20/ERC-20.json",
+                "address": "0xd9bB4402537D044709BC80b666F522A6F0ce6435",
                 "gas": {
                     "transfer": 100000
                 },
