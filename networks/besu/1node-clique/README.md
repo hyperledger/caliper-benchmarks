@@ -35,7 +35,7 @@ Below are the examples of how to run a benchmark on the simple smart contract, a
 - Simple Smart Contract 
  ```bash
 npx caliper launch manager \ 
-    --caliper-benchconfig benchmarks/scenario/ERC-20/config.yaml \ 
+    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \ 
     --caliper-networkconfig networks/besu/1node-clique/networkconfig.json \
     --caliper-workspace .
 ```
@@ -43,7 +43,7 @@ npx caliper launch manager \
 - ERC-20 Smart Contract
 ```bash
 npx caliper launch manager \
-    --caliper-benchconfig benchmarks/scenario/simple/ERC-20/config.yaml \
+    --caliper-benchconfig benchmarks/scenario/ERC-20/config.yaml \
     --caliper-networkconfig networks/besu/1node-clique/erc20networkconfig.json \
     --caliper-workspace .
 ```
@@ -51,7 +51,7 @@ npx caliper launch manager \
 - ERC-721 Smart Contract
 ```bash
 npx caliper launch manager \
-    --caliper-benchconfig benchmarks/scenario/simple/ERC-721/config.yaml \
+    --caliper-benchconfig benchmarks/scenario/ERC-721/config.yaml \
     --caliper-networkconfig networks/besu/1node-clique/erc721networkconfig.json \
     --caliper-workspace .
 ```
